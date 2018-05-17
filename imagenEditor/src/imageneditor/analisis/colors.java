@@ -5,7 +5,6 @@
 
 package imageneditor.analisis;
 
-import imageneditor.analizador.sym;
 import java_cup.runtime.*;
 import java_cup.runtime.XMLElement;
 
