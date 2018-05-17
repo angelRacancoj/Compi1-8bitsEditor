@@ -70,4 +70,6 @@ public class canvasManager {
             throw new InputsVaciosException("Lienzo already exist");
         }
     }
+    
+    
 }
