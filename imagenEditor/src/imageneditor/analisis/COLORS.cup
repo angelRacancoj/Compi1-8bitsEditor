@@ -1,0 +1,49 @@
+package imageneditor.analisis;
+
+import java_cup.runtime.*;
+
+parser code {:
+
+	public void syntax_error(Symbol cur_token) {
+		String message = "Estructura invalida en posición " + cur_token.right
+			 + ", token: " + cur_token.value;
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<");	 
+		System.out.println(message);
+		System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+	}
+
+:}
+
+/* Terminal */
+terminal String Pintar, Vars, Colores, Dimension, Cuadro, Hex, Red, Blue, Green, Tipo, Fondo; 
+terminal String Tamanio, Nombre, Lienzos, Igual, Menos, Mas, Coma, Intervalo, DosPuntos, PuntoYComa; 
+terminal String ParAbierto, ParCerrado, CorAbierto, CorCerrado, LlaveAbierta, LlaveCerrada;
+terminal String Comment, HexaCode, Entero, Cadena, Identificador, NewVar, Instrucciones;
+
+/* Non Terminal */
+
+non terminal String CLRS, CLRS_CUERPO, CLRS_CARACTERISTICAS, COLOR_CLRS, CLRGB_CLRS;
+
+start with CLRS;
+
+CLRS 		::= CorAbierto Colores DosPuntos CorAbierto CLRS_CUERPO CorCerrado CorCerrado; 
+
+CLRS_CUERPO	::= Identificador DosPuntos CorAbierto CLRS_CARACTERISTICAS CorCerrado Coma CLRS_CUERPO
+				| Identificador DosPuntos CorAbierto CLRS_CARACTERISTICAS CorCerrado
+				;
+
+CLRS_CARACTERISTICAS	::=	Identificador DosPuntos CorAbierto COLOR_CLRS CorCerrado Coma CLRS_CARACTERISTICAS
+							| Identificador DosPuntos CorAbierto COLOR_CLRS CorCerrado
+							;
+
+COLOR_CLRS 		::= Hex DosPuntos HexaCode
+				| CLRGB_CLRS
+				;
+
+CLRGB_CLRS	::=	Red DosPuntos Entero Coma CLRGB_CLRS
+				| Blue DosPuntos Entero Coma CLRGB_CLRS
+				| Green DosPuntos Entero Coma CLRGB_CLRS
+				| Red DosPuntos Entero
+				| Blue DosPuntos Entero
+				| Green DosPuntos Entero
+				;

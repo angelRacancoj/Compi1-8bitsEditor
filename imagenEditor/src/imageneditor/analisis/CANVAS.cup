@@ -1,0 +1,68 @@
+package imageneditor.analisis;
+
+import java_cup.runtime.*;
+
+parser code {:
+
+	public void syntax_error(Symbol cur_token) {
+		String message = "Estructura invalida en posición " + cur_token.right
+			 + ", token: " + cur_token.value;
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<");	 
+		System.out.println(message);
+		System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+	}
+
+:}
+/* Terminal */
+terminal String Pintar, Vars, Colores, Dimension, Cuadro, Hex, Red, Blue, Green, Tipo, Fondo; 
+terminal String Tamanio, Nombre, Lienzos, Igual, Menos, Mas, Coma, Intervalo, DosPuntos, PuntoYComa; 
+terminal String ParAbierto, ParCerrado, CorAbierto, CorCerrado, LlaveAbierta, LlaveCerrada;
+terminal String Comment, HexaCode, Entero, Cadena, Identificador, NewVar, Instrucciones;
+
+/* Non terminal */
+non terminal String CANVAS, CUERPO, CARACTERISTICAS, NOMBRE, TIPO, FONDO, TAMANIO, COLOR, CLRGB;
+
+start with CANVAS;
+
+CANVAS		::=	CorAbierto Lienzos DosPuntos CorAbierto CUERPO CorCerrado CorCerrado;
+
+CUERPO		::= Identificador DosPuntos CorAbierto CARACTERISTICAS CorCerrado Coma CUERPO
+				| Identificador DosPuntos CorAbierto CARACTERISTICAS CorCerrado
+				;
+
+CARACTERISTICAS	::= NOMBRE Coma CARACTERISTICAS
+					| TIPO Coma CARACTERISTICAS
+					| FONDO Coma CARACTERISTICAS
+					| TAMANIO Coma CARACTERISTICAS
+					| NOMBRE
+					| TIPO
+					| FONDO
+					| TAMANIO
+					; 
+
+NOMBRE 		::= Nombre DosPuntos Cadena; 
+
+TIPO 		::= Tipo DosPuntos Cadena;
+
+FONDO 		::= Fondo DosPuntos CorAbierto COLOR CorCerrado;
+
+COLOR 		::= Hex DosPuntos HexaCode
+				| CLRGB
+				;
+
+CLRGB		::=	Red DosPuntos Entero Coma CLRGB
+				| Blue DosPuntos Entero Coma CLRGB
+				| Green DosPuntos Entero Coma CLRGB
+				| Red DosPuntos Entero
+				| Blue DosPuntos Entero
+				| Green DosPuntos Entero
+				;
+
+TAMANIO 	::= Tamanio DosPuntos CorAbierto Cuadro DosPuntos Entero Coma Dimension DosPuntos Entero CorCerrado
+				| Tamanio DosPuntos CorAbierto Dimension DosPuntos Entero Coma Cuadro DosPuntos Entero CorCerrado
+				;
+
+/*Pintar, Vars, Colores, Dimension, Cuadro, Hex, Red, Blue, Green, Tipo, Fondo, 
+Tamanio, Nombre, Lienzos, Igual, Menos, Mas, Coma, Intervalo, DosPuntos, PuntoYComa, 
+ParAbierto, ParCerrado, CorAbierto, CorCerrado, LlaveAbierta, LlaveCerrada, 
+Comment, HexaCode, Entero, Cadena, Identificador*/
