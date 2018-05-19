@@ -23,12 +23,27 @@ public class paint {
         this.posY = posY;
     }
 
+    /**
+     * the method if 'posXEnd' or 'posY' is less that 0 won't be set
+     *
+     * @param colorSelected
+     * @param posX
+     * @param posXEnd
+     * @param posY
+     * @param posYEnd
+     */
     public paint(colorMaker colorSelected, int posX, int posXEnd, int posY, int posYEnd) {
         this.colorSelected = colorSelected;
         this.posX = posX;
-        this.posXEnd = posXEnd;
+
+        if (posXEnd >= 0) {
+            this.posXEnd = posXEnd;
+        }
         this.posY = posY;
-        this.posYEnd = posYEnd;
+
+        if (posYEnd >= 0) {
+            this.posYEnd = posYEnd;
+        }
     }
 
     public colorMaker getColorSelected() {

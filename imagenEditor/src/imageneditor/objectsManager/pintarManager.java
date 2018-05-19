@@ -6,6 +6,8 @@
 package imageneditor.objectsManager;
 
 import imageneditor.backEnd.Objects.colorsStruct;
+import imageneditor.backEnd.Objects.instruccionsP;
+import imageneditor.backEnd.Objects.paint;
 import imageneditor.backEnd.Objects.paintStruct;
 import imageneditor.backEnd.Objects.variable;
 import imageneditor.exceptions.InputsVaciosException;
@@ -85,8 +87,80 @@ public class pintarManager {
         }
     }
 
-    public void addInstruccion() {
+    /**
+     * add an instruction to de system
+     *
+     * @param owner
+     * @throws InputsVaciosException
+     */
+    public void addInstruccion(String owner) throws InputsVaciosException {
+        if (newPaintS.findIsntruccionsP(owner) == null) {
+            newPaintS.addInstruccion(new instruccionsP(canvasS.findLienzo(owner)));
+        } else {
+            throw new InputsVaciosException("The instruction " + owner + " doesn't exist");
+        }
+    }
 
+    /**
+     * verify if exist the instruction and verify if have been created the
+     * variable at the variables declaration method
+     *
+     * @param name
+     * @param owner
+     * @throws InputsVaciosException
+     */
+    public void addVariableToinstruccion(String name, String owner) throws InputsVaciosException {
+        if ((newPaintS.findIsntruccionsP(owner) != null) && (newPaintS.findVariable(name) != null)) {
+            newPaintS.findIsntruccionsP(owner).addVariable(newPaintS.findVariable(name));
+        } else {
+            throw new InputsVaciosException("The instruction " + owner + " doesn't exist");
+        }
+    }
+
+    /**
+     * the method if 'posXEnd' or 'posY' is less that 0 won't be set
+     *
+     * verify if exist the instruction and the color selected is part of the
+     * lienzo selected (the owner)
+     *
+     * "create a method to verify that the rank is reachable"
+     *
+     * @param owner
+     * @param colorName
+     * @param posX
+     * @param posXEnd
+     * @param posY
+     * @param posYEnd
+     * @throws InputsVaciosException
+     */
+    public void addPintarInstruccion(String owner, String colorName, int posX, int posXEnd, int posY, int posYEnd) throws InputsVaciosException {
+        if ((newPaintS.findIsntruccionsP(owner) != null) && colorsS.findColorMaker(owner, colorName) != null) {
+            newPaintS.findIsntruccionsP(owner).addPaint(new paint(colorsS.findColorMaker(owner, colorName), posX, posXEnd, posY, posYEnd));
+        } else {
+            throw new InputsVaciosException("Pintar instruction imposible to add");
+        }
+    }
+
+    /**
+     * verify if exist the instruction and the color selected is part of the
+     * lienzo selected (the owner)
+     *
+     * just use the simple format of position
+     *
+     * "create a method to verify that the rank is reachable"
+     *
+     * @param owner
+     * @param colorName
+     * @param posX
+     * @param posY
+     * @throws InputsVaciosException
+     */
+    public void addPintarInstruccion(String owner, String colorName, int posX, int posY) throws InputsVaciosException {
+        if ((newPaintS.findIsntruccionsP(owner) != null) && colorsS.findColorMaker(owner, colorName) != null) {
+            newPaintS.findIsntruccionsP(owner).addPaint(new paint(colorsS.findColorMaker(owner, colorName), posX, posY));
+        } else {
+            throw new InputsVaciosException("Pintar instruction imposible to add");
+        }
     }
 
 }
