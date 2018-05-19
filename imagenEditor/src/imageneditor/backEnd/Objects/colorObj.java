@@ -23,6 +23,15 @@ public class colorObj {
     public colorObj() {
     }
 
+    public colorMaker getColorMaker(String name) {
+        for (colorMaker colorList1 : colorList) {
+            if (colorList1.getName().equals(name)) {
+                return colorList1;
+            }
+        }
+        return null;
+    }
+
     /**
      * this method add an color element inside of the colors list
      *

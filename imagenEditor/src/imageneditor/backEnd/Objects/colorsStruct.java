@@ -24,6 +24,40 @@ public class colorsStruct {
     }
 
     /**
+     * find the colorMaker structure that is structure before the simple one
+     * that is COLOR
+     *
+     * @param id
+     * @param name
+     * @return colorMaker
+     */
+    public colorMaker findColorMaker(String id, String name) {
+        for (colorObj listLienzosColor : listLienzosColors) {
+            if (listLienzosColor.getOwner().getId().equals(id)) {
+                if (listLienzosColor.getColorMaker(name) != null) {
+                    return listLienzosColor.getColorMaker(name);
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * find the colorObj structure at the list
+     *
+     * @param id
+     * @return colorObj
+     */
+    public colorObj findColorObject(String id) {
+        for (colorObj listLienzosColor : listLienzosColors) {
+            if (listLienzosColor.getOwner().getId().equals(id)) {
+                return listLienzosColor;
+            }
+        }
+        return null;
+    }
+
+    /**
      * This method add an element into de Lienzo's colors list
      *
      * @param lienzoCl

@@ -24,6 +24,23 @@ public class canvasStruct {
     }
 
     /**
+     * check at the lienzos list using the ID
+     *
+     * if don't find a coincidence return null
+     *
+     * @param id
+     * @return lienzoOj
+     */
+    public lienzoObj findLienzo(String id) {
+        for (lienzoObj lienzo : lienzos) {
+            if (lienzo.getId().equals(id)) {
+                return lienzo;
+            }
+        }
+        return null;
+    }
+
+    /**
      * use the entry Id to verify if already exist the lienzo if it exist at the
      * list return true
      *

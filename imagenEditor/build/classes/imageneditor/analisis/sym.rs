@@ -1,1 +1,0 @@
-imageneditor.analizador.sym

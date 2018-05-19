@@ -22,7 +22,7 @@
                   <Component id="jScrollPane1" max="32767" attributes="0"/>
                   <Group type="102" attributes="0">
                       <Component id="lineColumn" min="-2" pref="230" max="-2" attributes="0"/>
-                      <EmptySpace pref="739" max="32767" attributes="0"/>
+                      <EmptySpace pref="955" max="32767" attributes="0"/>
                       <Component id="guardarButton" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -65,6 +65,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Guardar"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="guardarButtonActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="lineColumn">
       <Properties>

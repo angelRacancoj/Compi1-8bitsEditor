@@ -13,17 +13,49 @@ import java.util.LinkedList;
  */
 public class paintStruct {
 
+    String path;
     LinkedList<variable> variablesList = new LinkedList<>();
     LinkedList<instruccionsP> instruccionList = new LinkedList<>();
 
-    public paintStruct() {
+    public paintStruct(String path) {
+        this.path = path;
+    }
+
+    /**
+     * verify if already exist an instruction searching by the lienzo's name
+     *
+     * @param owner
+     * @return
+     */
+    public instruccionsP findIsntruccionsP(String owner) {
+        for (instruccionsP instruccionList1 : instruccionList) {
+            if (instruccionList1.getOwner().getId().equals(owner)) {
+                return instruccionList1;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * verify if the variable exist in the variables list and return de variable
+     *
+     * @param name
+     * @return variable
+     */
+    public variable findVariable(String name) {
+        for (variable variablesList1 : variablesList) {
+            if (variablesList1.getName().equals(name)) {
+                return variablesList1;
+            }
+        }
+        return null;
     }
 
     /**
      * verify if the variable exist in the variables list
      *
      * @param name
-     * @return
+     * @return true
      */
     public boolean existVariable(String name) {
         if (!variablesList.isEmpty()) {

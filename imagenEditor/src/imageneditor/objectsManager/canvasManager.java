@@ -19,8 +19,8 @@ public class canvasManager {
 
     canvasStruct newCanvas;
 
-    public canvasManager(String path) {
-        newCanvas = new canvasStruct(path);
+    public canvasManager(canvasStruct newCanvas) {
+        this.newCanvas = newCanvas;
     }
 
     /**
@@ -70,6 +70,22 @@ public class canvasManager {
             throw new InputsVaciosException("Lienzo already exist");
         }
     }
-    
-    
+
+    /**
+     * check at the lienzos list using the ID
+     *
+     * if don't find a coincidence throws an exception
+     *
+     * @param ID
+     * @return lienzoObj
+     * @throws InputsVaciosException
+     */
+    public lienzoObj findLienzo(String ID) throws InputsVaciosException {
+        if (newCanvas.findLienzo(ID) != null) {
+            return newCanvas.findLienzo(ID);
+        } else {
+            throw new InputsVaciosException("Don't exist a Lienzo named: " + ID);
+        }
+    }
+
 }

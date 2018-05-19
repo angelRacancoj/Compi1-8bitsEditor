@@ -7,6 +7,10 @@ package imageneditor.frontEnd;
 
 import imageneditor.files.ManejadorArchivo;
 import java.io.IOException;
+import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
 
 /**
  *
@@ -17,8 +21,11 @@ public class codeEditor extends javax.swing.JPanel {
     String path;
     ManejadorArchivo filesManager;
     TextLineNumber textLine;
+
     /**
      * Creates new form codeEditor
+     *
+     * @param path
      */
     public codeEditor(String path) {
         this.path = path;
@@ -29,8 +36,37 @@ public class codeEditor extends javax.swing.JPanel {
             codeTextArea.setText(filesManager.lecturaArchivo(path));
         } catch (IOException e) {
         }
-        
-        
+
+        codeTextArea.addCaretListener(new CaretListener() {
+
+            public void caretUpdate(CaretEvent e) {
+
+                JTextArea editArea = (JTextArea) e.getSource();
+
+                int linenum = 1;
+                int columnnum = 1;
+
+                try {
+
+                    int caretpos = editArea.getCaretPosition();
+                    linenum = editArea.getLineOfOffset(caretpos);
+
+                    columnnum = caretpos - editArea.getLineStartOffset(linenum);
+
+                    linenum += 1;
+
+                } catch (Exception ex) {
+
+                }
+
+                updateStatus(linenum, columnnum);
+            }
+        });
+
+    }
+
+    private void updateStatus(int linenumber, int columnnumber) {
+        lineColumn.setText("Line: " + linenumber + " Column: " + columnnumber);
     }
 
     /**
@@ -52,6 +88,11 @@ public class codeEditor extends javax.swing.JPanel {
         jScrollPane1.setViewportView(codeTextArea);
 
         guardarButton.setText("Guardar");
+        guardarButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                guardarButtonActionPerformed(evt);
+            }
+        });
 
         lineColumn.setText("jLabel1");
 
@@ -65,7 +106,7 @@ public class codeEditor extends javax.swing.JPanel {
                     .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lineColumn, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 739, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 955, Short.MAX_VALUE)
                         .addComponent(guardarButton)))
                 .addContainerGap())
         );
@@ -82,6 +123,15 @@ public class codeEditor extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void guardarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarButtonActionPerformed
+        try {
+            if (!filesManager.lecturaArchivo(path).equals(codeTextArea.getText())) {
+                filesManager.guardarArchivo(path, codeTextArea.getText());
+            }
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, e, "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_guardarButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea codeTextArea;

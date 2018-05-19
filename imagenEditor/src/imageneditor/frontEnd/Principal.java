@@ -29,16 +29,82 @@ public class Principal extends javax.swing.JFrame {
 
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenu2 = new javax.swing.JMenu();
+        archivoMenu = new javax.swing.JMenu();
+        nuevoMenu = new javax.swing.JMenu();
+        canvasMenuItem = new javax.swing.JMenuItem();
+        coloresMenuItem = new javax.swing.JMenuItem();
+        pintarMenuItem = new javax.swing.JMenuItem();
+        abrirMenuItem = new javax.swing.JMenuItem();
+        guardarMenuItem = new javax.swing.JMenuItem();
+        salirMenuItem = new javax.swing.JMenuItem();
+        analisisMenu = new javax.swing.JMenu();
+        analizarMenuItem = new javax.swing.JMenuItem();
+        generarMenu = new javax.swing.JMenu();
+        editorGraficoMenuItem = new javax.swing.JMenuItem();
+        generarMenuItem = new javax.swing.JMenuItem();
+        ayudaMenu = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        acercaDeMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Editor de Imagenes");
 
-        jMenu1.setText("File");
-        jMenuBar1.add(jMenu1);
+        archivoMenu.setText(" Archivo ");
 
-        jMenu2.setText("Edit");
-        jMenuBar1.add(jMenu2);
+        nuevoMenu.setText("Nuevo");
+
+        canvasMenuItem.setText("Canvas");
+        nuevoMenu.add(canvasMenuItem);
+
+        coloresMenuItem.setText("Colores");
+        nuevoMenu.add(coloresMenuItem);
+
+        pintarMenuItem.setText("Pintar");
+        nuevoMenu.add(pintarMenuItem);
+
+        archivoMenu.add(nuevoMenu);
+
+        abrirMenuItem.setText("Abrir");
+        archivoMenu.add(abrirMenuItem);
+
+        guardarMenuItem.setText("Guardar");
+        archivoMenu.add(guardarMenuItem);
+
+        salirMenuItem.setText("Salir");
+        archivoMenu.add(salirMenuItem);
+
+        jMenuBar1.add(archivoMenu);
+
+        analisisMenu.setText(" Analisis ");
+
+        analizarMenuItem.setText("Analizar");
+        analisisMenu.add(analizarMenuItem);
+
+        jMenuBar1.add(analisisMenu);
+
+        generarMenu.setText(" Generar ");
+
+        editorGraficoMenuItem.setText("Editor Grafico");
+        generarMenu.add(editorGraficoMenuItem);
+
+        generarMenuItem.setText("Generar");
+        generarMenu.add(generarMenuItem);
+
+        jMenuBar1.add(generarMenu);
+
+        ayudaMenu.setText(" Ayuda ");
+
+        jMenuItem1.setText("Manual Usuario");
+        ayudaMenu.add(jMenuItem1);
+
+        jMenuItem2.setText("Manual Tecnico");
+        ayudaMenu.add(jMenuItem2);
+
+        acercaDeMenuItem.setText("Acerca de");
+        ayudaMenu.add(acercaDeMenuItem);
+
+        jMenuBar1.add(ayudaMenu);
 
         setJMenuBar(jMenuBar1);
 
@@ -62,12 +128,25 @@ public class Principal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenuItem abrirMenuItem;
+    private javax.swing.JMenuItem acercaDeMenuItem;
+    private javax.swing.JMenu analisisMenu;
+    private javax.swing.JMenuItem analizarMenuItem;
+    private javax.swing.JMenu archivoMenu;
+    private javax.swing.JMenu ayudaMenu;
+    private javax.swing.JMenuItem canvasMenuItem;
+    private javax.swing.JMenuItem coloresMenuItem;
+    private javax.swing.JMenuItem editorGraficoMenuItem;
+    private javax.swing.JMenu generarMenu;
+    private javax.swing.JMenuItem generarMenuItem;
+    private javax.swing.JMenuItem guardarMenuItem;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JMenu nuevoMenu;
+    private javax.swing.JMenuItem pintarMenuItem;
+    private javax.swing.JMenuItem salirMenuItem;
     // End of variables declaration//GEN-END:variables
 }
