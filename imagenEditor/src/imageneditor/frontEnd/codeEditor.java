@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
+import javax.swing.text.BadLocationException;
 
 /**
  *
@@ -28,14 +29,11 @@ public class codeEditor extends javax.swing.JPanel {
      * @param path
      */
     public codeEditor(String path) {
+        filesManager = new ManejadorArchivo();
         this.path = path;
         initComponents();
         textLine = new TextLineNumber(codeTextArea);
         jScrollPane1.setRowHeaderView(textLine);
-        try {
-            codeTextArea.setText(filesManager.lecturaArchivo(path));
-        } catch (IOException e) {
-        }
 
         codeTextArea.addCaretListener(new CaretListener() {
 
@@ -55,7 +53,7 @@ public class codeEditor extends javax.swing.JPanel {
 
                     linenum += 1;
 
-                } catch (Exception ex) {
+                } catch (BadLocationException ex) {
 
                 }
 
@@ -139,4 +137,8 @@ public class codeEditor extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lineColumn;
     // End of variables declaration//GEN-END:variables
+
+    public void setText(String textIn) {
+        codeTextArea.setText(textIn);
+    }
 }

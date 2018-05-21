@@ -1,8 +1,27 @@
 package imageneditor.analisis;
 
 import java_cup.runtime.*;
+import imageneditor.DefaultValue;
+import imageneditor.objectsManager.colorManager;
+import imageneditor.exceptions.InputsVaciosException;
+import imageneditor.backEnd.Objects.auxColor;
+import java.util.LinkedList;
 
 parser code {:
+
+	LinkedList<auxColor> listAux = new LinkedList<>();
+	colorManager newColorM;
+	String id = "";
+	String nameCl = "";
+	int red = DefaultValue.noInicioDimension;
+	int blue = DefaultValue.noInicioDimension;
+	int green = DefaultValue.noInicioDimension;
+	String hexaC = "";
+
+	public colors(Lexer lex, colorManager clIn){
+		super(lex);
+		this.newColorM = clIn;
+	}
 
 	public void syntax_error(Symbol cur_token) {
 		String message = "Estructura invalida en posición " + cur_token.right
@@ -12,38 +31,126 @@ parser code {:
 		System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
 	}
 
+	private void setID(String IDLinezo) throws InputsVaciosException{
+		if (id.equals("")) {
+			id = IDLinezo;
+		} else {
+			throw new InputsVaciosException("Lienzo's name " + IDLinezo + " already set");
+		}
+	}
+
+	private void setNameColor(String nameColor) throws InputsVaciosException{
+		if (nameCl.equals("")) {
+			nameCl = nameColor;
+		} else {
+			throw new InputsVaciosException("Colors's name " + nameColor + " already set");
+		}
+	}
+
+	private void setRedCode(int RedCl) throws InputsVaciosException {
+		if ((red == DefaultValue.noInicioDimension) && (hexaC.equals(""))) {
+			red = RedCl;
+		} else {
+			throw new InputsVaciosException("Red code " + RedCl + " can't set");
+		}
+	}
+
+	private void setBlueCode(int BlueCl) throws InputsVaciosException {
+		if ((blue == DefaultValue.noInicioDimension) && (hexaC.equals(""))) {
+			blue = BlueCl;
+		} else {
+			throw new InputsVaciosException("Red code " + BlueCl + " can't set");
+		}
+	}
+
+	private void setGreenCode(int GreenCl) throws InputsVaciosException {
+		if ((green == DefaultValue.noInicioDimension) && (hexaC.equals(""))) {
+			green = GreenCl;
+		} else {
+			throw new InputsVaciosException("Red code " + GreenCl + " can't set");
+		}
+	}
+
+	private void setHexa(String hexaCd) throws InputsVaciosException{
+		if (hexaC.equals("") && (red == DefaultValue.noInicioDimension) && (blue == DefaultValue.noInicioDimension) && (green == DefaultValue.noInicioDimension)) {
+			hexaC = hexaCd;
+		} else {
+			throw new InputsVaciosException("Hexa code " + hexaCd + " can't set");
+		}
+	}
+
+	private void addTemColor() throws InputsVaciosException{
+		if (!nameCl.equals("") && (red != DefaultValue.noInicioDimension) && (blue != DefaultValue.noInicioDimension) && (green != DefaultValue.noInicioDimension) && (hexaC.equals(""))) {
+			listAux.add(new auxColor(nameCl, red, blue, green));
+		} else if (!nameCl.equals("") && (red == DefaultValue.noInicioDimension) && (blue == DefaultValue.noInicioDimension) && (green == DefaultValue.noInicioDimension) && (!hexaC.equals(""))) {
+			listAux.add(new auxColor(nameCl, hexaC));
+		} else {
+			throw new InputsVaciosException("Missing parameter at " + nameCl + " color");
+		}		
+		cleanColorParameters();
+	}
+
+	public void setColorByOwner(String owner) throws InputsVaciosException{
+		newColorM.newObjectColor(owner);
+		for (int i = 0;i< listAux.size() ; i++) {
+			if (!listAux.get(i).getHexa().equals("")) {
+				newColorM.addColorToColorObject(owner,listAux.get(i).getName(), listAux.get(i).getHexa());
+			} else {
+				newColorM.addColorToColorObject(owner,listAux.get(i).getName(), listAux.get(i).getRed(), listAux.get(i).getGreen(),listAux.get(i).getBlue());
+			}
+		}
+		cleanEverything();
+	}
+
+	private void cleanColorParameters(){
+		nameCl = "";
+		red = DefaultValue.noInicioDimension;
+		blue = DefaultValue.noInicioDimension;
+		green = DefaultValue.noInicioDimension;
+		hexaC = "";
+	}
+
+	private void cleanEverything(){
+		listAux.clear();
+		cleanColorParameters();
+		id = "";
+	}
 :}
 
 /* Terminal */
-terminal String Pintar, Vars, Colores, Dimension, Cuadro, Hex, Red, Blue, Green, Tipo, Fondo; 
+terminal String Pintar, Vars, Colores, Dimension, Cuadro, Hex, Tipo, Fondo,Red, Blue, Green; 
 terminal String Tamanio, Nombre, Lienzos, Igual, Menos, Mas, Coma, Intervalo, DosPuntos, PuntoYComa; 
 terminal String ParAbierto, ParCerrado, CorAbierto, CorCerrado, LlaveAbierta, LlaveCerrada;
-terminal String Comment, HexaCode, Entero, Cadena, Identificador, NewVar, Instrucciones;
+terminal String Comment, HexaCode, Cadena, Identificador, NewVar, Instrucciones,Entero;
 
 /* Non Terminal */
 
-non terminal String CLRS, CLRS_CUERPO, CLRS_CARACTERISTICAS, COLOR_CLRS, CLRGB_CLRS;
+non terminal String CLRS, CLRS_CUERPO, CLRS_CARACTERISTICAS, COLOR_CLRS, CLRGB_CLRS, ID_LIENZO, NEW_COLOR;
 
 start with CLRS;
 
 CLRS 		::= CorAbierto Colores DosPuntos CorAbierto CLRS_CUERPO CorCerrado CorCerrado; 
 
-CLRS_CUERPO	::= Identificador DosPuntos CorAbierto CLRS_CARACTERISTICAS CorCerrado Coma CLRS_CUERPO
-				| Identificador DosPuntos CorAbierto CLRS_CARACTERISTICAS CorCerrado
+CLRS_CUERPO	::= ID_LIENZO Coma CLRS_CUERPO
+				| ID_LIENZO
 				;
 
-CLRS_CARACTERISTICAS	::=	Identificador DosPuntos CorAbierto COLOR_CLRS CorCerrado Coma CLRS_CARACTERISTICAS
-							| Identificador DosPuntos CorAbierto COLOR_CLRS CorCerrado
+ID_LIENZO	::= Identificador:e DosPuntos CorAbierto CLRS_CARACTERISTICAS CorCerrado {: setColorByOwner(e); :};
+
+CLRS_CARACTERISTICAS	::=	NEW_COLOR Coma CLRS_CARACTERISTICAS
+							| NEW_COLOR
 							;
 
-COLOR_CLRS 		::= Hex DosPuntos HexaCode
+NEW_COLOR	::= Identificador:e DosPuntos CorAbierto COLOR_CLRS CorCerrado {: setNameColor(e); addTemColor();:};
+
+COLOR_CLRS 		::= Hex DosPuntos HexaCode:e {: setHexa(e); :}
 				| CLRGB_CLRS
 				;
 
-CLRGB_CLRS	::=	Red DosPuntos Entero Coma CLRGB_CLRS
-				| Blue DosPuntos Entero Coma CLRGB_CLRS
-				| Green DosPuntos Entero Coma CLRGB_CLRS
-				| Red DosPuntos Entero
-				| Blue DosPuntos Entero
-				| Green DosPuntos Entero
+CLRGB_CLRS	::=	Red DosPuntos Entero:e Coma CLRGB_CLRS {: setRedCode(Integer.parseInt(e)); :}
+				| Blue DosPuntos Entero:e Coma CLRGB_CLRS {: setBlueCode(Integer.parseInt(e)); :}
+				| Green DosPuntos Entero:e Coma CLRGB_CLRS {: setGreenCode(Integer.parseInt(e)); :}
+				| Red DosPuntos Entero:e {: setRedCode(Integer.parseInt(e)); :}
+				| Blue DosPuntos Entero:e {: setBlueCode(Integer.parseInt(e)); :}
+				| Green DosPuntos Entero:e {: setGreenCode(Integer.parseInt(e)); :}
 				;

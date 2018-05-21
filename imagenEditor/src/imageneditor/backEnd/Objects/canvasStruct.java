@@ -53,7 +53,7 @@ public class canvasStruct {
                 return true;
             }
         }
-        return true;
+        return false;
     }
 
     /**

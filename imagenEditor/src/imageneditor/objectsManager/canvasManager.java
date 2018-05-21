@@ -41,7 +41,7 @@ public class canvasManager {
         if (!newCanvas.existLienzo(id)) {
             color newColor = new color(red, green, blue);
             sizeL newSize = new sizeL(cuadro, dimension);
-            lienzoObj newLienzo = new lienzoObj(id, name, tipo, newColor, newSize);
+            lienzoObj newLienzo = new lienzoObj(id, name.replaceAll("\"", ""), tipo.replaceAll("\"", ""), newColor, newSize);
             newCanvas.addlienzoObj(newLienzo);
         } else {
             throw new InputsVaciosException("Lienzo already exist");
@@ -64,7 +64,7 @@ public class canvasManager {
         if (!newCanvas.existLienzo(id)) {
             color newColor = new color(hexa);
             sizeL newSize = new sizeL(cuadro, dimension);
-            lienzoObj newLienzo = new lienzoObj(id, name, tipo, newColor, newSize);
+            lienzoObj newLienzo = new lienzoObj(id, name.replaceAll("\"", ""), tipo.replaceAll("\"", ""), newColor, newSize);
             newCanvas.addlienzoObj(newLienzo);
         } else {
             throw new InputsVaciosException("Lienzo already exist");

@@ -5,6 +5,7 @@
  */
 package imageneditor.objectsManager;
 
+import imageneditor.DefaultValue;
 import imageneditor.backEnd.Objects.colorsStruct;
 import imageneditor.backEnd.Objects.instruccionsP;
 import imageneditor.backEnd.Objects.paint;
@@ -26,6 +27,14 @@ public class pintarManager {
         this.newPaintS = newPaintS;
         this.canvasS = canvasS;
         this.colorsS = colorsS;
+    }
+
+    public int varValue(String name) throws InputsVaciosException {
+        if (newPaintS.existVariable(name)) {
+            return newPaintS.getVaribleValue(name);
+        } else {
+            throw new InputsVaciosException("Doesn't exist the variable " + name);
+        }
     }
 
     /**
@@ -58,30 +67,15 @@ public class pintarManager {
     }
 
     /**
-     * take the incoming value "toAdd" and added to the found variable
+     * change the value;
      *
      * @param name
-     * @param toAdd
+     * @param newValue
      * @throws InputsVaciosException
      */
-    public void plusToVariable(String name, int toAdd) throws InputsVaciosException {
+    public void changeValVariable(String name, int newValue) throws InputsVaciosException {
         if (newPaintS.existVariable(name)) {
-            newPaintS.findVariable(name).addToValue(toAdd);
-        } else {
-            throw new InputsVaciosException("The variable " + name + " doesn't exist");
-        }
-    }
-
-    /**
-     * take the incoming value "toLess" and subtracted to the found variable
-     *
-     * @param name
-     * @param toLess
-     * @throws InputsVaciosException
-     */
-    public void lessToVariable(String name, int toLess) throws InputsVaciosException {
-        if (newPaintS.existVariable(name)) {
-            newPaintS.findVariable(name).lessToValue(toLess);
+            newPaintS.findVariable(name).setValue(newValue);
         } else {
             throw new InputsVaciosException("The variable " + name + " doesn't exist");
         }
@@ -123,7 +117,7 @@ public class pintarManager {
      * verify if exist the instruction and the color selected is part of the
      * lienzo selected (the owner)
      *
-     * "create a method to verify that the rank is reachable"
+     * verify that the rank is reachable
      *
      * @param owner
      * @param colorName
@@ -135,7 +129,37 @@ public class pintarManager {
      */
     public void addPintarInstruccion(String owner, String colorName, int posX, int posXEnd, int posY, int posYEnd) throws InputsVaciosException {
         if ((newPaintS.findIsntruccionsP(owner) != null) && colorsS.findColorMaker(owner, colorName) != null) {
-            newPaintS.findIsntruccionsP(owner).addPaint(new paint(colorsS.findColorMaker(owner, colorName), posX, posXEnd, posY, posYEnd));
+            if (newPaintS.findIsntruccionsP(owner).getOwner().getItSize().isReachableDimension(posX, posY) && (posXEnd >= DefaultValue.inicioDimension) && (posYEnd < DefaultValue.inicioDimension)) {
+                if (newPaintS.findIsntruccionsP(owner).getOwner().getItSize().isReachableDimension(posXEnd)) {
+                    newPaintS.findIsntruccionsP(owner).addPaint(new paint(colorsS.findColorMaker(owner, colorName), posX, posXEnd, posY, DefaultValue.noInicioDimension));
+                } else {
+                    throw new InputsVaciosException("Grow rank >>" + posX + "," + posXEnd + "<<");
+                }
+            } else if (newPaintS.findIsntruccionsP(owner).getOwner().getItSize().isReachableDimension(posX, posY) && (posYEnd >= DefaultValue.inicioDimension) && (posXEnd < DefaultValue.inicioDimension)) {
+                if (newPaintS.findIsntruccionsP(owner).getOwner().getItSize().isReachableDimension(posYEnd)) {
+                    newPaintS.findIsntruccionsP(owner).addPaint(new paint(colorsS.findColorMaker(owner, colorName), posX, DefaultValue.noInicioDimension, posY, posYEnd));
+                } else {
+                    throw new InputsVaciosException("Grow rank >>" + posY + "," + posYEnd + "<<");
+                }
+            } else {
+                if ((posX < posXEnd) && (posY < posYEnd)) {
+                    if (newPaintS.findIsntruccionsP(owner).getOwner().getItSize().isReachableDimension(posX, posXEnd) && newPaintS.findIsntruccionsP(owner).getOwner().getItSize().isReachableDimension(posY, posYEnd)) {
+                        newPaintS.findIsntruccionsP(owner).addPaint(new paint(colorsS.findColorMaker(owner, colorName), posX, posXEnd, posY, posYEnd));
+                    } else {
+                        if (posX >= posXEnd) {
+                            throw new InputsVaciosException("Grow rank >>" + posX + "," + posXEnd + "<<");
+                        } else {
+                            throw new InputsVaciosException("Grow rank >>" + posY + "," + posYEnd + "<<");
+                        }
+                    }
+                } else {
+                    if (posX >= posXEnd) {
+                        throw new InputsVaciosException("Grow rank >>" + posX + "," + posXEnd + "<<");
+                    } else {
+                        throw new InputsVaciosException("Grow rank >>" + posY + "," + posYEnd + "<<");
+                    }
+                }
+            }
         } else {
             throw new InputsVaciosException("Pintar instruction imposible to add");
         }
@@ -147,7 +171,7 @@ public class pintarManager {
      *
      * just use the simple format of position
      *
-     * "create a method to verify that the rank is reachable"
+     * verify that the rank is reachable
      *
      * @param owner
      * @param colorName
@@ -157,7 +181,9 @@ public class pintarManager {
      */
     public void addPintarInstruccion(String owner, String colorName, int posX, int posY) throws InputsVaciosException {
         if ((newPaintS.findIsntruccionsP(owner) != null) && colorsS.findColorMaker(owner, colorName) != null) {
-            newPaintS.findIsntruccionsP(owner).addPaint(new paint(colorsS.findColorMaker(owner, colorName), posX, posY));
+            if (newPaintS.findIsntruccionsP(owner).getOwner().getItSize().isReachableDimension(posX, posY)) {
+                newPaintS.findIsntruccionsP(owner).addPaint(new paint(colorsS.findColorMaker(owner, colorName), posX, posY));
+            }
         } else {
             throw new InputsVaciosException("Pintar instruction imposible to add");
         }

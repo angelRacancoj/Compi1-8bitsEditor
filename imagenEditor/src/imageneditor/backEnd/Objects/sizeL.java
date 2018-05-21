@@ -5,6 +5,8 @@
  */
 package imageneditor.backEnd.Objects;
 
+import imageneditor.DefaultValue;
+
 /**
  *
  * @author angel
@@ -17,6 +19,29 @@ public class sizeL {
     public sizeL(int cuadro, int dimension) {
         this.cuadro = cuadro;
         this.dimension = dimension;
+    }
+
+    /**
+     * return if the position selected is possible to reach and verify if the
+     * position is mayor that or equals to "0"
+     *
+     * @param pos
+     * @return
+     */
+    public boolean isReachableDimension(int pos) {
+        return ((dimension > pos) && (pos >= DefaultValue.inicioDimension));
+    }
+
+    /**
+     * return if the position selected is possible to reach and verify if the
+     * position is mayor that or equals to "0" for both "posX" and "poxY"
+     *
+     * @param posX
+     * @param posY
+     * @return
+     */
+    public boolean isReachableDimension(int posX, int posY) {
+        return (isReachableDimension(posY) && isReachableDimension(posX));
     }
 
     public sizeL() {

@@ -5,17 +5,66 @@
  */
 package imageneditor.frontEnd;
 
+import imageneditor.DefaultValue;
+import imageneditor.analisis.Lexer;
+import imageneditor.analisis.canvas;
+import imageneditor.analisis.colors;
+import imageneditor.backEnd.Objects.canvasStruct;
+import imageneditor.backEnd.Objects.colorsStruct;
+import imageneditor.backEnd.Objects.paintStruct;
+import imageneditor.files.ManejadorArchivo;
+import imageneditor.objectsManager.canvasManager;
+import imageneditor.objectsManager.colorManager;
+import imageneditor.objectsManager.pintarManager;
+import java.io.IOException;
+import java.io.StringReader;
+import javax.swing.JFileChooser;
+
 /**
  *
  * @author orlan
  */
 public class Principal extends javax.swing.JFrame {
 
+    String pathAux = "";
+    String pathCanvas = "";
+    String pathCanvasOld = "";
+    String pathColors = "";
+    String pathColorsOld = "";
+    String pathPaint = "";
+    String pathPaintOld = "";
+
+    ManejadorArchivo fileManager;
+
+    canvasStruct canvasStr;
+    colorsStruct colorStr;
+    paintStruct paintSrt;
+    canvasManager canvasMgr;
+    colorManager colorMgr;
+    pintarManager paintMgr;
+
+    Lexer lex;
+    Lexer lex2;
+    canvas canvasSi;
+    colors colorSi;
+
     /**
      * Creates new form Principal
      */
     public Principal() {
         initComponents();
+        this.fileManager = new ManejadorArchivo();
+        this.canvasStr = new canvasStruct();
+        this.canvasMgr = new canvasManager(canvasStr);
+        this.colorStr = new colorsStruct();
+        this.colorMgr = new colorManager(colorStr, canvasMgr);
+        this.paintSrt = new paintStruct();
+        this.paintMgr = new pintarManager(paintSrt, canvasMgr, colorStr);
+
+        this.lex = new Lexer(new StringReader(""));
+        this.canvasSi = new canvas(lex, canvasMgr);
+        this.lex2 = new Lexer(new StringReader(""));
+        this.colorSi = new colors(lex2, colorMgr);
     }
 
     /**
@@ -27,7 +76,7 @@ public class Principal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTabbedPane1 = new javax.swing.JTabbedPane();
+        proyectTabsTabbedPane = new javax.swing.JTabbedPane();
         jMenuBar1 = new javax.swing.JMenuBar();
         archivoMenu = new javax.swing.JMenu();
         nuevoMenu = new javax.swing.JMenu();
@@ -55,23 +104,53 @@ public class Principal extends javax.swing.JFrame {
         nuevoMenu.setText("Nuevo");
 
         canvasMenuItem.setText("Canvas");
+        canvasMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                canvasMenuItemActionPerformed(evt);
+            }
+        });
         nuevoMenu.add(canvasMenuItem);
 
         coloresMenuItem.setText("Colores");
+        coloresMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                coloresMenuItemActionPerformed(evt);
+            }
+        });
         nuevoMenu.add(coloresMenuItem);
 
         pintarMenuItem.setText("Pintar");
+        pintarMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pintarMenuItemActionPerformed(evt);
+            }
+        });
         nuevoMenu.add(pintarMenuItem);
 
         archivoMenu.add(nuevoMenu);
 
         abrirMenuItem.setText("Abrir");
+        abrirMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                abrirMenuItemActionPerformed(evt);
+            }
+        });
         archivoMenu.add(abrirMenuItem);
 
         guardarMenuItem.setText("Guardar");
+        guardarMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                guardarMenuItemActionPerformed(evt);
+            }
+        });
         archivoMenu.add(guardarMenuItem);
 
         salirMenuItem.setText("Salir");
+        salirMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                salirMenuItemActionPerformed(evt);
+            }
+        });
         archivoMenu.add(salirMenuItem);
 
         jMenuBar1.add(archivoMenu);
@@ -79,6 +158,11 @@ public class Principal extends javax.swing.JFrame {
         analisisMenu.setText(" Analisis ");
 
         analizarMenuItem.setText("Analizar");
+        analizarMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                analizarMenuItemActionPerformed(evt);
+            }
+        });
         analisisMenu.add(analizarMenuItem);
 
         jMenuBar1.add(analisisMenu);
@@ -86,9 +170,19 @@ public class Principal extends javax.swing.JFrame {
         generarMenu.setText(" Generar ");
 
         editorGraficoMenuItem.setText("Editor Grafico");
+        editorGraficoMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editorGraficoMenuItemActionPerformed(evt);
+            }
+        });
         generarMenu.add(editorGraficoMenuItem);
 
         generarMenuItem.setText("Generar");
+        generarMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                generarMenuItemActionPerformed(evt);
+            }
+        });
         generarMenu.add(generarMenuItem);
 
         jMenuBar1.add(generarMenu);
@@ -96,12 +190,27 @@ public class Principal extends javax.swing.JFrame {
         ayudaMenu.setText(" Ayuda ");
 
         jMenuItem1.setText("Manual Usuario");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
         ayudaMenu.add(jMenuItem1);
 
         jMenuItem2.setText("Manual Tecnico");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
         ayudaMenu.add(jMenuItem2);
 
         acercaDeMenuItem.setText("Acerca de");
+        acercaDeMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                acercaDeMenuItemActionPerformed(evt);
+            }
+        });
         ayudaMenu.add(acercaDeMenuItem);
 
         jMenuBar1.add(ayudaMenu);
@@ -114,19 +223,118 @@ public class Principal extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1260, Short.MAX_VALUE)
+                .addComponent(proyectTabsTabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, 1260, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 677, Short.MAX_VALUE)
+                .addComponent(proyectTabsTabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, 677, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void canvasMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_canvasMenuItemActionPerformed
+
+    }//GEN-LAST:event_canvasMenuItemActionPerformed
+
+    private void coloresMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_coloresMenuItemActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_coloresMenuItemActionPerformed
+
+    private void pintarMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pintarMenuItemActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_pintarMenuItemActionPerformed
+
+    private void abrirMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_abrirMenuItemActionPerformed
+        JFileChooser dialogo = new JFileChooser();
+        dialogo.setDialogTitle("Open .canvas file");
+        if (dialogo.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+            pathAux = dialogo.getSelectedFile().getAbsolutePath();
+            try {
+                if (fileManager.extensionFile(pathAux).equalsIgnoreCase(DefaultValue.canvasExt)) {
+                    pathCanvas = pathAux;
+                    if (pathCanvasOld.equals("")) {
+                        codeEditor canvasWindows = new codeEditor(pathCanvas);
+                        canvasWindows.setText(fileManager.lecturaArchivo(pathCanvas));
+                        proyectTabsTabbedPane.add(fileManager.nameFile(pathCanvas), canvasWindows);
+                    } else {
+                        int index = proyectTabsTabbedPane.indexOfTab(fileManager.nameFile(pathCanvasOld));
+                        proyectTabsTabbedPane.remove(index);
+                        codeEditor canvasWindows = new codeEditor(pathCanvas);
+                        canvasWindows.setText(fileManager.lecturaArchivo(pathCanvas));
+                        proyectTabsTabbedPane.add(fileManager.nameFile(pathCanvas), canvasWindows);
+                    }
+                    pathCanvasOld = pathCanvas;
+                } else if (fileManager.extensionFile(pathAux).equalsIgnoreCase(DefaultValue.colorsExt) && (!pathCanvas.replaceAll(" ", "").equals(""))) {
+                    pathColors = pathAux;
+                    if (pathColorsOld.equals("")) {
+                        codeEditor colorsWindows = new codeEditor(pathColors);
+                        colorsWindows.setText(fileManager.lecturaArchivo(pathColors));
+                        proyectTabsTabbedPane.add(fileManager.nameFile(pathColors), colorsWindows);
+                    } else {
+                        int index = proyectTabsTabbedPane.indexOfTab(fileManager.nameFile(pathColorsOld));
+                        proyectTabsTabbedPane.remove(index);
+                        codeEditor colorsWindows = new codeEditor(pathColors);
+                        colorsWindows.setText(fileManager.lecturaArchivo(pathColors));
+                        proyectTabsTabbedPane.add(fileManager.nameFile(pathColors), colorsWindows);
+                    }
+                }
+            } catch (IOException e) {
+                System.out.println(e);
+            }
+        }
+    }//GEN-LAST:event_abrirMenuItemActionPerformed
+
+    private void guardarMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarMenuItemActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_guardarMenuItemActionPerformed
+
+    private void salirMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salirMenuItemActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_salirMenuItemActionPerformed
+
+    private void analizarMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_analizarMenuItemActionPerformed
+        try {
+            lex.yyreset(new StringReader(fileManager.lecturaArchivo(pathCanvas)));
+            this.canvasSi.parse();
+            System.out.println("parse canvas");
+        } catch (Exception e) {
+            System.out.println("Error-> " + e);
+        }
+
+        try {
+
+            lex2.yyreset(new StringReader(fileManager.lecturaArchivo(pathColors)));
+            this.colorSi.parse();
+            System.out.println("parse colors");
+        } catch (Exception e) {
+            System.out.println("Error=> " + e);
+        }
+    }//GEN-LAST:event_analizarMenuItemActionPerformed
+
+    private void editorGraficoMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editorGraficoMenuItemActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_editorGraficoMenuItemActionPerformed
+
+    private void generarMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generarMenuItemActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_generarMenuItemActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void acercaDeMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_acercaDeMenuItemActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_acercaDeMenuItemActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem abrirMenuItem;
@@ -144,9 +352,9 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JMenu nuevoMenu;
     private javax.swing.JMenuItem pintarMenuItem;
+    private javax.swing.JTabbedPane proyectTabsTabbedPane;
     private javax.swing.JMenuItem salirMenuItem;
     // End of variables declaration//GEN-END:variables
 }

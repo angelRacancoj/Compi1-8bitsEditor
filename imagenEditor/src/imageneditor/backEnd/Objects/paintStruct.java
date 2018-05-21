@@ -21,6 +21,9 @@ public class paintStruct {
         this.path = path;
     }
 
+    public paintStruct() {
+    }
+
     /**
      * verify if already exist an instruction searching by the lienzo's name
      *
@@ -137,6 +140,14 @@ public class paintStruct {
 
     public void setInstruccionList(LinkedList<instruccionsP> instruccionList) {
         this.instruccionList = instruccionList;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
     }
 
 }

@@ -5,6 +5,8 @@
  */
 package imageneditor;
 
+import imageneditor.frontEnd.Principal;
+
 /**
  *
  * @author angel
@@ -15,7 +17,8 @@ public class ImagenEditor {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        Principal newPrincipal = new Principal();
+        newPrincipal.setVisible(true);
     }
 
 }

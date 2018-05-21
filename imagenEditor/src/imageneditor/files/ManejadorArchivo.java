@@ -58,4 +58,27 @@ public class ManejadorArchivo {
         }
         return textoSalida;
     }
+
+    public String extensionFile(String textoEntrada) {
+        int catENTER = 1;
+        String textoSelect = "";
+        String textoSalida = "";
+        for (int i = (textoEntrada.length() - 1); i > -1; i--) {
+            char letra = textoEntrada.charAt(i);
+            if (catENTER > 0) {
+                switch (letra) {
+                    case '.':
+                        catENTER--;
+                        break;
+                    default:
+                        textoSelect += letra;
+                }
+            }
+        }
+        for (int i = (textoSelect.length() - 1); i > -1; i--) {
+            char letra = textoSelect.charAt(i);
+            textoSalida += letra;
+        }
+        return textoSalida;
+    }
 }

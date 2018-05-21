@@ -6,6 +6,9 @@
 package imageneditor.analisis;
 
 import java_cup.runtime.*;
+import imageneditor.DefaultValue;
+import imageneditor.objectsManager.canvasManager;
+import imageneditor.exceptions.InputsVaciosException;
 import java_cup.runtime.XMLElement;
 
 /** CUP v0.11b 20160615 (GIT 4ac7450) generated parser.
@@ -31,14 +34,15 @@ public class canvas extends java_cup.runtime.lr_parser {
   /** Production table. */
   protected static final short _production_table[][] = 
     unpackFromStrings(new String[] {
-    "\000\031\000\002\002\004\000\002\002\011\000\002\003" +
-    "\011\000\002\003\007\000\002\004\005\000\002\004\005" +
-    "\000\002\004\005\000\002\004\005\000\002\004\003\000" +
+    "\000\032\000\002\002\004\000\002\002\011\000\002\003" +
+    "\005\000\002\003\003\000\002\013\007\000\002\004\005" +
+    "\000\002\004\005\000\002\004\005\000\002\004\005\000" +
     "\002\004\003\000\002\004\003\000\002\004\003\000\002" +
-    "\005\005\000\002\006\005\000\002\007\007\000\002\011" +
-    "\005\000\002\011\003\000\002\012\007\000\002\012\007" +
-    "\000\002\012\007\000\002\012\005\000\002\012\005\000" +
-    "\002\012\005\000\002\010\015\000\002\010\015" });
+    "\004\003\000\002\005\005\000\002\006\005\000\002\007" +
+    "\007\000\002\011\005\000\002\011\003\000\002\012\007" +
+    "\000\002\012\007\000\002\012\007\000\002\012\005\000" +
+    "\002\012\005\000\002\012\005\000\002\010\015\000\002" +
+    "\010\015" });
 
   /** Access to production table. */
   public short[][] production_table() {return _production_table;}
@@ -46,49 +50,49 @@ public class canvas extends java_cup.runtime.lr_parser {
   /** Parse-action table. */
   protected static final short[][] _action_table = 
     unpackFromStrings(new String[] {
-    "\000\116\000\004\033\005\001\002\000\004\002\120\001" +
+    "\000\117\000\004\033\005\001\002\000\004\002\121\001" +
     "\002\000\004\021\006\001\002\000\004\027\007\001\002" +
-    "\000\004\033\010\001\002\000\004\043\011\001\002\000" +
-    "\004\027\015\001\002\000\004\034\013\001\002\000\004" +
-    "\034\014\001\002\000\004\002\000\001\002\000\004\033" +
-    "\016\001\002\000\012\015\017\016\023\017\022\020\020" +
-    "\001\002\000\004\027\116\001\002\000\004\027\114\001" +
-    "\002\000\006\025\112\034\ufff7\001\002\000\004\027\070" +
-    "\001\002\000\004\027\041\001\002\000\006\025\037\034" +
-    "\ufff8\001\002\000\004\034\034\001\002\000\006\025\032" +
-    "\034\ufff9\001\002\000\006\025\030\034\ufff6\001\002\000" +
-    "\012\015\017\016\023\017\022\020\020\001\002\000\004" +
-    "\034\ufffa\001\002\000\012\015\017\016\023\017\022\020" +
-    "\020\001\002\000\004\034\ufffd\001\002\000\006\025\035" +
-    "\034\ufffe\001\002\000\004\043\011\001\002\000\004\034" +
-    "\uffff\001\002\000\012\015\017\016\023\017\022\020\020" +
-    "\001\002\000\004\034\ufffc\001\002\000\004\033\042\001" +
-    "\002\000\012\011\044\012\046\013\047\014\045\001\002" +
-    "\000\004\034\067\001\002\000\004\027\065\001\002\000" +
-    "\004\027\061\001\002\000\004\027\055\001\002\000\004" +
-    "\027\051\001\002\000\004\034\ufff1\001\002\000\004\041" +
-    "\052\001\002\000\006\025\053\034\uffec\001\002\000\010" +
-    "\012\046\013\047\014\045\001\002\000\004\034\uffef\001" +
-    "\002\000\004\041\056\001\002\000\006\025\057\034\uffed" +
-    "\001\002\000\010\012\046\013\047\014\045\001\002\000" +
-    "\004\034\ufff0\001\002\000\004\041\062\001\002\000\006" +
-    "\025\063\034\uffeb\001\002\000\010\012\046\013\047\014" +
-    "\045\001\002\000\004\034\uffee\001\002\000\004\040\066" +
-    "\001\002\000\004\034\ufff2\001\002\000\006\025\ufff3\034" +
-    "\ufff3\001\002\000\004\033\071\001\002\000\006\007\073" +
-    "\010\072\001\002\000\004\027\103\001\002\000\004\027" +
-    "\074\001\002\000\004\041\075\001\002\000\004\025\076" +
-    "\001\002\000\004\010\077\001\002\000\004\027\100\001" +
-    "\002\000\004\041\101\001\002\000\004\034\102\001\002" +
-    "\000\006\025\uffe9\034\uffe9\001\002\000\004\041\104\001" +
-    "\002\000\004\025\105\001\002\000\004\007\106\001\002" +
-    "\000\004\027\107\001\002\000\004\041\110\001\002\000" +
-    "\004\034\111\001\002\000\006\025\uffea\034\uffea\001\002" +
-    "\000\012\015\017\016\023\017\022\020\020\001\002\000" +
-    "\004\034\ufffb\001\002\000\004\042\115\001\002\000\006" +
-    "\025\ufff5\034\ufff5\001\002\000\004\042\117\001\002\000" +
-    "\006\025\ufff4\034\ufff4\001\002\000\004\002\001\001\002" +
-    "" });
+    "\000\004\033\010\001\002\000\004\042\012\001\002\000" +
+    "\006\025\117\034\ufffe\001\002\000\004\027\016\001\002" +
+    "\000\004\034\014\001\002\000\004\034\015\001\002\000" +
+    "\004\002\000\001\002\000\004\033\017\001\002\000\012" +
+    "\012\020\013\024\017\023\020\021\001\002\000\004\027" +
+    "\115\001\002\000\004\027\113\001\002\000\006\025\111" +
+    "\034\ufff6\001\002\000\004\027\067\001\002\000\004\027" +
+    "\040\001\002\000\006\025\036\034\ufff7\001\002\000\004" +
+    "\034\035\001\002\000\006\025\033\034\ufff8\001\002\000" +
+    "\006\025\031\034\ufff5\001\002\000\012\012\020\013\024" +
+    "\017\023\020\021\001\002\000\004\034\ufff9\001\002\000" +
+    "\012\012\020\013\024\017\023\020\021\001\002\000\004" +
+    "\034\ufffc\001\002\000\006\025\ufffd\034\ufffd\001\002\000" +
+    "\012\012\020\013\024\017\023\020\021\001\002\000\004" +
+    "\034\ufffb\001\002\000\004\033\041\001\002\000\012\011" +
+    "\043\014\045\015\046\016\044\001\002\000\004\034\066" +
+    "\001\002\000\004\027\064\001\002\000\004\027\060\001" +
+    "\002\000\004\027\054\001\002\000\004\027\050\001\002" +
+    "\000\004\034\ufff0\001\002\000\004\045\051\001\002\000" +
+    "\006\025\052\034\uffeb\001\002\000\010\014\045\015\046" +
+    "\016\044\001\002\000\004\034\uffee\001\002\000\004\045" +
+    "\055\001\002\000\006\025\056\034\uffec\001\002\000\010" +
+    "\014\045\015\046\016\044\001\002\000\004\034\uffef\001" +
+    "\002\000\004\045\061\001\002\000\006\025\062\034\uffea" +
+    "\001\002\000\010\014\045\015\046\016\044\001\002\000" +
+    "\004\034\uffed\001\002\000\004\040\065\001\002\000\004" +
+    "\034\ufff1\001\002\000\006\025\ufff2\034\ufff2\001\002\000" +
+    "\004\033\070\001\002\000\006\007\072\010\071\001\002" +
+    "\000\004\027\102\001\002\000\004\027\073\001\002\000" +
+    "\004\045\074\001\002\000\004\025\075\001\002\000\004" +
+    "\010\076\001\002\000\004\027\077\001\002\000\004\045" +
+    "\100\001\002\000\004\034\101\001\002\000\006\025\uffe8" +
+    "\034\uffe8\001\002\000\004\045\103\001\002\000\004\025" +
+    "\104\001\002\000\004\007\105\001\002\000\004\027\106" +
+    "\001\002\000\004\045\107\001\002\000\004\034\110\001" +
+    "\002\000\006\025\uffe9\034\uffe9\001\002\000\012\012\020" +
+    "\013\024\017\023\020\021\001\002\000\004\034\ufffa\001" +
+    "\002\000\004\041\114\001\002\000\006\025\ufff4\034\ufff4" +
+    "\001\002\000\004\041\116\001\002\000\006\025\ufff3\034" +
+    "\ufff3\001\002\000\004\042\012\001\002\000\004\034\uffff" +
+    "\001\002\000\004\002\001\001\002" });
 
   /** Access to parse-action table. */
   public short[][] action_table() {return _action_table;}
@@ -96,36 +100,36 @@ public class canvas extends java_cup.runtime.lr_parser {
   /** <code>reduce_goto</code> table. */
   protected static final short[][] _reduce_table = 
     unpackFromStrings(new String[] {
-    "\000\116\000\004\002\003\001\001\000\002\001\001\000" +
-    "\002\001\001\000\002\001\001\000\002\001\001\000\004" +
-    "\003\011\001\001\000\002\001\001\000\002\001\001\000" +
-    "\002\001\001\000\002\001\001\000\002\001\001\000\014" +
-    "\004\024\005\025\006\023\007\020\010\026\001\001\000" +
+    "\000\117\000\004\002\003\001\001\000\002\001\001\000" +
+    "\002\001\001\000\002\001\001\000\002\001\001\000\006" +
+    "\003\012\013\010\001\001\000\002\001\001\000\002\001" +
+    "\001\000\002\001\001\000\002\001\001\000\002\001\001" +
+    "\000\002\001\001\000\014\004\025\005\026\006\024\007" +
+    "\021\010\027\001\001\000\002\001\001\000\002\001\001" +
+    "\000\002\001\001\000\002\001\001\000\002\001\001\000" +
     "\002\001\001\000\002\001\001\000\002\001\001\000\002" +
-    "\001\001\000\002\001\001\000\002\001\001\000\002\001" +
-    "\001\000\002\001\001\000\002\001\001\000\014\004\030" +
-    "\005\025\006\023\007\020\010\026\001\001\000\002\001" +
-    "\001\000\014\004\032\005\025\006\023\007\020\010\026" +
-    "\001\001\000\002\001\001\000\002\001\001\000\004\003" +
-    "\035\001\001\000\002\001\001\000\014\004\037\005\025" +
-    "\006\023\007\020\010\026\001\001\000\002\001\001\000" +
-    "\002\001\001\000\006\011\042\012\047\001\001\000\002" +
+    "\001\001\000\014\004\031\005\026\006\024\007\021\010" +
+    "\027\001\001\000\002\001\001\000\014\004\033\005\026" +
+    "\006\024\007\021\010\027\001\001\000\002\001\001\000" +
+    "\002\001\001\000\014\004\036\005\026\006\024\007\021" +
+    "\010\027\001\001\000\002\001\001\000\002\001\001\000" +
+    "\006\011\041\012\046\001\001\000\002\001\001\000\002" +
     "\001\001\000\002\001\001\000\002\001\001\000\002\001" +
     "\001\000\002\001\001\000\002\001\001\000\002\001\001" +
-    "\000\002\001\001\000\004\012\053\001\001\000\002\001" +
-    "\001\000\002\001\001\000\002\001\001\000\004\012\057" +
-    "\001\001\000\002\001\001\000\002\001\001\000\002\001" +
-    "\001\000\004\012\063\001\001\000\002\001\001\000\002" +
+    "\000\004\012\052\001\001\000\002\001\001\000\002\001" +
+    "\001\000\002\001\001\000\004\012\056\001\001\000\002" +
+    "\001\001\000\002\001\001\000\002\001\001\000\004\012" +
+    "\062\001\001\000\002\001\001\000\002\001\001\000\002" +
     "\001\001\000\002\001\001\000\002\001\001\000\002\001" +
     "\001\000\002\001\001\000\002\001\001\000\002\001\001" +
     "\000\002\001\001\000\002\001\001\000\002\001\001\000" +
     "\002\001\001\000\002\001\001\000\002\001\001\000\002" +
     "\001\001\000\002\001\001\000\002\001\001\000\002\001" +
     "\001\000\002\001\001\000\002\001\001\000\002\001\001" +
-    "\000\002\001\001\000\014\004\112\005\025\006\023\007" +
-    "\020\010\026\001\001\000\002\001\001\000\002\001\001" +
-    "\000\002\001\001\000\002\001\001\000\002\001\001\000" +
-    "\002\001\001" });
+    "\000\014\004\111\005\026\006\024\007\021\010\027\001" +
+    "\001\000\002\001\001\000\002\001\001\000\002\001\001" +
+    "\000\002\001\001\000\002\001\001\000\006\003\117\013" +
+    "\010\001\001\000\002\001\001\000\002\001\001" });
 
   /** Access to <code>reduce_goto</code> table. */
   public short[][] reduce_table() {return _reduce_table;}
@@ -165,12 +169,124 @@ public class canvas extends java_cup.runtime.lr_parser {
 
 
 
+	canvasManager newCanvasM;
+	String id = "";
+	String name = "";
+	String type = "";
+	int red = DefaultValue.noInicioDimension;
+	int blue = DefaultValue.noInicioDimension;
+	int green = DefaultValue.noInicioDimension;
+	String hexaC = "";
+	int cuadros = DefaultValue.noInicioDimension;
+	int dimesion = DefaultValue.noInicioDimension;
+
+
+	public canvas(Lexer lex, canvasManager canvasM){
+		super(lex);
+		this.newCanvasM = canvasM;
+	}
+
 	public void syntax_error(Symbol cur_token) {
 		String message = "Estructura invalida en posición " + cur_token.right
 			 + ", token: " + cur_token.value;
 		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<");	 
 		System.out.println(message);
 		System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+	}
+
+	private void setNameLienzo(String nameLienzo) throws InputsVaciosException{
+		if (name.equals("")) {
+			name = nameLienzo;
+		} else {
+			throw new InputsVaciosException("Lienzo's name " + nameLienzo + " already set");
+		}
+	}
+
+	private void setTypeLienzo(String typeLienzo) throws InputsVaciosException{
+		if (type.equals("")) {
+			type = typeLienzo;
+		} else {
+			throw new InputsVaciosException("Lienzo's type " + typeLienzo + " already set");
+		}
+	}
+
+	private void setCuadros(int CuadroCl) throws InputsVaciosException {
+		if (cuadros == DefaultValue.noInicioDimension) {
+			cuadros = CuadroCl;
+		} else {
+			throw new InputsVaciosException("Cuadro parameter " + CuadroCl + " can't set");
+		}
+	}
+
+	private void setDimension(int DimensionCl) throws InputsVaciosException {
+		if (dimesion == DefaultValue.noInicioDimension) {
+			dimesion = DimensionCl;
+		} else {
+			throw new InputsVaciosException("Dimension parameter " + DimensionCl + " can't set");
+		}
+	}
+
+	private void setRedCode(int RedCl) throws InputsVaciosException {
+		if ((red == DefaultValue.noInicioDimension) && (hexaC.equals(""))) {
+			red = RedCl;
+		} else {
+			throw new InputsVaciosException("Red code " + RedCl + " can't set");
+		}
+	}
+
+	private void setBlueCode(int BlueCl) throws InputsVaciosException {
+		if ((blue == DefaultValue.noInicioDimension) && (hexaC.equals(""))) {
+			blue = BlueCl;
+		} else {
+			throw new InputsVaciosException("Red code " + BlueCl + " can't set");
+		}
+	}
+
+	private void setGreenCode(int GreenCl) throws InputsVaciosException {
+		if ((green == DefaultValue.noInicioDimension) && (hexaC.equals(""))) {
+			green = GreenCl;
+		} else {
+			throw new InputsVaciosException("Red code " + GreenCl + " can't set");
+		}
+	}
+
+	private void setHexa(String hexaCd) throws InputsVaciosException{
+		if (hexaC.equals("") && (red == DefaultValue.noInicioDimension) && (blue == DefaultValue.noInicioDimension) && (green == DefaultValue.noInicioDimension)) {
+			hexaC = hexaCd;
+		} else {
+			throw new InputsVaciosException("Hexa code " + hexaCd + " can't set");
+		}
+	}
+
+	private void setlienzo(String idLienzo) throws InputsVaciosException {
+		if (!name.equals("") && !type.equals("") && (((red != DefaultValue.noInicioDimension) && 
+			(blue != DefaultValue.noInicioDimension) && (green != DefaultValue.noInicioDimension)&& 
+			(hexaC.equals(""))) || ((red == DefaultValue.noInicioDimension) && (blue == DefaultValue.noInicioDimension) 
+			&& (green == DefaultValue.noInicioDimension)&& (!hexaC.equals("")))) && 
+			(cuadros != DefaultValue.noInicioDimension) && (dimesion != DefaultValue.noInicioDimension)) {
+			
+			if (((red != DefaultValue.noInicioDimension) && (blue != DefaultValue.noInicioDimension) && (green != DefaultValue.noInicioDimension)&& (hexaC.equals("")))) {
+				newCanvasM.addLienzo(idLienzo, name, type, red, green, blue, cuadros, dimesion);
+			} else if (((red == DefaultValue.noInicioDimension) && (blue == DefaultValue.noInicioDimension) && (green == DefaultValue.noInicioDimension)&& (!hexaC.equals("")))) {
+				newCanvasM.addLienzo(idLienzo, name, type, hexaC, cuadros, dimesion);
+			}
+		} else {
+			throw new InputsVaciosException("Missing parameter at " + idLienzo + " lienzo");
+		}
+		cleanValues();
+	}
+
+	private void cleanValues(){
+		id = "";
+		name = "";
+		type = "";
+		red = DefaultValue.noInicioDimension;
+		blue = DefaultValue.noInicioDimension;
+		green = DefaultValue.noInicioDimension;
+		hexaC = "";
+		cuadros = DefaultValue.noInicioDimension;
+		dimesion = DefaultValue.noInicioDimension;
+
 	}
 
 
@@ -223,25 +339,37 @@ class CUP$canvas$actions {
           return CUP$canvas$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 2: // CUERPO ::= Identificador DosPuntos CorAbierto CARACTERISTICAS CorCerrado Coma CUERPO 
+          case 2: // CUERPO ::= LIENZO Coma CUERPO 
             {
               String RESULT =null;
 
-              CUP$canvas$result = parser.getSymbolFactory().newSymbol("CUERPO",1, ((java_cup.runtime.Symbol)CUP$canvas$stack.elementAt(CUP$canvas$top-6)), ((java_cup.runtime.Symbol)CUP$canvas$stack.peek()), RESULT);
+              CUP$canvas$result = parser.getSymbolFactory().newSymbol("CUERPO",1, ((java_cup.runtime.Symbol)CUP$canvas$stack.elementAt(CUP$canvas$top-2)), ((java_cup.runtime.Symbol)CUP$canvas$stack.peek()), RESULT);
             }
           return CUP$canvas$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 3: // CUERPO ::= Identificador DosPuntos CorAbierto CARACTERISTICAS CorCerrado 
+          case 3: // CUERPO ::= LIENZO 
             {
               String RESULT =null;
 
-              CUP$canvas$result = parser.getSymbolFactory().newSymbol("CUERPO",1, ((java_cup.runtime.Symbol)CUP$canvas$stack.elementAt(CUP$canvas$top-4)), ((java_cup.runtime.Symbol)CUP$canvas$stack.peek()), RESULT);
+              CUP$canvas$result = parser.getSymbolFactory().newSymbol("CUERPO",1, ((java_cup.runtime.Symbol)CUP$canvas$stack.peek()), ((java_cup.runtime.Symbol)CUP$canvas$stack.peek()), RESULT);
             }
           return CUP$canvas$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 4: // CARACTERISTICAS ::= NOMBRE Coma CARACTERISTICAS 
+          case 4: // LIENZO ::= Identificador DosPuntos CorAbierto CARACTERISTICAS CorCerrado 
+            {
+              String RESULT =null;
+		int eleft = ((java_cup.runtime.Symbol)CUP$canvas$stack.elementAt(CUP$canvas$top-4)).left;
+		int eright = ((java_cup.runtime.Symbol)CUP$canvas$stack.elementAt(CUP$canvas$top-4)).right;
+		String e = (String)((java_cup.runtime.Symbol) CUP$canvas$stack.elementAt(CUP$canvas$top-4)).value;
+		 setlienzo(e); 
+              CUP$canvas$result = parser.getSymbolFactory().newSymbol("LIENZO",9, ((java_cup.runtime.Symbol)CUP$canvas$stack.elementAt(CUP$canvas$top-4)), ((java_cup.runtime.Symbol)CUP$canvas$stack.peek()), RESULT);
+            }
+          return CUP$canvas$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 5: // CARACTERISTICAS ::= NOMBRE Coma CARACTERISTICAS 
             {
               String RESULT =null;
 
@@ -250,7 +378,7 @@ class CUP$canvas$actions {
           return CUP$canvas$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 5: // CARACTERISTICAS ::= TIPO Coma CARACTERISTICAS 
+          case 6: // CARACTERISTICAS ::= TIPO Coma CARACTERISTICAS 
             {
               String RESULT =null;
 
@@ -259,7 +387,7 @@ class CUP$canvas$actions {
           return CUP$canvas$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 6: // CARACTERISTICAS ::= FONDO Coma CARACTERISTICAS 
+          case 7: // CARACTERISTICAS ::= FONDO Coma CARACTERISTICAS 
             {
               String RESULT =null;
 
@@ -268,7 +396,7 @@ class CUP$canvas$actions {
           return CUP$canvas$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 7: // CARACTERISTICAS ::= TAMANIO Coma CARACTERISTICAS 
+          case 8: // CARACTERISTICAS ::= TAMANIO Coma CARACTERISTICAS 
             {
               String RESULT =null;
 
@@ -277,7 +405,7 @@ class CUP$canvas$actions {
           return CUP$canvas$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 8: // CARACTERISTICAS ::= NOMBRE 
+          case 9: // CARACTERISTICAS ::= NOMBRE 
             {
               String RESULT =null;
 
@@ -286,7 +414,7 @@ class CUP$canvas$actions {
           return CUP$canvas$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 9: // CARACTERISTICAS ::= TIPO 
+          case 10: // CARACTERISTICAS ::= TIPO 
             {
               String RESULT =null;
 
@@ -295,7 +423,7 @@ class CUP$canvas$actions {
           return CUP$canvas$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 10: // CARACTERISTICAS ::= FONDO 
+          case 11: // CARACTERISTICAS ::= FONDO 
             {
               String RESULT =null;
 
@@ -304,7 +432,7 @@ class CUP$canvas$actions {
           return CUP$canvas$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 11: // CARACTERISTICAS ::= TAMANIO 
+          case 12: // CARACTERISTICAS ::= TAMANIO 
             {
               String RESULT =null;
 
@@ -313,25 +441,31 @@ class CUP$canvas$actions {
           return CUP$canvas$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 12: // NOMBRE ::= Nombre DosPuntos Cadena 
+          case 13: // NOMBRE ::= Nombre DosPuntos Cadena 
             {
               String RESULT =null;
-
+		int eleft = ((java_cup.runtime.Symbol)CUP$canvas$stack.peek()).left;
+		int eright = ((java_cup.runtime.Symbol)CUP$canvas$stack.peek()).right;
+		String e = (String)((java_cup.runtime.Symbol) CUP$canvas$stack.peek()).value;
+		 setNameLienzo(e); 
               CUP$canvas$result = parser.getSymbolFactory().newSymbol("NOMBRE",3, ((java_cup.runtime.Symbol)CUP$canvas$stack.elementAt(CUP$canvas$top-2)), ((java_cup.runtime.Symbol)CUP$canvas$stack.peek()), RESULT);
             }
           return CUP$canvas$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 13: // TIPO ::= Tipo DosPuntos Cadena 
+          case 14: // TIPO ::= Tipo DosPuntos Cadena 
             {
               String RESULT =null;
-
+		int eleft = ((java_cup.runtime.Symbol)CUP$canvas$stack.peek()).left;
+		int eright = ((java_cup.runtime.Symbol)CUP$canvas$stack.peek()).right;
+		String e = (String)((java_cup.runtime.Symbol) CUP$canvas$stack.peek()).value;
+		 setTypeLienzo(e); 
               CUP$canvas$result = parser.getSymbolFactory().newSymbol("TIPO",4, ((java_cup.runtime.Symbol)CUP$canvas$stack.elementAt(CUP$canvas$top-2)), ((java_cup.runtime.Symbol)CUP$canvas$stack.peek()), RESULT);
             }
           return CUP$canvas$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 14: // FONDO ::= Fondo DosPuntos CorAbierto COLOR CorCerrado 
+          case 15: // FONDO ::= Fondo DosPuntos CorAbierto COLOR CorCerrado 
             {
               String RESULT =null;
 
@@ -340,16 +474,19 @@ class CUP$canvas$actions {
           return CUP$canvas$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 15: // COLOR ::= Hex DosPuntos HexaCode 
+          case 16: // COLOR ::= Hex DosPuntos HexaCode 
             {
               String RESULT =null;
-
+		int eleft = ((java_cup.runtime.Symbol)CUP$canvas$stack.peek()).left;
+		int eright = ((java_cup.runtime.Symbol)CUP$canvas$stack.peek()).right;
+		String e = (String)((java_cup.runtime.Symbol) CUP$canvas$stack.peek()).value;
+		 setHexa(e); 
               CUP$canvas$result = parser.getSymbolFactory().newSymbol("COLOR",7, ((java_cup.runtime.Symbol)CUP$canvas$stack.elementAt(CUP$canvas$top-2)), ((java_cup.runtime.Symbol)CUP$canvas$stack.peek()), RESULT);
             }
           return CUP$canvas$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 16: // COLOR ::= CLRGB 
+          case 17: // COLOR ::= CLRGB 
             {
               String RESULT =null;
 
@@ -358,73 +495,103 @@ class CUP$canvas$actions {
           return CUP$canvas$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 17: // CLRGB ::= Red DosPuntos Entero Coma CLRGB 
+          case 18: // CLRGB ::= Red DosPuntos Entero Coma CLRGB 
             {
               String RESULT =null;
-
+		int eleft = ((java_cup.runtime.Symbol)CUP$canvas$stack.elementAt(CUP$canvas$top-2)).left;
+		int eright = ((java_cup.runtime.Symbol)CUP$canvas$stack.elementAt(CUP$canvas$top-2)).right;
+		String e = (String)((java_cup.runtime.Symbol) CUP$canvas$stack.elementAt(CUP$canvas$top-2)).value;
+		 setRedCode(Integer.parseInt(e)); 
               CUP$canvas$result = parser.getSymbolFactory().newSymbol("CLRGB",8, ((java_cup.runtime.Symbol)CUP$canvas$stack.elementAt(CUP$canvas$top-4)), ((java_cup.runtime.Symbol)CUP$canvas$stack.peek()), RESULT);
             }
           return CUP$canvas$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 18: // CLRGB ::= Blue DosPuntos Entero Coma CLRGB 
+          case 19: // CLRGB ::= Blue DosPuntos Entero Coma CLRGB 
             {
               String RESULT =null;
-
+		int eleft = ((java_cup.runtime.Symbol)CUP$canvas$stack.elementAt(CUP$canvas$top-2)).left;
+		int eright = ((java_cup.runtime.Symbol)CUP$canvas$stack.elementAt(CUP$canvas$top-2)).right;
+		String e = (String)((java_cup.runtime.Symbol) CUP$canvas$stack.elementAt(CUP$canvas$top-2)).value;
+		 setBlueCode(Integer.parseInt(e)); 
               CUP$canvas$result = parser.getSymbolFactory().newSymbol("CLRGB",8, ((java_cup.runtime.Symbol)CUP$canvas$stack.elementAt(CUP$canvas$top-4)), ((java_cup.runtime.Symbol)CUP$canvas$stack.peek()), RESULT);
             }
           return CUP$canvas$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 19: // CLRGB ::= Green DosPuntos Entero Coma CLRGB 
+          case 20: // CLRGB ::= Green DosPuntos Entero Coma CLRGB 
             {
               String RESULT =null;
-
+		int eleft = ((java_cup.runtime.Symbol)CUP$canvas$stack.elementAt(CUP$canvas$top-2)).left;
+		int eright = ((java_cup.runtime.Symbol)CUP$canvas$stack.elementAt(CUP$canvas$top-2)).right;
+		String e = (String)((java_cup.runtime.Symbol) CUP$canvas$stack.elementAt(CUP$canvas$top-2)).value;
+		 setGreenCode(Integer.parseInt(e)); 
               CUP$canvas$result = parser.getSymbolFactory().newSymbol("CLRGB",8, ((java_cup.runtime.Symbol)CUP$canvas$stack.elementAt(CUP$canvas$top-4)), ((java_cup.runtime.Symbol)CUP$canvas$stack.peek()), RESULT);
             }
           return CUP$canvas$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 20: // CLRGB ::= Red DosPuntos Entero 
+          case 21: // CLRGB ::= Red DosPuntos Entero 
             {
               String RESULT =null;
-
+		int eleft = ((java_cup.runtime.Symbol)CUP$canvas$stack.peek()).left;
+		int eright = ((java_cup.runtime.Symbol)CUP$canvas$stack.peek()).right;
+		String e = (String)((java_cup.runtime.Symbol) CUP$canvas$stack.peek()).value;
+		 setRedCode(Integer.parseInt(e)); 
               CUP$canvas$result = parser.getSymbolFactory().newSymbol("CLRGB",8, ((java_cup.runtime.Symbol)CUP$canvas$stack.elementAt(CUP$canvas$top-2)), ((java_cup.runtime.Symbol)CUP$canvas$stack.peek()), RESULT);
             }
           return CUP$canvas$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 21: // CLRGB ::= Blue DosPuntos Entero 
+          case 22: // CLRGB ::= Blue DosPuntos Entero 
             {
               String RESULT =null;
-
+		int eleft = ((java_cup.runtime.Symbol)CUP$canvas$stack.peek()).left;
+		int eright = ((java_cup.runtime.Symbol)CUP$canvas$stack.peek()).right;
+		String e = (String)((java_cup.runtime.Symbol) CUP$canvas$stack.peek()).value;
+		 setBlueCode(Integer.parseInt(e)); 
               CUP$canvas$result = parser.getSymbolFactory().newSymbol("CLRGB",8, ((java_cup.runtime.Symbol)CUP$canvas$stack.elementAt(CUP$canvas$top-2)), ((java_cup.runtime.Symbol)CUP$canvas$stack.peek()), RESULT);
             }
           return CUP$canvas$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 22: // CLRGB ::= Green DosPuntos Entero 
+          case 23: // CLRGB ::= Green DosPuntos Entero 
             {
               String RESULT =null;
-
+		int eleft = ((java_cup.runtime.Symbol)CUP$canvas$stack.peek()).left;
+		int eright = ((java_cup.runtime.Symbol)CUP$canvas$stack.peek()).right;
+		String e = (String)((java_cup.runtime.Symbol) CUP$canvas$stack.peek()).value;
+		 setGreenCode(Integer.parseInt(e)); 
               CUP$canvas$result = parser.getSymbolFactory().newSymbol("CLRGB",8, ((java_cup.runtime.Symbol)CUP$canvas$stack.elementAt(CUP$canvas$top-2)), ((java_cup.runtime.Symbol)CUP$canvas$stack.peek()), RESULT);
             }
           return CUP$canvas$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 23: // TAMANIO ::= Tamanio DosPuntos CorAbierto Cuadro DosPuntos Entero Coma Dimension DosPuntos Entero CorCerrado 
+          case 24: // TAMANIO ::= Tamanio DosPuntos CorAbierto Cuadro DosPuntos Entero Coma Dimension DosPuntos Entero CorCerrado 
             {
               String RESULT =null;
-
+		int e1left = ((java_cup.runtime.Symbol)CUP$canvas$stack.elementAt(CUP$canvas$top-5)).left;
+		int e1right = ((java_cup.runtime.Symbol)CUP$canvas$stack.elementAt(CUP$canvas$top-5)).right;
+		String e1 = (String)((java_cup.runtime.Symbol) CUP$canvas$stack.elementAt(CUP$canvas$top-5)).value;
+		int e2left = ((java_cup.runtime.Symbol)CUP$canvas$stack.elementAt(CUP$canvas$top-1)).left;
+		int e2right = ((java_cup.runtime.Symbol)CUP$canvas$stack.elementAt(CUP$canvas$top-1)).right;
+		String e2 = (String)((java_cup.runtime.Symbol) CUP$canvas$stack.elementAt(CUP$canvas$top-1)).value;
+		 setCuadros(Integer.parseInt(e1)); setDimension(Integer.parseInt(e2)); 
               CUP$canvas$result = parser.getSymbolFactory().newSymbol("TAMANIO",6, ((java_cup.runtime.Symbol)CUP$canvas$stack.elementAt(CUP$canvas$top-10)), ((java_cup.runtime.Symbol)CUP$canvas$stack.peek()), RESULT);
             }
           return CUP$canvas$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 24: // TAMANIO ::= Tamanio DosPuntos CorAbierto Dimension DosPuntos Entero Coma Cuadro DosPuntos Entero CorCerrado 
+          case 25: // TAMANIO ::= Tamanio DosPuntos CorAbierto Dimension DosPuntos Entero Coma Cuadro DosPuntos Entero CorCerrado 
             {
               String RESULT =null;
-
+		int e1left = ((java_cup.runtime.Symbol)CUP$canvas$stack.elementAt(CUP$canvas$top-5)).left;
+		int e1right = ((java_cup.runtime.Symbol)CUP$canvas$stack.elementAt(CUP$canvas$top-5)).right;
+		String e1 = (String)((java_cup.runtime.Symbol) CUP$canvas$stack.elementAt(CUP$canvas$top-5)).value;
+		int e2left = ((java_cup.runtime.Symbol)CUP$canvas$stack.elementAt(CUP$canvas$top-1)).left;
+		int e2right = ((java_cup.runtime.Symbol)CUP$canvas$stack.elementAt(CUP$canvas$top-1)).right;
+		String e2 = (String)((java_cup.runtime.Symbol) CUP$canvas$stack.elementAt(CUP$canvas$top-1)).value;
+		 setCuadros(Integer.parseInt(e2)); setDimension(Integer.parseInt(e1)); 
               CUP$canvas$result = parser.getSymbolFactory().newSymbol("TAMANIO",6, ((java_cup.runtime.Symbol)CUP$canvas$stack.elementAt(CUP$canvas$top-10)), ((java_cup.runtime.Symbol)CUP$canvas$stack.peek()), RESULT);
             }
           return CUP$canvas$result;

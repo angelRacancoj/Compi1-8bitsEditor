@@ -9,7 +9,7 @@ package imageneditor.analisis;
 public class sym {
   /* terminals */
   public static final int Nombre = 14;
-  public static final int Entero = 31;
+  public static final int Entero = 35;
   public static final int Coma = 19;
   public static final int ParAbierto = 23;
   public static final int Tamanio = 13;
@@ -20,28 +20,28 @@ public class sym {
   public static final int Mas = 18;
   public static final int Lienzos = 15;
   public static final int PuntoYComa = 22;
-  public static final int Blue = 9;
+  public static final int Blue = 11;
   public static final int CorAbierto = 25;
   public static final int Cuadro = 6;
   public static final int Pintar = 2;
   public static final int Hex = 7;
   public static final int LlaveCerrada = 28;
-  public static final int Cadena = 32;
-  public static final int Red = 8;
+  public static final int Cadena = 31;
+  public static final int Red = 10;
   public static final int EOF = 0;
   public static final int DosPuntos = 21;
   public static final int error = 1;
-  public static final int Green = 10;
+  public static final int Green = 12;
   public static final int Comment = 29;
-  public static final int Tipo = 11;
+  public static final int Tipo = 8;
   public static final int Vars = 3;
-  public static final int NewVar = 34;
+  public static final int NewVar = 33;
   public static final int ParCerrado = 24;
   public static final int Intervalo = 20;
-  public static final int Instrucciones = 35;
-  public static final int Identificador = 33;
+  public static final int Instrucciones = 34;
+  public static final int Identificador = 32;
   public static final int LlaveAbierta = 27;
-  public static final int Fondo = 12;
+  public static final int Fondo = 9;
   public static final int Igual = 16;
   public static final int CorCerrado = 26;
   public static final String[] terminalNames = new String[] {
@@ -53,11 +53,11 @@ public class sym {
   "Dimension",
   "Cuadro",
   "Hex",
+  "Tipo",
+  "Fondo",
   "Red",
   "Blue",
   "Green",
-  "Tipo",
-  "Fondo",
   "Tamanio",
   "Nombre",
   "Lienzos",
@@ -76,11 +76,11 @@ public class sym {
   "LlaveCerrada",
   "Comment",
   "HexaCode",
-  "Entero",
   "Cadena",
   "Identificador",
   "NewVar",
-  "Instrucciones"
+  "Instrucciones",
+  "Entero"
   };
 }
 

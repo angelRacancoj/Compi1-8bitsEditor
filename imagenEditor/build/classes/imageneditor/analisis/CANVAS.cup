@@ -1,8 +1,28 @@
 package imageneditor.analisis;
 
 import java_cup.runtime.*;
+import imageneditor.DefaultValue;
+import imageneditor.objectsManager.canvasManager;
+import imageneditor.exceptions.InputsVaciosException;
 
 parser code {:
+
+	canvasManager newCanvasM;
+	String id = "";
+	String name = "";
+	String type = "";
+	int red = DefaultValue.noInicioDimension;
+	int blue = DefaultValue.noInicioDimension;
+	int green = DefaultValue.noInicioDimension;
+	String hexaC = "";
+	int cuadros = DefaultValue.noInicioDimension;
+	int dimesion = DefaultValue.noInicioDimension;
+
+
+	public canvas(Lexer lex, canvasManager canvasM){
+		super(lex);
+		this.newCanvasM = canvasM;
+	}
 
 	public void syntax_error(Symbol cur_token) {
 		String message = "Estructura invalida en posición " + cur_token.right
@@ -12,23 +32,121 @@ parser code {:
 		System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
 	}
 
+	private void setNameLienzo(String nameLienzo) throws InputsVaciosException{
+		if (name.equals("")) {
+			name = nameLienzo;
+		} else {
+			throw new InputsVaciosException("Lienzo's name " + nameLienzo + " already set");
+		}
+	}
+
+	private void setTypeLienzo(String typeLienzo) throws InputsVaciosException{
+		if (type.equals("")) {
+			type = typeLienzo;
+		} else {
+			throw new InputsVaciosException("Lienzo's type " + typeLienzo + " already set");
+		}
+	}
+
+	private void setCuadros(int CuadroCl) throws InputsVaciosException {
+		if (cuadros == DefaultValue.noInicioDimension) {
+			cuadros = CuadroCl;
+		} else {
+			throw new InputsVaciosException("Cuadro parameter " + CuadroCl + " can't set");
+		}
+	}
+
+	private void setDimension(int DimensionCl) throws InputsVaciosException {
+		if (dimesion == DefaultValue.noInicioDimension) {
+			dimesion = DimensionCl;
+		} else {
+			throw new InputsVaciosException("Dimension parameter " + DimensionCl + " can't set");
+		}
+	}
+
+	private void setRedCode(int RedCl) throws InputsVaciosException {
+		if ((red == DefaultValue.noInicioDimension) && (hexaC.equals(""))) {
+			red = RedCl;
+		} else {
+			throw new InputsVaciosException("Red code " + RedCl + " can't set");
+		}
+	}
+
+	private void setBlueCode(int BlueCl) throws InputsVaciosException {
+		if ((blue == DefaultValue.noInicioDimension) && (hexaC.equals(""))) {
+			blue = BlueCl;
+		} else {
+			throw new InputsVaciosException("Red code " + BlueCl + " can't set");
+		}
+	}
+
+	private void setGreenCode(int GreenCl) throws InputsVaciosException {
+		if ((green == DefaultValue.noInicioDimension) && (hexaC.equals(""))) {
+			green = GreenCl;
+		} else {
+			throw new InputsVaciosException("Red code " + GreenCl + " can't set");
+		}
+	}
+
+	private void setHexa(String hexaCd) throws InputsVaciosException{
+		if (hexaC.equals("") && (red == DefaultValue.noInicioDimension) && (blue == DefaultValue.noInicioDimension) && (green == DefaultValue.noInicioDimension)) {
+			hexaC = hexaCd;
+		} else {
+			throw new InputsVaciosException("Hexa code " + hexaCd + " can't set");
+		}
+	}
+
+	private void setlienzo(String idLienzo) throws InputsVaciosException {
+		if (!name.equals("") && !type.equals("") && (((red != DefaultValue.noInicioDimension) && 
+			(blue != DefaultValue.noInicioDimension) && (green != DefaultValue.noInicioDimension)&& 
+			(hexaC.equals(""))) || ((red == DefaultValue.noInicioDimension) && (blue == DefaultValue.noInicioDimension) 
+			&& (green == DefaultValue.noInicioDimension)&& (!hexaC.equals("")))) && 
+			(cuadros != DefaultValue.noInicioDimension) && (dimesion != DefaultValue.noInicioDimension)) {
+			
+			if (((red != DefaultValue.noInicioDimension) && (blue != DefaultValue.noInicioDimension) && (green != DefaultValue.noInicioDimension)&& (hexaC.equals("")))) {
+				newCanvasM.addLienzo(idLienzo, name, type, red, green, blue, cuadros, dimesion);
+			} else if (((red == DefaultValue.noInicioDimension) && (blue == DefaultValue.noInicioDimension) && (green == DefaultValue.noInicioDimension)&& (!hexaC.equals("")))) {
+				newCanvasM.addLienzo(idLienzo, name, type, hexaC, cuadros, dimesion);
+			}
+		} else {
+			throw new InputsVaciosException("Missing parameter at " + idLienzo + " lienzo");
+		}
+		cleanValues();
+	}
+
+	private void cleanValues(){
+		id = "";
+		name = "";
+		type = "";
+		red = DefaultValue.noInicioDimension;
+		blue = DefaultValue.noInicioDimension;
+		green = DefaultValue.noInicioDimension;
+		hexaC = "";
+		cuadros = DefaultValue.noInicioDimension;
+		dimesion = DefaultValue.noInicioDimension;
+
+	}
+
 :}
 /* Terminal */
-terminal String Pintar, Vars, Colores, Dimension, Cuadro, Hex, Red, Blue, Green, Tipo, Fondo; 
+terminal String Pintar, Vars, Colores, Dimension, Cuadro, Hex, Tipo, Fondo,Red, Blue, Green; 
 terminal String Tamanio, Nombre, Lienzos, Igual, Menos, Mas, Coma, Intervalo, DosPuntos, PuntoYComa; 
 terminal String ParAbierto, ParCerrado, CorAbierto, CorCerrado, LlaveAbierta, LlaveCerrada;
-terminal String Comment, HexaCode, Entero, Cadena, Identificador, NewVar, Instrucciones;
+terminal String Comment, HexaCode, Cadena, Identificador, NewVar, Instrucciones,Entero;
+//terminal Integer Entero;
 
 /* Non terminal */
-non terminal String CANVAS, CUERPO, CARACTERISTICAS, NOMBRE, TIPO, FONDO, TAMANIO, COLOR, CLRGB;
+non terminal String CANVAS, CUERPO, CARACTERISTICAS, NOMBRE, TIPO, FONDO, TAMANIO, COLOR, CLRGB, LIENZO;
 
 start with CANVAS;
 
 CANVAS		::=	CorAbierto Lienzos DosPuntos CorAbierto CUERPO CorCerrado CorCerrado;
 
-CUERPO		::= Identificador DosPuntos CorAbierto CARACTERISTICAS CorCerrado Coma CUERPO
-				| Identificador DosPuntos CorAbierto CARACTERISTICAS CorCerrado
+CUERPO		::= LIENZO Coma CUERPO
+				| LIENZO
 				;
+
+LIENZO 		::= Identificador:e DosPuntos CorAbierto CARACTERISTICAS CorCerrado {: setlienzo(e); :};
 
 CARACTERISTICAS	::= NOMBRE Coma CARACTERISTICAS
 					| TIPO Coma CARACTERISTICAS
@@ -40,26 +158,26 @@ CARACTERISTICAS	::= NOMBRE Coma CARACTERISTICAS
 					| TAMANIO
 					; 
 
-NOMBRE 		::= Nombre DosPuntos Cadena; 
+NOMBRE 		::= Nombre DosPuntos Cadena:e {: setNameLienzo(e); :}; 
 
-TIPO 		::= Tipo DosPuntos Cadena;
+TIPO 		::= Tipo DosPuntos Cadena:e {: setTypeLienzo(e); :};
 
 FONDO 		::= Fondo DosPuntos CorAbierto COLOR CorCerrado;
 
-COLOR 		::= Hex DosPuntos HexaCode
+COLOR 		::= Hex DosPuntos HexaCode:e {: setHexa(e); :}
 				| CLRGB
 				;
 
-CLRGB		::=	Red DosPuntos Entero Coma CLRGB
-				| Blue DosPuntos Entero Coma CLRGB
-				| Green DosPuntos Entero Coma CLRGB
-				| Red DosPuntos Entero
-				| Blue DosPuntos Entero
-				| Green DosPuntos Entero
+CLRGB		::=	Red DosPuntos Entero:e Coma CLRGB {: setRedCode(Integer.parseInt(e)); :}
+				| Blue DosPuntos Entero:e Coma CLRGB {: setBlueCode(Integer.parseInt(e)); :}
+				| Green DosPuntos Entero:e Coma CLRGB {: setGreenCode(Integer.parseInt(e)); :}
+				| Red DosPuntos Entero:e {: setRedCode(Integer.parseInt(e)); :}
+				| Blue DosPuntos Entero:e {: setBlueCode(Integer.parseInt(e)); :}
+				| Green DosPuntos Entero:e {: setGreenCode(Integer.parseInt(e)); :}
 				;
 
-TAMANIO 	::= Tamanio DosPuntos CorAbierto Cuadro DosPuntos Entero Coma Dimension DosPuntos Entero CorCerrado
-				| Tamanio DosPuntos CorAbierto Dimension DosPuntos Entero Coma Cuadro DosPuntos Entero CorCerrado
+TAMANIO 	::= Tamanio DosPuntos CorAbierto Cuadro DosPuntos Entero:e1 Coma Dimension DosPuntos Entero:e2 CorCerrado {: setCuadros(Integer.parseInt(e1)); setDimension(Integer.parseInt(e2)); :}
+				| Tamanio DosPuntos CorAbierto Dimension DosPuntos Entero:e1 Coma Cuadro DosPuntos Entero:e2 CorCerrado {: setCuadros(Integer.parseInt(e2)); setDimension(Integer.parseInt(e1)); :}
 				;
 
 /*Pintar, Vars, Colores, Dimension, Cuadro, Hex, Red, Blue, Green, Tipo, Fondo, 

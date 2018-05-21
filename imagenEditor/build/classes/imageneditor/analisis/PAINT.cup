@@ -1,8 +1,76 @@
 package imageneditor.analisis;
 
 import java_cup.runtime.*;
+import imageneditor.DefaultValue;
+import imageneditor.objectsManager.pintarManager;
+import imageneditor.exceptions.InputsVaciosException;
 
 parser code {:
+
+	pintarManager newPaintM;
+	int posX =DefaultValue.noInicioDimension;
+	int posXint = DefaultValue.noInicioDimension;
+	int posY =DefaultValue.noInicioDimension;
+	int posYint = DefaultValue.noInicioDimension;
+
+	public paint(Lexer lex, pintarManager pntIn){
+		super(lex);
+		this.newPaintM = pntIn;
+	}
+
+	private void setPosX(int xPnt) throws InputsVaciosException {
+		if (posX == DefaultValue.noInicioDimension) {
+			posX = xPnt;
+		} else {
+			throw new InputsVaciosException("Posicion X " + xPnt + " can't set");
+		}
+	}
+
+	private void setPosXint(int xPnt) throws InputsVaciosException {
+		if (posXint == DefaultValue.noInicioDimension) {
+			posXint = xPnt;
+		} else {
+			throw new InputsVaciosException("Posicion X " + xPnt + " can't set");
+		}
+	}
+
+	private void setPosY(int yPnt) throws InputsVaciosException {
+		if (posY == DefaultValue.noInicioDimension) {
+			posY = yPnt;
+		} else {
+			throw new InputsVaciosException("Posicion X " + yPnt + " can't set");
+		}
+	}
+
+	private void setPosYint(int yPnt) throws InputsVaciosException {
+		if (posYint == DefaultValue.noInicioDimension) {
+			posYint = yPnt;
+		} else {
+			throw new InputsVaciosException("Posicion X " + yPnt + " can't set");
+		}
+	}
+
+	private void setPintarCom() throws InputsVaciosException{
+		if ((posX != DefaultValue.noInicioDimension) && (posXint == DefaultValue.noInicioDimension) && (posY != DefaultValue.noInicioDimension) && (posYint == DefaultValue.noInicioDimension)) {
+			
+		} else if ((posX != DefaultValue.noInicioDimension) && (posXint != DefaultValue.noInicioDimension) && (posY != DefaultValue.noInicioDimension) && (posYint == DefaultValue.noInicioDimension)) {
+			
+		} else if ((posX != DefaultValue.noInicioDimension) && (posXint == DefaultValue.noInicioDimension) && (posY != DefaultValue.noInicioDimension) && (posYint != DefaultValue.noInicioDimension)) {
+			
+		} else if ((posX != DefaultValue.noInicioDimension) && (posXint != DefaultValue.noInicioDimension) && (posY != DefaultValue.noInicioDimension) && (posYint != DefaultValue.noInicioDimension)) {
+			
+		} else {
+			throw new InputsVaciosException("Error setting pintar command");
+		}
+	}
+
+	private String valorSuma(String val1, String val2){
+		return String.valueOf(Integer.parseInt(val1) + Integer.parseInt(val2));
+	}
+
+	private String valorResta(String val1, String val2){
+		return String.valueOf(Integer.parseInt(val1) - Integer.parseInt(val2));
+	}
 
 	public void syntax_error(Symbol cur_token) {
 		String message = "Estructura invalida en posición " + cur_token.right
@@ -15,21 +83,18 @@ parser code {:
 :}
 
 /* Terminal */
-terminal String Pintar, Vars, Colores, Dimension, Cuadro, Hex, Red, Blue, Green, Tipo, Fondo; 
+terminal String Pintar, Vars, Colores, Dimension, Cuadro, Hex, Tipo, Fondo,Red, Blue, Green; 
 terminal String Tamanio, Nombre, Lienzos, Igual, Menos, Mas, Coma, Intervalo, DosPuntos, PuntoYComa; 
 terminal String ParAbierto, ParCerrado, CorAbierto, CorCerrado, LlaveAbierta, LlaveCerrada;
-terminal String Comment, HexaCode, Entero, Cadena, Identificador, NewVar, Instrucciones;
-
+terminal String Comment, HexaCode, Cadena, Identificador, NewVar, Instrucciones,Entero;
 /* Non terminal */
-non terminal String PAINT, VARIABLES, INSTRUCCIONS, SET_VARIABLE, DATA, MATH_OP, INT_BODY, POS_XY;
+non terminal String PAINT, VARIABLES, INSTRUCCIONS, SET_VARIABLE, DATA, MATH_OP, INT_BODY, POS_X, POS_Y, PAINT_COM, VAR_VALUE, NEW_VAR;
 
 precedence left Mas, Menos;
 
 start with PAINT;
 
-PAINT		::= VARIABLES PAINT
-				| INSTRUCCIONS PAINT
-				| VARIABLES
+PAINT		::= VARIABLES INSTRUCCIONS PAINT
 				| INSTRUCCIONS
 				;
 
@@ -37,32 +102,38 @@ VARIABLES	::= Vars LlaveAbierta SET_VARIABLE LlaveCerrada;
 
 SET_VARIABLE	::= NewVar DATA PuntoYComa;
 
-DATA		::= Identificador Coma DATA
-				| Identificador Igual MATH_OP Coma DATA
-				| Identificador
-				| Identificador Igual MATH_OP
+DATA		::= NEW_VAR Coma DATA
+//				| Identificador:e1 Igual MATH_OP:e2 Coma DATA
+				| NEW_VAR
+//				| Identificador:e1 Igual MATH_OP:e2
 				;
 
-MATH_OP		::= MATH_OP Mas Entero
-				| MATH_OP Mas Identificador
-				| MATH_OP Menos Entero
-				| MATH_OP Menos Identificador
-				| Identificador
-				| Entero
+NEW_VAR		::= Identificador:e 																			{: newPaintM.addVariable(e); :}
+				| Identificador:e1 Igual MATH_OP:e2 														{: newPaintM.addVariable(e1, Integer.parseInt(e2)); :}
+				;
+
+MATH_OP		::= MATH_OP:e1 Mas MATH_OP:e2 																	{: RESULT = valorSuma(e1, e2); :}
+				| MATH_OP:e1 Menos MATH_OP:e2 																{: RESULT = valorResta(e1, e2); :}
+				| Identificador:e 																			{: RESULT = String.valueOf(newPaintM.varValue(e)); :}
+				| Entero:e 																					{: RESULT = e; :}
 				;
 
 INSTRUCCIONS	::= Instrucciones ParAbierto Identificador ParCerrado LlaveAbierta INT_BODY LlaveCerrada;
 
-INT_BODY	::= Identificador Igual MATH_OP PuntoYComa INT_BODY
-				| Pintar ParAbierto Identificador Coma POS_XY Coma POS_XY ParCerrado PuntoYComa INT_BODY
-				| Identificador Igual MATH_OP PuntoYComa
-				| Pintar ParAbierto Identificador Coma POS_XY Coma POS_XY ParCerrado PuntoYComa
+INT_BODY	::= VAR_VALUE INT_BODY
+				| PAINT_COM INT_BODY
+				| VAR_VALUE
+				| PAINT_COM
 				;
 
-POS_XY		::= Entero
-				| Identificador
-				| Entero Intervalo Entero
-				| Entero Intervalo Identificador
-				| Identificador Intervalo Entero
-				| Identificador Intervalo Identificador
+VAR_VALUE	::= Identificador:e1 Igual MATH_OP:e2 PuntoYComa {: newPaintM.changeValVariable(e1, Integer.parseInt(e2)); :} ;
+
+PAINT_COM	::= Pintar ParAbierto Identificador:e1 Coma POS_X Coma POS_Y ParCerrado PuntoYComa;
+
+POS_X		::= MATH_OP:e
+				| MATH_OP:e1 Intervalo MATH_OP:e2
+				;
+
+POS_Y		::= MATH_OP:e
+				| MATH_OP:e1 Intervalo MATH_OP:e2
 				;
