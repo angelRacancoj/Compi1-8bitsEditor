@@ -20,6 +20,11 @@ public class canvasStruct {
         this.path = path;
     }
 
+    public void clear() {
+        path = "";
+        lienzos.clear();
+    }
+
     public canvasStruct() {
     }
 

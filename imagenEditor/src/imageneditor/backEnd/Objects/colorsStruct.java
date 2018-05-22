@@ -23,6 +23,11 @@ public class colorsStruct {
     public colorsStruct() {
     }
 
+    public void clear() {
+        path = "";
+        listLienzosColors.clear();
+    }
+
     /**
      * find the colorMaker structure that is structure before the simple one
      * that is COLOR

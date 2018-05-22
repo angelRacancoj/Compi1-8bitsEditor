@@ -5,6 +5,8 @@
  */
 package imageneditor.backEnd.Objects;
 
+import imageneditor.DefaultValue;
+
 /**
  *
  * @author angel
@@ -36,13 +38,17 @@ public class paint {
         this.colorSelected = colorSelected;
         this.posX = posX;
 
-        if (posXEnd >= 0) {
+        if (posXEnd >= DefaultValue.INICIO_DIMENSION) {
             this.posXEnd = posXEnd;
+        } else {
+            this.posXEnd = DefaultValue.NO_INICIO_DIMENSION;
         }
         this.posY = posY;
 
-        if (posYEnd >= 0) {
+        if (posYEnd >= DefaultValue.INICIO_DIMENSION) {
             this.posYEnd = posYEnd;
+        } else {
+            this.posYEnd = DefaultValue.NO_INICIO_DIMENSION;
         }
     }
 

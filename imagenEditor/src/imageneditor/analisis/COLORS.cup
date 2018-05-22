@@ -13,9 +13,9 @@ parser code {:
 	colorManager newColorM;
 	String id = "";
 	String nameCl = "";
-	int red = DefaultValue.noInicioDimension;
-	int blue = DefaultValue.noInicioDimension;
-	int green = DefaultValue.noInicioDimension;
+	int red = DefaultValue.INVALID_CL_CODE;
+	int blue = DefaultValue.INVALID_CL_CODE;
+	int green = DefaultValue.INVALID_CL_CODE;
 	String hexaC = "";
 
 	public colors(Lexer lex, colorManager clIn){
@@ -48,7 +48,7 @@ parser code {:
 	}
 
 	private void setRedCode(int RedCl) throws InputsVaciosException {
-		if ((red == DefaultValue.noInicioDimension) && (hexaC.equals(""))) {
+		if ((red == DefaultValue.INVALID_CL_CODE) && (hexaC.equals(""))) {
 			red = RedCl;
 		} else {
 			throw new InputsVaciosException("Red code " + RedCl + " can't set");
@@ -56,7 +56,7 @@ parser code {:
 	}
 
 	private void setBlueCode(int BlueCl) throws InputsVaciosException {
-		if ((blue == DefaultValue.noInicioDimension) && (hexaC.equals(""))) {
+		if ((blue == DefaultValue.INVALID_CL_CODE) && (hexaC.equals(""))) {
 			blue = BlueCl;
 		} else {
 			throw new InputsVaciosException("Red code " + BlueCl + " can't set");
@@ -64,7 +64,7 @@ parser code {:
 	}
 
 	private void setGreenCode(int GreenCl) throws InputsVaciosException {
-		if ((green == DefaultValue.noInicioDimension) && (hexaC.equals(""))) {
+		if ((green == DefaultValue.INVALID_CL_CODE) && (hexaC.equals(""))) {
 			green = GreenCl;
 		} else {
 			throw new InputsVaciosException("Red code " + GreenCl + " can't set");
@@ -72,7 +72,7 @@ parser code {:
 	}
 
 	private void setHexa(String hexaCd) throws InputsVaciosException{
-		if (hexaC.equals("") && (red == DefaultValue.noInicioDimension) && (blue == DefaultValue.noInicioDimension) && (green == DefaultValue.noInicioDimension)) {
+		if (hexaC.equals("") && (red == DefaultValue.INVALID_CL_CODE) && (blue == DefaultValue.INVALID_CL_CODE) && (green == DefaultValue.INVALID_CL_CODE)) {
 			hexaC = hexaCd;
 		} else {
 			throw new InputsVaciosException("Hexa code " + hexaCd + " can't set");
@@ -80,9 +80,9 @@ parser code {:
 	}
 
 	private void addTemColor() throws InputsVaciosException{
-		if (!nameCl.equals("") && (red != DefaultValue.noInicioDimension) && (blue != DefaultValue.noInicioDimension) && (green != DefaultValue.noInicioDimension) && (hexaC.equals(""))) {
+		if (!nameCl.equals("") && (red != DefaultValue.INVALID_CL_CODE) && (blue != DefaultValue.INVALID_CL_CODE) && (green != DefaultValue.INVALID_CL_CODE) && (hexaC.equals(""))) {
 			listAux.add(new auxColor(nameCl, red, blue, green));
-		} else if (!nameCl.equals("") && (red == DefaultValue.noInicioDimension) && (blue == DefaultValue.noInicioDimension) && (green == DefaultValue.noInicioDimension) && (!hexaC.equals(""))) {
+		} else if (!nameCl.equals("") && (red == DefaultValue.INVALID_CL_CODE) && (blue == DefaultValue.INVALID_CL_CODE) && (green == DefaultValue.INVALID_CL_CODE) && (!hexaC.equals(""))) {
 			listAux.add(new auxColor(nameCl, hexaC));
 		} else {
 			throw new InputsVaciosException("Missing parameter at " + nameCl + " color");
@@ -93,7 +93,7 @@ parser code {:
 	public void setColorByOwner(String owner) throws InputsVaciosException{
 		newColorM.newObjectColor(owner);
 		for (int i = 0;i< listAux.size() ; i++) {
-			if (!listAux.get(i).getHexa().equals("")) {
+			if (!(listAux.get(i).getHexa() == null)) {
 				newColorM.addColorToColorObject(owner,listAux.get(i).getName(), listAux.get(i).getHexa());
 			} else {
 				newColorM.addColorToColorObject(owner,listAux.get(i).getName(), listAux.get(i).getRed(), listAux.get(i).getGreen(),listAux.get(i).getBlue());
@@ -104,9 +104,9 @@ parser code {:
 
 	private void cleanColorParameters(){
 		nameCl = "";
-		red = DefaultValue.noInicioDimension;
-		blue = DefaultValue.noInicioDimension;
-		green = DefaultValue.noInicioDimension;
+		red = DefaultValue.INVALID_CL_CODE;
+		blue = DefaultValue.INVALID_CL_CODE;
+		green = DefaultValue.INVALID_CL_CODE;
 		hexaC = "";
 	}
 
@@ -129,7 +129,8 @@ non terminal String CLRS, CLRS_CUERPO, CLRS_CARACTERISTICAS, COLOR_CLRS, CLRGB_C
 
 start with CLRS;
 
-CLRS 		::= CorAbierto Colores DosPuntos CorAbierto CLRS_CUERPO CorCerrado CorCerrado; 
+CLRS 		::= CorAbierto Colores DosPuntos CorAbierto CLRS_CUERPO CorCerrado CorCerrado
+				| error:e {: System.out.println("error: "+e);:}; 
 
 CLRS_CUERPO	::= ID_LIENZO Coma CLRS_CUERPO
 				| ID_LIENZO

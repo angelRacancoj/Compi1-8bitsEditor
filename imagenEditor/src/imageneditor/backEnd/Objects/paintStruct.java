@@ -24,6 +24,12 @@ public class paintStruct {
     public paintStruct() {
     }
 
+    public void clear() {
+        path = "";
+        variablesList.clear();
+        instruccionList.clear();
+    }
+
     /**
      * verify if already exist an instruction searching by the lienzo's name
      *

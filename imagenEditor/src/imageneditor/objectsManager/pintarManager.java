@@ -103,7 +103,7 @@ public class pintarManager {
      * @param owner
      * @throws InputsVaciosException
      */
-    public void addVariableToinstruccion(String name, String owner) throws InputsVaciosException {
+    public void addVariableToinstruccion(String owner, String name) throws InputsVaciosException {
         if ((newPaintS.findIsntruccionsP(owner) != null) && (newPaintS.findVariable(name) != null)) {
             newPaintS.findIsntruccionsP(owner).addVariable(newPaintS.findVariable(name));
         } else {
@@ -129,15 +129,21 @@ public class pintarManager {
      */
     public void addPintarInstruccion(String owner, String colorName, int posX, int posXEnd, int posY, int posYEnd) throws InputsVaciosException {
         if ((newPaintS.findIsntruccionsP(owner) != null) && colorsS.findColorMaker(owner, colorName) != null) {
-            if (newPaintS.findIsntruccionsP(owner).getOwner().getItSize().isReachableDimension(posX, posY) && (posXEnd >= DefaultValue.inicioDimension) && (posYEnd < DefaultValue.inicioDimension)) {
+            if (newPaintS.findIsntruccionsP(owner).getOwner().getItSize().isReachableDimension(posX, posY) && (posXEnd < DefaultValue.INICIO_DIMENSION) && (posYEnd < DefaultValue.INICIO_DIMENSION)) {
+                if (newPaintS.findIsntruccionsP(owner).getOwner().getItSize().isReachableDimension(posX) && newPaintS.findIsntruccionsP(owner).getOwner().getItSize().isReachableDimension(posY)) {
+                    newPaintS.findIsntruccionsP(owner).addPaint(new paint(colorsS.findColorMaker(owner, colorName), posX, posY));
+                } else {
+                    throw new InputsVaciosException("Grow rank >>" + posX + "," + posY + "<<");
+                }
+            } else if (newPaintS.findIsntruccionsP(owner).getOwner().getItSize().isReachableDimension(posX, posY) && (posXEnd >= DefaultValue.INICIO_DIMENSION) && (posYEnd < DefaultValue.INICIO_DIMENSION)) {
                 if (newPaintS.findIsntruccionsP(owner).getOwner().getItSize().isReachableDimension(posXEnd)) {
-                    newPaintS.findIsntruccionsP(owner).addPaint(new paint(colorsS.findColorMaker(owner, colorName), posX, posXEnd, posY, DefaultValue.noInicioDimension));
+                    newPaintS.findIsntruccionsP(owner).addPaint(new paint(colorsS.findColorMaker(owner, colorName), posX, posXEnd, posY, DefaultValue.INVALID_CL_CODE));
                 } else {
                     throw new InputsVaciosException("Grow rank >>" + posX + "," + posXEnd + "<<");
                 }
-            } else if (newPaintS.findIsntruccionsP(owner).getOwner().getItSize().isReachableDimension(posX, posY) && (posYEnd >= DefaultValue.inicioDimension) && (posXEnd < DefaultValue.inicioDimension)) {
+            } else if (newPaintS.findIsntruccionsP(owner).getOwner().getItSize().isReachableDimension(posX, posY) && (posYEnd >= DefaultValue.INICIO_DIMENSION) && (posXEnd < DefaultValue.INICIO_DIMENSION)) {
                 if (newPaintS.findIsntruccionsP(owner).getOwner().getItSize().isReachableDimension(posYEnd)) {
-                    newPaintS.findIsntruccionsP(owner).addPaint(new paint(colorsS.findColorMaker(owner, colorName), posX, DefaultValue.noInicioDimension, posY, posYEnd));
+                    newPaintS.findIsntruccionsP(owner).addPaint(new paint(colorsS.findColorMaker(owner, colorName), posX, DefaultValue.INVALID_CL_CODE, posY, posYEnd));
                 } else {
                     throw new InputsVaciosException("Grow rank >>" + posY + "," + posYEnd + "<<");
                 }
@@ -188,5 +194,4 @@ public class pintarManager {
             throw new InputsVaciosException("Pintar instruction imposible to add");
         }
     }
-
 }

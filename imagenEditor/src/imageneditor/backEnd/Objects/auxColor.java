@@ -29,9 +29,9 @@ public class auxColor {
     public auxColor(String name, String hexa) {
         this.name = name;
         this.hexa = hexa;
-        this.red = DefaultValue.noInicioDimension;
-        this.green = DefaultValue.noInicioDimension;
-        this.blue = DefaultValue.noInicioDimension;
+        this.red = DefaultValue.NO_INICIO_DIMENSION;
+        this.green = DefaultValue.NO_INICIO_DIMENSION;
+        this.blue = DefaultValue.NO_INICIO_DIMENSION;
     }
 
     public String getName() {

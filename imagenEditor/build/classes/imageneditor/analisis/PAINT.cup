@@ -4,14 +4,21 @@ import java_cup.runtime.*;
 import imageneditor.DefaultValue;
 import imageneditor.objectsManager.pintarManager;
 import imageneditor.exceptions.InputsVaciosException;
+import imageneditor.backEnd.AuxObjects.*;
+import java.util.LinkedList;
 
 parser code {:
 
+	LinkedList<auxVar> listVar = new LinkedList<>();
+	LinkedList<AuxPaint> listPaintVar = new LinkedList<>();
+
 	pintarManager newPaintM;
-	int posX =DefaultValue.noInicioDimension;
-	int posXint = DefaultValue.noInicioDimension;
-	int posY =DefaultValue.noInicioDimension;
-	int posYint = DefaultValue.noInicioDimension;
+	int posX 	= DefaultValue.NO_INICIO_DIMENSION;
+	int posXint = DefaultValue.NO_INICIO_DIMENSION;
+	int posY 	= DefaultValue.NO_INICIO_DIMENSION;
+	int posYint = DefaultValue.NO_INICIO_DIMENSION;
+
+
 
 	public paint(Lexer lex, pintarManager pntIn){
 		super(lex);
@@ -19,7 +26,7 @@ parser code {:
 	}
 
 	private void setPosX(int xPnt) throws InputsVaciosException {
-		if (posX == DefaultValue.noInicioDimension) {
+		if (posX == DefaultValue.NO_INICIO_DIMENSION) {
 			posX = xPnt;
 		} else {
 			throw new InputsVaciosException("Posicion X " + xPnt + " can't set");
@@ -27,7 +34,7 @@ parser code {:
 	}
 
 	private void setPosXint(int xPnt) throws InputsVaciosException {
-		if (posXint == DefaultValue.noInicioDimension) {
+		if (posXint == DefaultValue.NO_INICIO_DIMENSION) {
 			posXint = xPnt;
 		} else {
 			throw new InputsVaciosException("Posicion X " + xPnt + " can't set");
@@ -35,7 +42,7 @@ parser code {:
 	}
 
 	private void setPosY(int yPnt) throws InputsVaciosException {
-		if (posY == DefaultValue.noInicioDimension) {
+		if (posY == DefaultValue.NO_INICIO_DIMENSION) {
 			posY = yPnt;
 		} else {
 			throw new InputsVaciosException("Posicion X " + yPnt + " can't set");
@@ -43,25 +50,23 @@ parser code {:
 	}
 
 	private void setPosYint(int yPnt) throws InputsVaciosException {
-		if (posYint == DefaultValue.noInicioDimension) {
+		if (posYint == DefaultValue.NO_INICIO_DIMENSION) {
 			posYint = yPnt;
 		} else {
 			throw new InputsVaciosException("Posicion X " + yPnt + " can't set");
 		}
 	}
 
-	private void setPintarCom() throws InputsVaciosException{
-		if ((posX != DefaultValue.noInicioDimension) && (posXint == DefaultValue.noInicioDimension) && (posY != DefaultValue.noInicioDimension) && (posYint == DefaultValue.noInicioDimension)) {
-			
-		} else if ((posX != DefaultValue.noInicioDimension) && (posXint != DefaultValue.noInicioDimension) && (posY != DefaultValue.noInicioDimension) && (posYint == DefaultValue.noInicioDimension)) {
-			
-		} else if ((posX != DefaultValue.noInicioDimension) && (posXint == DefaultValue.noInicioDimension) && (posY != DefaultValue.noInicioDimension) && (posYint != DefaultValue.noInicioDimension)) {
-			
-		} else if ((posX != DefaultValue.noInicioDimension) && (posXint != DefaultValue.noInicioDimension) && (posY != DefaultValue.noInicioDimension) && (posYint != DefaultValue.noInicioDimension)) {
-			
-		} else {
-			throw new InputsVaciosException("Error setting pintar command");
+	private void addInstruccion(String owner) throws InputsVaciosException {
+		newPaintM.addInstruccion(owner);
+		for (int i = 0; i< listVar.size() ; i++) {
+			newPaintM.addVariableToinstruccion(owner, listVar.get(i).getName());
+			newPaintM.changeValVariable(listVar.get(i).getName(),listVar.get(i).getValue());
 		}
+		for (int j = 0; j < listPaintVar.size() ; j++ ) {
+			newPaintM.addPintarInstruccion(owner, listPaintVar.get(j).getName(), listPaintVar.get(j).getPosX() , listPaintVar.get(j).getPosXemd(), listPaintVar.get(j).getPosY() , listPaintVar.get(j).getPosYemd());
+		}
+		clearAll();
 	}
 
 	private String valorSuma(String val1, String val2){
@@ -78,6 +83,19 @@ parser code {:
 		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<");	 
 		System.out.println(message);
 		System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+	}
+
+	private void clearPosXY(){
+		posX 	= DefaultValue.NO_INICIO_DIMENSION;
+		posXint = DefaultValue.NO_INICIO_DIMENSION;
+		posY 	= DefaultValue.NO_INICIO_DIMENSION;
+		posYint = DefaultValue.NO_INICIO_DIMENSION;
+	}
+
+	private void clearAll(){
+		listVar.clear();
+		listPaintVar.clear();
+		clearPosXY();
 	}
 
 :}
@@ -100,25 +118,28 @@ PAINT		::= VARIABLES INSTRUCCIONS PAINT
 
 VARIABLES	::= Vars LlaveAbierta SET_VARIABLE LlaveCerrada;
 
-SET_VARIABLE	::= NewVar DATA PuntoYComa;
+SET_VARIABLE	::= NewVar DATA PuntoYComa SET_VARIABLE
+					| NewVar DATA PuntoYComa	
+					| error:e {: System.out.println("error: "+e);:}
+					;
 
 DATA		::= NEW_VAR Coma DATA
-//				| Identificador:e1 Igual MATH_OP:e2 Coma DATA
 				| NEW_VAR
-//				| Identificador:e1 Igual MATH_OP:e2
 				;
 
-NEW_VAR		::= Identificador:e 																			{: newPaintM.addVariable(e); :}
-				| Identificador:e1 Igual MATH_OP:e2 														{: newPaintM.addVariable(e1, Integer.parseInt(e2)); :}
+NEW_VAR		::= Identificador:e 								{: newPaintM.addVariable(e); :}
+				| Identificador:e1 Igual MATH_OP:e2 			{: newPaintM.addVariable(e1, Integer.parseInt(e2)); :}
 				;
 
-MATH_OP		::= MATH_OP:e1 Mas MATH_OP:e2 																	{: RESULT = valorSuma(e1, e2); :}
-				| MATH_OP:e1 Menos MATH_OP:e2 																{: RESULT = valorResta(e1, e2); :}
-				| Identificador:e 																			{: RESULT = String.valueOf(newPaintM.varValue(e)); :}
-				| Entero:e 																					{: RESULT = e; :}
+MATH_OP		::= MATH_OP:e1 Mas MATH_OP:e2 						{: RESULT = valorSuma(e1, e2); :}
+				| MATH_OP:e1 Menos MATH_OP:e2 					{: RESULT = valorResta(e1, e2); :}
+				| Identificador:e 								{: RESULT = String.valueOf(newPaintM.varValue(e)); :}
+				| Entero:e 										{: RESULT = e; :}
 				;
 
-INSTRUCCIONS	::= Instrucciones ParAbierto Identificador ParCerrado LlaveAbierta INT_BODY LlaveCerrada;
+INSTRUCCIONS	::= Instrucciones ParAbierto Identificador:e ParCerrado LlaveAbierta INT_BODY LlaveCerrada {: addInstruccion(e); :} 
+				| error:e 										{: System.out.println("error: "+e);:}
+				;
 
 INT_BODY	::= VAR_VALUE INT_BODY
 				| PAINT_COM INT_BODY
@@ -126,14 +147,14 @@ INT_BODY	::= VAR_VALUE INT_BODY
 				| PAINT_COM
 				;
 
-VAR_VALUE	::= Identificador:e1 Igual MATH_OP:e2 PuntoYComa {: newPaintM.changeValVariable(e1, Integer.parseInt(e2)); :} ;
+VAR_VALUE	::= Identificador:e1 Igual MATH_OP:e2 PuntoYComa 	{: newPaintM.changeValVariable(e1, Integer.parseInt(e2)); :} ;
 
-PAINT_COM	::= Pintar ParAbierto Identificador:e1 Coma POS_X Coma POS_Y ParCerrado PuntoYComa;
+PAINT_COM	::= Pintar ParAbierto Identificador:e Coma POS_X Coma POS_Y ParCerrado PuntoYComa {: listPaintVar.add(new AuxPaint(e, posX, posXint, posY, posYint)); clearPosXY(); :};
 
-POS_X		::= MATH_OP:e
-				| MATH_OP:e1 Intervalo MATH_OP:e2
+POS_X		::= MATH_OP:e 										{: setPosX(Integer.parseInt(e)); :}
+				| MATH_OP:e1 Intervalo MATH_OP:e2 				{: setPosX(Integer.parseInt(e1)); setPosXint(Integer.parseInt(e2)); :}
 				;
 
-POS_Y		::= MATH_OP:e
-				| MATH_OP:e1 Intervalo MATH_OP:e2
+POS_Y		::= MATH_OP:e 										{: setPosY(Integer.parseInt(e)); :}
+				| MATH_OP:e1 Intervalo MATH_OP:e2 				{: setPosY(Integer.parseInt(e1)); setPosYint(Integer.parseInt(e2)); :}
 				;

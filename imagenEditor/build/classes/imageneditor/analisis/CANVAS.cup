@@ -11,12 +11,12 @@ parser code {:
 	String id = "";
 	String name = "";
 	String type = "";
-	int red = DefaultValue.noInicioDimension;
-	int blue = DefaultValue.noInicioDimension;
-	int green = DefaultValue.noInicioDimension;
+	int red = DefaultValue.INVALID_CL_CODE;
+	int blue = DefaultValue.INVALID_CL_CODE;
+	int green = DefaultValue.INVALID_CL_CODE;
 	String hexaC = "";
-	int cuadros = DefaultValue.noInicioDimension;
-	int dimesion = DefaultValue.noInicioDimension;
+	int cuadros = DefaultValue.NO_INICIO_DIMENSION;
+	int dimesion = DefaultValue.NO_INICIO_DIMENSION;
 
 
 	public canvas(Lexer lex, canvasManager canvasM){
@@ -49,7 +49,7 @@ parser code {:
 	}
 
 	private void setCuadros(int CuadroCl) throws InputsVaciosException {
-		if (cuadros == DefaultValue.noInicioDimension) {
+		if (cuadros == DefaultValue.NO_INICIO_DIMENSION) {
 			cuadros = CuadroCl;
 		} else {
 			throw new InputsVaciosException("Cuadro parameter " + CuadroCl + " can't set");
@@ -57,7 +57,7 @@ parser code {:
 	}
 
 	private void setDimension(int DimensionCl) throws InputsVaciosException {
-		if (dimesion == DefaultValue.noInicioDimension) {
+		if (dimesion == DefaultValue.NO_INICIO_DIMENSION) {
 			dimesion = DimensionCl;
 		} else {
 			throw new InputsVaciosException("Dimension parameter " + DimensionCl + " can't set");
@@ -65,7 +65,7 @@ parser code {:
 	}
 
 	private void setRedCode(int RedCl) throws InputsVaciosException {
-		if ((red == DefaultValue.noInicioDimension) && (hexaC.equals(""))) {
+		if ((red == DefaultValue.INVALID_CL_CODE) && (hexaC.equals(""))) {
 			red = RedCl;
 		} else {
 			throw new InputsVaciosException("Red code " + RedCl + " can't set");
@@ -73,7 +73,7 @@ parser code {:
 	}
 
 	private void setBlueCode(int BlueCl) throws InputsVaciosException {
-		if ((blue == DefaultValue.noInicioDimension) && (hexaC.equals(""))) {
+		if ((blue == DefaultValue.INVALID_CL_CODE) && (hexaC.equals(""))) {
 			blue = BlueCl;
 		} else {
 			throw new InputsVaciosException("Red code " + BlueCl + " can't set");
@@ -81,7 +81,7 @@ parser code {:
 	}
 
 	private void setGreenCode(int GreenCl) throws InputsVaciosException {
-		if ((green == DefaultValue.noInicioDimension) && (hexaC.equals(""))) {
+		if ((green == DefaultValue.INVALID_CL_CODE) && (hexaC.equals(""))) {
 			green = GreenCl;
 		} else {
 			throw new InputsVaciosException("Red code " + GreenCl + " can't set");
@@ -89,7 +89,7 @@ parser code {:
 	}
 
 	private void setHexa(String hexaCd) throws InputsVaciosException{
-		if (hexaC.equals("") && (red == DefaultValue.noInicioDimension) && (blue == DefaultValue.noInicioDimension) && (green == DefaultValue.noInicioDimension)) {
+		if (hexaC.equals("") && (red == DefaultValue.INVALID_CL_CODE) && (blue == DefaultValue.INVALID_CL_CODE) && (green == DefaultValue.INVALID_CL_CODE)) {
 			hexaC = hexaCd;
 		} else {
 			throw new InputsVaciosException("Hexa code " + hexaCd + " can't set");
@@ -97,15 +97,15 @@ parser code {:
 	}
 
 	private void setlienzo(String idLienzo) throws InputsVaciosException {
-		if (!name.equals("") && !type.equals("") && (((red != DefaultValue.noInicioDimension) && 
-			(blue != DefaultValue.noInicioDimension) && (green != DefaultValue.noInicioDimension)&& 
-			(hexaC.equals(""))) || ((red == DefaultValue.noInicioDimension) && (blue == DefaultValue.noInicioDimension) 
-			&& (green == DefaultValue.noInicioDimension)&& (!hexaC.equals("")))) && 
-			(cuadros != DefaultValue.noInicioDimension) && (dimesion != DefaultValue.noInicioDimension)) {
+		if (!name.equals("") && !type.equals("") && (((red != DefaultValue.INVALID_CL_CODE) && 
+			(blue != DefaultValue.INVALID_CL_CODE) && (green != DefaultValue.INVALID_CL_CODE)&& 
+			(hexaC.equals(""))) || ((red == DefaultValue.INVALID_CL_CODE) && (blue == DefaultValue.INVALID_CL_CODE) 
+			&& (green == DefaultValue.INVALID_CL_CODE)&& (!hexaC.equals("")))) && 
+			(cuadros != DefaultValue.NO_INICIO_DIMENSION) && (dimesion != DefaultValue.NO_INICIO_DIMENSION)) {
 			
-			if (((red != DefaultValue.noInicioDimension) && (blue != DefaultValue.noInicioDimension) && (green != DefaultValue.noInicioDimension)&& (hexaC.equals("")))) {
+			if (((red != DefaultValue.INVALID_CL_CODE) && (blue != DefaultValue.INVALID_CL_CODE) && (green != DefaultValue.INVALID_CL_CODE)&& (hexaC.equals("")))) {
 				newCanvasM.addLienzo(idLienzo, name, type, red, green, blue, cuadros, dimesion);
-			} else if (((red == DefaultValue.noInicioDimension) && (blue == DefaultValue.noInicioDimension) && (green == DefaultValue.noInicioDimension)&& (!hexaC.equals("")))) {
+			} else if (((red == DefaultValue.INVALID_CL_CODE) && (blue == DefaultValue.INVALID_CL_CODE) && (green == DefaultValue.INVALID_CL_CODE)&& (!hexaC.equals("")))) {
 				newCanvasM.addLienzo(idLienzo, name, type, hexaC, cuadros, dimesion);
 			}
 		} else {
@@ -118,12 +118,12 @@ parser code {:
 		id = "";
 		name = "";
 		type = "";
-		red = DefaultValue.noInicioDimension;
-		blue = DefaultValue.noInicioDimension;
-		green = DefaultValue.noInicioDimension;
+		red = DefaultValue.INVALID_CL_CODE;
+		blue = DefaultValue.INVALID_CL_CODE;
+		green = DefaultValue.INVALID_CL_CODE;
 		hexaC = "";
-		cuadros = DefaultValue.noInicioDimension;
-		dimesion = DefaultValue.noInicioDimension;
+		cuadros = DefaultValue.NO_INICIO_DIMENSION;
+		dimesion = DefaultValue.NO_INICIO_DIMENSION;
 
 	}
 
@@ -140,13 +140,15 @@ non terminal String CANVAS, CUERPO, CARACTERISTICAS, NOMBRE, TIPO, FONDO, TAMANI
 
 start with CANVAS;
 
-CANVAS		::=	CorAbierto Lienzos DosPuntos CorAbierto CUERPO CorCerrado CorCerrado;
+CANVAS		::=	CorAbierto Lienzos DosPuntos CorAbierto CUERPO CorCerrado CorCerrado
+				| error:e {: System.out.println("error: "+e);:};
 
 CUERPO		::= LIENZO Coma CUERPO
 				| LIENZO
 				;
-
-LIENZO 		::= Identificador:e DosPuntos CorAbierto CARACTERISTICAS CorCerrado {: setlienzo(e); :};
+LIENZO 		::= Identificador:e DosPuntos CorAbierto CARACTERISTICAS CorCerrado {: setlienzo(e); :}
+				
+				;
 
 CARACTERISTICAS	::= NOMBRE Coma CARACTERISTICAS
 					| TIPO Coma CARACTERISTICAS

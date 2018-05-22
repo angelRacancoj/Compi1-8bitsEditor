@@ -9,6 +9,8 @@ import java_cup.runtime.*;
 import imageneditor.DefaultValue;
 import imageneditor.objectsManager.pintarManager;
 import imageneditor.exceptions.InputsVaciosException;
+import imageneditor.backEnd.AuxObjects.*;
+import java.util.LinkedList;
 import java_cup.runtime.XMLElement;
 
 /** CUP v0.11b 20160615 (GIT 4ac7450) generated parser.
@@ -34,14 +36,15 @@ public class paint extends java_cup.runtime.lr_parser {
   /** Production table. */
   protected static final short _production_table[][] = 
     unpackFromStrings(new String[] {
-    "\000\030\000\002\002\004\000\002\002\005\000\002\002" +
-    "\003\000\002\003\006\000\002\005\005\000\002\006\005" +
-    "\000\002\006\003\000\002\015\003\000\002\015\005\000" +
-    "\002\007\005\000\002\007\005\000\002\007\003\000\002" +
-    "\007\003\000\002\004\011\000\002\010\004\000\002\010" +
-    "\004\000\002\010\003\000\002\010\003\000\002\014\006" +
-    "\000\002\013\013\000\002\011\003\000\002\011\005\000" +
-    "\002\012\003\000\002\012\005" });
+    "\000\033\000\002\002\004\000\002\002\005\000\002\002" +
+    "\003\000\002\003\006\000\002\005\006\000\002\005\005" +
+    "\000\002\005\003\000\002\006\005\000\002\006\003\000" +
+    "\002\015\003\000\002\015\005\000\002\007\005\000\002" +
+    "\007\005\000\002\007\003\000\002\007\003\000\002\004" +
+    "\011\000\002\004\003\000\002\010\004\000\002\010\004" +
+    "\000\002\010\003\000\002\010\003\000\002\014\006\000" +
+    "\002\013\013\000\002\011\003\000\002\011\005\000\002" +
+    "\012\003\000\002\012\005" });
 
   /** Access to production table. */
   public short[][] production_table() {return _production_table;}
@@ -49,42 +52,45 @@ public class paint extends java_cup.runtime.lr_parser {
   /** Parse-action table. */
   protected static final short[][] _action_table = 
     unpackFromStrings(new String[] {
-    "\000\070\000\006\005\005\044\006\001\002\000\004\002" +
-    "\uffff\001\002\000\004\035\057\001\002\000\004\031\014" +
-    "\001\002\000\004\044\006\001\002\000\004\002\011\001" +
-    "\002\000\004\002\001\001\002\000\006\005\005\044\006" +
-    "\001\002\000\004\002\000\001\002\000\004\042\015\001" +
-    "\002\000\004\032\016\001\002\000\004\035\017\001\002" +
-    "\000\006\004\020\042\024\001\002\000\004\031\041\001" +
-    "\002\000\004\036\040\001\002\000\010\004\020\036\ufff0" +
-    "\042\024\001\002\000\010\004\020\036\ufff1\042\024\001" +
-    "\002\000\004\022\025\001\002\000\006\042\027\045\030" +
-    "\001\002\000\010\023\032\024\031\030\033\001\002\000" +
-    "\016\023\ufff6\024\ufff6\025\ufff6\026\ufff6\030\ufff6\032\ufff6" +
-    "\001\002\000\016\023\ufff5\024\ufff5\025\ufff5\026\ufff5\030" +
-    "\ufff5\032\ufff5\001\002\000\006\042\027\045\030\001\002" +
-    "\000\006\042\027\045\030\001\002\000\010\004\uffef\036" +
-    "\uffef\042\uffef\001\002\000\016\023\ufff7\024\ufff7\025\ufff7" +
-    "\026\ufff7\030\ufff7\032\ufff7\001\002\000\016\023\ufff8\024" +
-    "\ufff8\025\ufff8\026\ufff8\030\ufff8\032\ufff8\001\002\000\004" +
-    "\036\ufff3\001\002\000\004\036\ufff2\001\002\000\010\002" +
-    "\ufff4\005\ufff4\044\ufff4\001\002\000\004\042\042\001\002" +
-    "\000\004\025\043\001\002\000\006\042\027\045\030\001" +
-    "\002\000\004\025\050\001\002\000\012\023\032\024\031" +
-    "\025\uffed\026\046\001\002\000\006\042\027\045\030\001" +
-    "\002\000\010\023\032\024\031\025\uffec\001\002\000\006" +
-    "\042\027\045\030\001\002\000\004\032\055\001\002\000" +
-    "\012\023\032\024\031\026\053\032\uffeb\001\002\000\006" +
-    "\042\027\045\030\001\002\000\010\023\032\024\031\032" +
-    "\uffea\001\002\000\004\030\056\001\002\000\010\004\uffee" +
-    "\036\uffee\042\uffee\001\002\000\004\043\061\001\002\000" +
-    "\004\036\072\001\002\000\004\042\064\001\002\000\004" +
-    "\030\071\001\002\000\006\025\067\030\ufffb\001\002\000" +
-    "\010\022\065\025\ufffa\030\ufffa\001\002\000\006\042\027" +
-    "\045\030\001\002\000\012\023\032\024\031\025\ufff9\030" +
-    "\ufff9\001\002\000\004\042\064\001\002\000\004\030\ufffc" +
-    "\001\002\000\004\036\ufffd\001\002\000\004\044\ufffe\001" +
-    "\002" });
+    "\000\073\000\010\003\004\005\006\044\007\001\002\000" +
+    "\012\002\ufff1\003\ufff1\005\ufff1\044\ufff1\001\002\000\004" +
+    "\002\uffff\001\002\000\004\035\060\001\002\000\004\031" +
+    "\015\001\002\000\006\003\004\044\007\001\002\000\004" +
+    "\002\012\001\002\000\004\002\001\001\002\000\010\003" +
+    "\004\005\006\044\007\001\002\000\004\002\000\001\002" +
+    "\000\004\042\016\001\002\000\004\032\017\001\002\000" +
+    "\004\035\020\001\002\000\006\004\021\042\025\001\002" +
+    "\000\004\031\042\001\002\000\004\036\041\001\002\000" +
+    "\010\004\021\036\uffed\042\025\001\002\000\010\004\021" +
+    "\036\uffee\042\025\001\002\000\004\022\026\001\002\000" +
+    "\006\042\030\045\031\001\002\000\010\023\033\024\032" +
+    "\030\034\001\002\000\016\023\ufff4\024\ufff4\025\ufff4\026" +
+    "\ufff4\030\ufff4\032\ufff4\001\002\000\016\023\ufff3\024\ufff3" +
+    "\025\ufff3\026\ufff3\030\ufff3\032\ufff3\001\002\000\006\042" +
+    "\030\045\031\001\002\000\006\042\030\045\031\001\002" +
+    "\000\010\004\uffec\036\uffec\042\uffec\001\002\000\016\023" +
+    "\ufff5\024\ufff5\025\ufff5\026\ufff5\030\ufff5\032\ufff5\001\002" +
+    "\000\016\023\ufff6\024\ufff6\025\ufff6\026\ufff6\030\ufff6\032" +
+    "\ufff6\001\002\000\004\036\ufff0\001\002\000\004\036\uffef" +
+    "\001\002\000\012\002\ufff2\003\ufff2\005\ufff2\044\ufff2\001" +
+    "\002\000\004\042\043\001\002\000\004\025\044\001\002" +
+    "\000\006\042\030\045\031\001\002\000\004\025\051\001" +
+    "\002\000\012\023\033\024\032\025\uffea\026\047\001\002" +
+    "\000\006\042\030\045\031\001\002\000\010\023\033\024" +
+    "\032\025\uffe9\001\002\000\006\042\030\045\031\001\002" +
+    "\000\004\032\056\001\002\000\012\023\033\024\032\026" +
+    "\054\032\uffe8\001\002\000\006\042\030\045\031\001\002" +
+    "\000\010\023\033\024\032\032\uffe7\001\002\000\004\030" +
+    "\057\001\002\000\010\004\uffeb\036\uffeb\042\uffeb\001\002" +
+    "\000\006\003\061\043\063\001\002\000\004\036\ufffb\001" +
+    "\002\000\004\036\075\001\002\000\004\042\066\001\002" +
+    "\000\004\030\073\001\002\000\006\025\071\030\ufff9\001" +
+    "\002\000\010\022\067\025\ufff8\030\ufff8\001\002\000\006" +
+    "\042\030\045\031\001\002\000\012\023\033\024\032\025" +
+    "\ufff7\030\ufff7\001\002\000\004\042\066\001\002\000\004" +
+    "\030\ufffa\001\002\000\010\003\061\036\ufffc\043\063\001" +
+    "\002\000\004\036\ufffd\001\002\000\006\003\ufffe\044\ufffe" +
+    "\001\002" });
 
   /** Access to parse-action table. */
   public short[][] action_table() {return _action_table;}
@@ -92,29 +98,30 @@ public class paint extends java_cup.runtime.lr_parser {
   /** <code>reduce_goto</code> table. */
   protected static final short[][] _reduce_table = 
     unpackFromStrings(new String[] {
-    "\000\070\000\010\002\007\003\006\004\003\001\001\000" +
-    "\002\001\001\000\002\001\001\000\002\001\001\000\004" +
-    "\004\011\001\001\000\002\001\001\000\002\001\001\000" +
-    "\010\002\012\003\006\004\003\001\001\000\002\001\001" +
+    "\000\073\000\010\002\010\003\007\004\004\001\001\000" +
+    "\002\001\001\000\002\001\001\000\002\001\001\000\002" +
+    "\001\001\000\004\004\012\001\001\000\002\001\001\000" +
+    "\002\001\001\000\010\002\013\003\007\004\004\001\001" +
     "\000\002\001\001\000\002\001\001\000\002\001\001\000" +
-    "\010\010\020\013\021\014\022\001\001\000\002\001\001" +
-    "\000\002\001\001\000\010\010\036\013\021\014\022\001" +
-    "\001\000\010\010\035\013\021\014\022\001\001\000\002" +
-    "\001\001\000\004\007\025\001\001\000\002\001\001\000" +
-    "\002\001\001\000\002\001\001\000\004\007\034\001\001" +
-    "\000\004\007\033\001\001\000\002\001\001\000\002\001" +
+    "\002\001\001\000\010\010\021\013\022\014\023\001\001" +
+    "\000\002\001\001\000\002\001\001\000\010\010\037\013" +
+    "\022\014\023\001\001\000\010\010\036\013\022\014\023" +
+    "\001\001\000\002\001\001\000\004\007\026\001\001\000" +
+    "\002\001\001\000\002\001\001\000\002\001\001\000\004" +
+    "\007\035\001\001\000\004\007\034\001\001\000\002\001" +
     "\001\000\002\001\001\000\002\001\001\000\002\001\001" +
     "\000\002\001\001\000\002\001\001\000\002\001\001\000" +
-    "\006\007\044\011\043\001\001\000\002\001\001\000\002" +
-    "\001\001\000\004\007\046\001\001\000\002\001\001\000" +
-    "\006\007\051\012\050\001\001\000\002\001\001\000\002" +
-    "\001\001\000\004\007\053\001\001\000\002\001\001\000" +
-    "\002\001\001\000\002\001\001\000\004\005\057\001\001" +
-    "\000\002\001\001\000\006\006\061\015\062\001\001\000" +
+    "\002\001\001\000\006\007\045\011\044\001\001\000\002" +
+    "\001\001\000\002\001\001\000\004\007\047\001\001\000" +
+    "\002\001\001\000\006\007\052\012\051\001\001\000\002" +
+    "\001\001\000\002\001\001\000\004\007\054\001\001\000" +
     "\002\001\001\000\002\001\001\000\002\001\001\000\004" +
-    "\007\065\001\001\000\002\001\001\000\006\006\067\015" +
-    "\062\001\001\000\002\001\001\000\002\001\001\000\002" +
-    "\001\001" });
+    "\005\061\001\001\000\002\001\001\000\002\001\001\000" +
+    "\006\006\063\015\064\001\001\000\002\001\001\000\002" +
+    "\001\001\000\002\001\001\000\004\007\067\001\001\000" +
+    "\002\001\001\000\006\006\071\015\064\001\001\000\002" +
+    "\001\001\000\004\005\073\001\001\000\002\001\001\000" +
+    "\002\001\001" });
 
   /** Access to <code>reduce_goto</code> table. */
   public short[][] reduce_table() {return _reduce_table;}
@@ -154,11 +161,16 @@ public class paint extends java_cup.runtime.lr_parser {
 
 
 
+	LinkedList<auxVar> listVar = new LinkedList<>();
+	LinkedList<AuxPaint> listPaintVar = new LinkedList<>();
+
 	pintarManager newPaintM;
-	int posX =DefaultValue.noInicioDimension;
-	int posXint = DefaultValue.noInicioDimension;
-	int posY =DefaultValue.noInicioDimension;
-	int posYint = DefaultValue.noInicioDimension;
+	int posX 	= DefaultValue.NO_INICIO_DIMENSION;
+	int posXint = DefaultValue.NO_INICIO_DIMENSION;
+	int posY 	= DefaultValue.NO_INICIO_DIMENSION;
+	int posYint = DefaultValue.NO_INICIO_DIMENSION;
+
+
 
 	public paint(Lexer lex, pintarManager pntIn){
 		super(lex);
@@ -166,7 +178,7 @@ public class paint extends java_cup.runtime.lr_parser {
 	}
 
 	private void setPosX(int xPnt) throws InputsVaciosException {
-		if (posX == DefaultValue.noInicioDimension) {
+		if (posX == DefaultValue.NO_INICIO_DIMENSION) {
 			posX = xPnt;
 		} else {
 			throw new InputsVaciosException("Posicion X " + xPnt + " can't set");
@@ -174,7 +186,7 @@ public class paint extends java_cup.runtime.lr_parser {
 	}
 
 	private void setPosXint(int xPnt) throws InputsVaciosException {
-		if (posXint == DefaultValue.noInicioDimension) {
+		if (posXint == DefaultValue.NO_INICIO_DIMENSION) {
 			posXint = xPnt;
 		} else {
 			throw new InputsVaciosException("Posicion X " + xPnt + " can't set");
@@ -182,7 +194,7 @@ public class paint extends java_cup.runtime.lr_parser {
 	}
 
 	private void setPosY(int yPnt) throws InputsVaciosException {
-		if (posY == DefaultValue.noInicioDimension) {
+		if (posY == DefaultValue.NO_INICIO_DIMENSION) {
 			posY = yPnt;
 		} else {
 			throw new InputsVaciosException("Posicion X " + yPnt + " can't set");
@@ -190,11 +202,23 @@ public class paint extends java_cup.runtime.lr_parser {
 	}
 
 	private void setPosYint(int yPnt) throws InputsVaciosException {
-		if (posYint == DefaultValue.noInicioDimension) {
+		if (posYint == DefaultValue.NO_INICIO_DIMENSION) {
 			posYint = yPnt;
 		} else {
 			throw new InputsVaciosException("Posicion X " + yPnt + " can't set");
 		}
+	}
+
+	private void addInstruccion(String owner) throws InputsVaciosException {
+		newPaintM.addInstruccion(owner);
+		for (int i = 0; i< listVar.size() ; i++) {
+			newPaintM.addVariableToinstruccion(owner, listVar.get(i).getName());
+			newPaintM.changeValVariable(listVar.get(i).getName(),listVar.get(i).getValue());
+		}
+		for (int j = 0; j < listPaintVar.size() ; j++ ) {
+			newPaintM.addPintarInstruccion(owner, listPaintVar.get(j).getName(), listPaintVar.get(j).getPosX() , listPaintVar.get(j).getPosXemd(), listPaintVar.get(j).getPosY() , listPaintVar.get(j).getPosYemd());
+		}
+		clearAll();
 	}
 
 	private String valorSuma(String val1, String val2){
@@ -211,6 +235,19 @@ public class paint extends java_cup.runtime.lr_parser {
 		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<");	 
 		System.out.println(message);
 		System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+	}
+
+	private void clearPosXY(){
+		posX =DefaultValue.NO_INICIO_DIMENSION;
+		posXint = DefaultValue.NO_INICIO_DIMENSION;
+		posY =DefaultValue.NO_INICIO_DIMENSION;
+		posYint = DefaultValue.NO_INICIO_DIMENSION;
+	}
+
+	private void clearAll(){
+		listVar.clear();
+		listPaintVar.clear();
+		clearPosXY();
 	}
 
 
@@ -281,7 +318,16 @@ class CUP$paint$actions {
           return CUP$paint$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 4: // SET_VARIABLE ::= NewVar DATA PuntoYComa 
+          case 4: // SET_VARIABLE ::= NewVar DATA PuntoYComa SET_VARIABLE 
+            {
+              String RESULT =null;
+
+              CUP$paint$result = parser.getSymbolFactory().newSymbol("SET_VARIABLE",3, ((java_cup.runtime.Symbol)CUP$paint$stack.elementAt(CUP$paint$top-3)), ((java_cup.runtime.Symbol)CUP$paint$stack.peek()), RESULT);
+            }
+          return CUP$paint$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 5: // SET_VARIABLE ::= NewVar DATA PuntoYComa 
             {
               String RESULT =null;
 
@@ -290,7 +336,19 @@ class CUP$paint$actions {
           return CUP$paint$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 5: // DATA ::= NEW_VAR Coma DATA 
+          case 6: // SET_VARIABLE ::= error 
+            {
+              String RESULT =null;
+		int eleft = ((java_cup.runtime.Symbol)CUP$paint$stack.peek()).left;
+		int eright = ((java_cup.runtime.Symbol)CUP$paint$stack.peek()).right;
+		Object e = (Object)((java_cup.runtime.Symbol) CUP$paint$stack.peek()).value;
+		 System.out.println("error: "+e);
+              CUP$paint$result = parser.getSymbolFactory().newSymbol("SET_VARIABLE",3, ((java_cup.runtime.Symbol)CUP$paint$stack.peek()), ((java_cup.runtime.Symbol)CUP$paint$stack.peek()), RESULT);
+            }
+          return CUP$paint$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 7: // DATA ::= NEW_VAR Coma DATA 
             {
               String RESULT =null;
 
@@ -299,7 +357,7 @@ class CUP$paint$actions {
           return CUP$paint$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 6: // DATA ::= NEW_VAR 
+          case 8: // DATA ::= NEW_VAR 
             {
               String RESULT =null;
 
@@ -308,7 +366,7 @@ class CUP$paint$actions {
           return CUP$paint$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 7: // NEW_VAR ::= Identificador 
+          case 9: // NEW_VAR ::= Identificador 
             {
               String RESULT =null;
 		int eleft = ((java_cup.runtime.Symbol)CUP$paint$stack.peek()).left;
@@ -320,7 +378,7 @@ class CUP$paint$actions {
           return CUP$paint$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 8: // NEW_VAR ::= Identificador Igual MATH_OP 
+          case 10: // NEW_VAR ::= Identificador Igual MATH_OP 
             {
               String RESULT =null;
 		int e1left = ((java_cup.runtime.Symbol)CUP$paint$stack.elementAt(CUP$paint$top-2)).left;
@@ -335,7 +393,7 @@ class CUP$paint$actions {
           return CUP$paint$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 9: // MATH_OP ::= MATH_OP Mas MATH_OP 
+          case 11: // MATH_OP ::= MATH_OP Mas MATH_OP 
             {
               String RESULT =null;
 		int e1left = ((java_cup.runtime.Symbol)CUP$paint$stack.elementAt(CUP$paint$top-2)).left;
@@ -350,7 +408,7 @@ class CUP$paint$actions {
           return CUP$paint$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 10: // MATH_OP ::= MATH_OP Menos MATH_OP 
+          case 12: // MATH_OP ::= MATH_OP Menos MATH_OP 
             {
               String RESULT =null;
 		int e1left = ((java_cup.runtime.Symbol)CUP$paint$stack.elementAt(CUP$paint$top-2)).left;
@@ -365,7 +423,7 @@ class CUP$paint$actions {
           return CUP$paint$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 11: // MATH_OP ::= Identificador 
+          case 13: // MATH_OP ::= Identificador 
             {
               String RESULT =null;
 		int eleft = ((java_cup.runtime.Symbol)CUP$paint$stack.peek()).left;
@@ -377,7 +435,7 @@ class CUP$paint$actions {
           return CUP$paint$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 12: // MATH_OP ::= Entero 
+          case 14: // MATH_OP ::= Entero 
             {
               String RESULT =null;
 		int eleft = ((java_cup.runtime.Symbol)CUP$paint$stack.peek()).left;
@@ -389,16 +447,31 @@ class CUP$paint$actions {
           return CUP$paint$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 13: // INSTRUCCIONS ::= Instrucciones ParAbierto Identificador ParCerrado LlaveAbierta INT_BODY LlaveCerrada 
+          case 15: // INSTRUCCIONS ::= Instrucciones ParAbierto Identificador ParCerrado LlaveAbierta INT_BODY LlaveCerrada 
             {
               String RESULT =null;
-
+		int eleft = ((java_cup.runtime.Symbol)CUP$paint$stack.elementAt(CUP$paint$top-4)).left;
+		int eright = ((java_cup.runtime.Symbol)CUP$paint$stack.elementAt(CUP$paint$top-4)).right;
+		String e = (String)((java_cup.runtime.Symbol) CUP$paint$stack.elementAt(CUP$paint$top-4)).value;
+		 addInstruccion(e); 
               CUP$paint$result = parser.getSymbolFactory().newSymbol("INSTRUCCIONS",2, ((java_cup.runtime.Symbol)CUP$paint$stack.elementAt(CUP$paint$top-6)), ((java_cup.runtime.Symbol)CUP$paint$stack.peek()), RESULT);
             }
           return CUP$paint$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 14: // INT_BODY ::= VAR_VALUE INT_BODY 
+          case 16: // INSTRUCCIONS ::= error 
+            {
+              String RESULT =null;
+		int eleft = ((java_cup.runtime.Symbol)CUP$paint$stack.peek()).left;
+		int eright = ((java_cup.runtime.Symbol)CUP$paint$stack.peek()).right;
+		Object e = (Object)((java_cup.runtime.Symbol) CUP$paint$stack.peek()).value;
+		 System.out.println("error: "+e);
+              CUP$paint$result = parser.getSymbolFactory().newSymbol("INSTRUCCIONS",2, ((java_cup.runtime.Symbol)CUP$paint$stack.peek()), ((java_cup.runtime.Symbol)CUP$paint$stack.peek()), RESULT);
+            }
+          return CUP$paint$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 17: // INT_BODY ::= VAR_VALUE INT_BODY 
             {
               String RESULT =null;
 
@@ -407,7 +480,7 @@ class CUP$paint$actions {
           return CUP$paint$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 15: // INT_BODY ::= PAINT_COM INT_BODY 
+          case 18: // INT_BODY ::= PAINT_COM INT_BODY 
             {
               String RESULT =null;
 
@@ -416,7 +489,7 @@ class CUP$paint$actions {
           return CUP$paint$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 16: // INT_BODY ::= VAR_VALUE 
+          case 19: // INT_BODY ::= VAR_VALUE 
             {
               String RESULT =null;
 
@@ -425,7 +498,7 @@ class CUP$paint$actions {
           return CUP$paint$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 17: // INT_BODY ::= PAINT_COM 
+          case 20: // INT_BODY ::= PAINT_COM 
             {
               String RESULT =null;
 
@@ -434,7 +507,7 @@ class CUP$paint$actions {
           return CUP$paint$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 18: // VAR_VALUE ::= Identificador Igual MATH_OP PuntoYComa 
+          case 21: // VAR_VALUE ::= Identificador Igual MATH_OP PuntoYComa 
             {
               String RESULT =null;
 		int e1left = ((java_cup.runtime.Symbol)CUP$paint$stack.elementAt(CUP$paint$top-3)).left;
@@ -443,37 +516,37 @@ class CUP$paint$actions {
 		int e2left = ((java_cup.runtime.Symbol)CUP$paint$stack.elementAt(CUP$paint$top-1)).left;
 		int e2right = ((java_cup.runtime.Symbol)CUP$paint$stack.elementAt(CUP$paint$top-1)).right;
 		String e2 = (String)((java_cup.runtime.Symbol) CUP$paint$stack.elementAt(CUP$paint$top-1)).value;
-
+		 newPaintM.changeValVariable(e1, Integer.parseInt(e2)); 
               CUP$paint$result = parser.getSymbolFactory().newSymbol("VAR_VALUE",10, ((java_cup.runtime.Symbol)CUP$paint$stack.elementAt(CUP$paint$top-3)), ((java_cup.runtime.Symbol)CUP$paint$stack.peek()), RESULT);
             }
           return CUP$paint$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 19: // PAINT_COM ::= Pintar ParAbierto Identificador Coma POS_X Coma POS_Y ParCerrado PuntoYComa 
+          case 22: // PAINT_COM ::= Pintar ParAbierto Identificador Coma POS_X Coma POS_Y ParCerrado PuntoYComa 
             {
               String RESULT =null;
-		int e1left = ((java_cup.runtime.Symbol)CUP$paint$stack.elementAt(CUP$paint$top-6)).left;
-		int e1right = ((java_cup.runtime.Symbol)CUP$paint$stack.elementAt(CUP$paint$top-6)).right;
-		String e1 = (String)((java_cup.runtime.Symbol) CUP$paint$stack.elementAt(CUP$paint$top-6)).value;
-
+		int eleft = ((java_cup.runtime.Symbol)CUP$paint$stack.elementAt(CUP$paint$top-6)).left;
+		int eright = ((java_cup.runtime.Symbol)CUP$paint$stack.elementAt(CUP$paint$top-6)).right;
+		String e = (String)((java_cup.runtime.Symbol) CUP$paint$stack.elementAt(CUP$paint$top-6)).value;
+		 listPaintVar.add(new AuxPaint(e, posX, posXint, posY, posYint)); clearPosXY(); 
               CUP$paint$result = parser.getSymbolFactory().newSymbol("PAINT_COM",9, ((java_cup.runtime.Symbol)CUP$paint$stack.elementAt(CUP$paint$top-8)), ((java_cup.runtime.Symbol)CUP$paint$stack.peek()), RESULT);
             }
           return CUP$paint$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 20: // POS_X ::= MATH_OP 
+          case 23: // POS_X ::= MATH_OP 
             {
               String RESULT =null;
 		int eleft = ((java_cup.runtime.Symbol)CUP$paint$stack.peek()).left;
 		int eright = ((java_cup.runtime.Symbol)CUP$paint$stack.peek()).right;
 		String e = (String)((java_cup.runtime.Symbol) CUP$paint$stack.peek()).value;
-
+		 setPosX(Integer.parseInt(e)); 
               CUP$paint$result = parser.getSymbolFactory().newSymbol("POS_X",7, ((java_cup.runtime.Symbol)CUP$paint$stack.peek()), ((java_cup.runtime.Symbol)CUP$paint$stack.peek()), RESULT);
             }
           return CUP$paint$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 21: // POS_X ::= MATH_OP Intervalo MATH_OP 
+          case 24: // POS_X ::= MATH_OP Intervalo MATH_OP 
             {
               String RESULT =null;
 		int e1left = ((java_cup.runtime.Symbol)CUP$paint$stack.elementAt(CUP$paint$top-2)).left;
@@ -482,25 +555,25 @@ class CUP$paint$actions {
 		int e2left = ((java_cup.runtime.Symbol)CUP$paint$stack.peek()).left;
 		int e2right = ((java_cup.runtime.Symbol)CUP$paint$stack.peek()).right;
 		String e2 = (String)((java_cup.runtime.Symbol) CUP$paint$stack.peek()).value;
-
+		 setPosX(Integer.parseInt(e1)); setPosXint(Integer.parseInt(e2)); 
               CUP$paint$result = parser.getSymbolFactory().newSymbol("POS_X",7, ((java_cup.runtime.Symbol)CUP$paint$stack.elementAt(CUP$paint$top-2)), ((java_cup.runtime.Symbol)CUP$paint$stack.peek()), RESULT);
             }
           return CUP$paint$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 22: // POS_Y ::= MATH_OP 
+          case 25: // POS_Y ::= MATH_OP 
             {
               String RESULT =null;
 		int eleft = ((java_cup.runtime.Symbol)CUP$paint$stack.peek()).left;
 		int eright = ((java_cup.runtime.Symbol)CUP$paint$stack.peek()).right;
 		String e = (String)((java_cup.runtime.Symbol) CUP$paint$stack.peek()).value;
-
+		 setPosY(Integer.parseInt(e)); 
               CUP$paint$result = parser.getSymbolFactory().newSymbol("POS_Y",8, ((java_cup.runtime.Symbol)CUP$paint$stack.peek()), ((java_cup.runtime.Symbol)CUP$paint$stack.peek()), RESULT);
             }
           return CUP$paint$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 23: // POS_Y ::= MATH_OP Intervalo MATH_OP 
+          case 26: // POS_Y ::= MATH_OP Intervalo MATH_OP 
             {
               String RESULT =null;
 		int e1left = ((java_cup.runtime.Symbol)CUP$paint$stack.elementAt(CUP$paint$top-2)).left;
@@ -509,7 +582,7 @@ class CUP$paint$actions {
 		int e2left = ((java_cup.runtime.Symbol)CUP$paint$stack.peek()).left;
 		int e2right = ((java_cup.runtime.Symbol)CUP$paint$stack.peek()).right;
 		String e2 = (String)((java_cup.runtime.Symbol) CUP$paint$stack.peek()).value;
-
+		 setPosY(Integer.parseInt(e1)); setPosYint(Integer.parseInt(e2)); 
               CUP$paint$result = parser.getSymbolFactory().newSymbol("POS_Y",8, ((java_cup.runtime.Symbol)CUP$paint$stack.elementAt(CUP$paint$top-2)), ((java_cup.runtime.Symbol)CUP$paint$stack.peek()), RESULT);
             }
           return CUP$paint$result;

@@ -36,12 +36,12 @@ public class colors extends java_cup.runtime.lr_parser {
   /** Production table. */
   protected static final short _production_table[][] = 
     unpackFromStrings(new String[] {
-    "\000\020\000\002\002\004\000\002\002\011\000\002\003" +
-    "\005\000\002\003\003\000\002\007\007\000\002\004\005" +
-    "\000\002\004\003\000\002\010\007\000\002\005\005\000" +
-    "\002\005\003\000\002\006\007\000\002\006\007\000\002" +
-    "\006\007\000\002\006\005\000\002\006\005\000\002\006" +
-    "\005" });
+    "\000\021\000\002\002\004\000\002\002\011\000\002\002" +
+    "\003\000\002\003\005\000\002\003\003\000\002\007\007" +
+    "\000\002\004\005\000\002\004\003\000\002\010\007\000" +
+    "\002\005\005\000\002\005\003\000\002\006\007\000\002" +
+    "\006\007\000\002\006\007\000\002\006\005\000\002\006" +
+    "\005\000\002\006\005" });
 
   /** Access to production table. */
   public short[][] production_table() {return _production_table;}
@@ -49,30 +49,31 @@ public class colors extends java_cup.runtime.lr_parser {
   /** Parse-action table. */
   protected static final short[][] _action_table = 
     unpackFromStrings(new String[] {
-    "\000\055\000\004\033\005\001\002\000\004\002\057\001" +
-    "\002\000\004\006\006\001\002\000\004\027\007\001\002" +
-    "\000\004\033\010\001\002\000\004\042\013\001\002\000" +
-    "\004\034\055\001\002\000\006\025\053\034\ufffe\001\002" +
-    "\000\004\027\014\001\002\000\004\033\015\001\002\000" +
-    "\004\042\017\001\002\000\004\034\052\001\002\000\004" +
-    "\027\023\001\002\000\006\025\021\034\ufffb\001\002\000" +
-    "\004\042\017\001\002\000\004\034\ufffc\001\002\000\004" +
-    "\033\024\001\002\000\012\011\026\014\027\015\031\016" +
-    "\025\001\002\000\004\027\046\001\002\000\004\027\044" +
-    "\001\002\000\004\027\040\001\002\000\004\034\037\001" +
-    "\002\000\004\027\033\001\002\000\004\034\ufff8\001\002" +
-    "\000\004\045\034\001\002\000\006\025\035\034\ufff3\001" +
-    "\002\000\010\014\027\015\031\016\025\001\002\000\004" +
-    "\034\ufff6\001\002\000\006\025\ufffa\034\ufffa\001\002\000" +
-    "\004\045\041\001\002\000\006\025\042\034\ufff4\001\002" +
-    "\000\010\014\027\015\031\016\025\001\002\000\004\034" +
-    "\ufff7\001\002\000\004\040\045\001\002\000\004\034\ufff9" +
-    "\001\002\000\004\045\047\001\002\000\006\025\050\034" +
-    "\ufff2\001\002\000\010\014\027\015\031\016\025\001\002" +
-    "\000\004\034\ufff5\001\002\000\006\025\ufffd\034\ufffd\001" +
-    "\002\000\004\042\013\001\002\000\004\034\uffff\001\002" +
-    "\000\004\034\056\001\002\000\004\002\000\001\002\000" +
-    "\004\002\001\001\002" });
+    "\000\056\000\006\003\004\033\006\001\002\000\004\002" +
+    "\uffff\001\002\000\004\002\060\001\002\000\004\006\007" +
+    "\001\002\000\004\027\010\001\002\000\004\033\011\001" +
+    "\002\000\004\042\014\001\002\000\004\034\056\001\002" +
+    "\000\006\025\054\034\ufffd\001\002\000\004\027\015\001" +
+    "\002\000\004\033\016\001\002\000\004\042\020\001\002" +
+    "\000\004\034\053\001\002\000\004\027\024\001\002\000" +
+    "\006\025\022\034\ufffa\001\002\000\004\042\020\001\002" +
+    "\000\004\034\ufffb\001\002\000\004\033\025\001\002\000" +
+    "\012\011\026\014\030\015\032\016\027\001\002\000\004" +
+    "\027\051\001\002\000\004\027\045\001\002\000\004\027" +
+    "\041\001\002\000\004\034\040\001\002\000\004\027\034" +
+    "\001\002\000\004\034\ufff7\001\002\000\004\045\035\001" +
+    "\002\000\006\025\036\034\ufff2\001\002\000\010\014\030" +
+    "\015\032\016\027\001\002\000\004\034\ufff5\001\002\000" +
+    "\006\025\ufff9\034\ufff9\001\002\000\004\045\042\001\002" +
+    "\000\006\025\043\034\ufff3\001\002\000\010\014\030\015" +
+    "\032\016\027\001\002\000\004\034\ufff6\001\002\000\004" +
+    "\045\046\001\002\000\006\025\047\034\ufff1\001\002\000" +
+    "\010\014\030\015\032\016\027\001\002\000\004\034\ufff4" +
+    "\001\002\000\004\040\052\001\002\000\004\034\ufff8\001" +
+    "\002\000\006\025\ufffc\034\ufffc\001\002\000\004\042\014" +
+    "\001\002\000\004\034\ufffe\001\002\000\004\034\057\001" +
+    "\002\000\004\002\000\001\002\000\004\002\001\001\002" +
+    "" });
 
   /** Access to parse-action table. */
   public short[][] action_table() {return _action_table;}
@@ -80,23 +81,23 @@ public class colors extends java_cup.runtime.lr_parser {
   /** <code>reduce_goto</code> table. */
   protected static final short[][] _reduce_table = 
     unpackFromStrings(new String[] {
-    "\000\055\000\004\002\003\001\001\000\002\001\001\000" +
-    "\002\001\001\000\002\001\001\000\002\001\001\000\006" +
-    "\003\010\007\011\001\001\000\002\001\001\000\002\001" +
-    "\001\000\002\001\001\000\002\001\001\000\006\004\015" +
-    "\010\017\001\001\000\002\001\001\000\002\001\001\000" +
-    "\002\001\001\000\006\004\021\010\017\001\001\000\002" +
-    "\001\001\000\002\001\001\000\006\005\027\006\031\001" +
-    "\001\000\002\001\001\000\002\001\001\000\002\001\001" +
-    "\000\002\001\001\000\002\001\001\000\002\001\001\000" +
-    "\002\001\001\000\002\001\001\000\004\006\035\001\001" +
-    "\000\002\001\001\000\002\001\001\000\002\001\001\000" +
-    "\002\001\001\000\004\006\042\001\001\000\002\001\001" +
-    "\000\002\001\001\000\002\001\001\000\002\001\001\000" +
-    "\002\001\001\000\004\006\050\001\001\000\002\001\001" +
-    "\000\002\001\001\000\006\003\053\007\011\001\001\000" +
+    "\000\056\000\004\002\004\001\001\000\002\001\001\000" +
     "\002\001\001\000\002\001\001\000\002\001\001\000\002" +
-    "\001\001" });
+    "\001\001\000\006\003\011\007\012\001\001\000\002\001" +
+    "\001\000\002\001\001\000\002\001\001\000\002\001\001" +
+    "\000\006\004\016\010\020\001\001\000\002\001\001\000" +
+    "\002\001\001\000\002\001\001\000\006\004\022\010\020" +
+    "\001\001\000\002\001\001\000\002\001\001\000\006\005" +
+    "\030\006\032\001\001\000\002\001\001\000\002\001\001" +
+    "\000\002\001\001\000\002\001\001\000\002\001\001\000" +
+    "\002\001\001\000\002\001\001\000\002\001\001\000\004" +
+    "\006\036\001\001\000\002\001\001\000\002\001\001\000" +
+    "\002\001\001\000\002\001\001\000\004\006\043\001\001" +
+    "\000\002\001\001\000\002\001\001\000\002\001\001\000" +
+    "\004\006\047\001\001\000\002\001\001\000\002\001\001" +
+    "\000\002\001\001\000\002\001\001\000\006\003\054\007" +
+    "\012\001\001\000\002\001\001\000\002\001\001\000\002" +
+    "\001\001\000\002\001\001" });
 
   /** Access to <code>reduce_goto</code> table. */
   public short[][] reduce_table() {return _reduce_table;}
@@ -140,9 +141,9 @@ public class colors extends java_cup.runtime.lr_parser {
 	colorManager newColorM;
 	String id = "";
 	String nameCl = "";
-	int red = DefaultValue.noInicioDimension;
-	int blue = DefaultValue.noInicioDimension;
-	int green = DefaultValue.noInicioDimension;
+	int red = DefaultValue.INVALID_CL_CODE;
+	int blue = DefaultValue.INVALID_CL_CODE;
+	int green = DefaultValue.INVALID_CL_CODE;
 	String hexaC = "";
 
 	public colors(Lexer lex, colorManager clIn){
@@ -175,7 +176,7 @@ public class colors extends java_cup.runtime.lr_parser {
 	}
 
 	private void setRedCode(int RedCl) throws InputsVaciosException {
-		if ((red == DefaultValue.noInicioDimension) && (hexaC.equals(""))) {
+		if ((red == DefaultValue.INVALID_CL_CODE) && (hexaC.equals(""))) {
 			red = RedCl;
 		} else {
 			throw new InputsVaciosException("Red code " + RedCl + " can't set");
@@ -183,7 +184,7 @@ public class colors extends java_cup.runtime.lr_parser {
 	}
 
 	private void setBlueCode(int BlueCl) throws InputsVaciosException {
-		if ((blue == DefaultValue.noInicioDimension) && (hexaC.equals(""))) {
+		if ((blue == DefaultValue.INVALID_CL_CODE) && (hexaC.equals(""))) {
 			blue = BlueCl;
 		} else {
 			throw new InputsVaciosException("Red code " + BlueCl + " can't set");
@@ -191,7 +192,7 @@ public class colors extends java_cup.runtime.lr_parser {
 	}
 
 	private void setGreenCode(int GreenCl) throws InputsVaciosException {
-		if ((green == DefaultValue.noInicioDimension) && (hexaC.equals(""))) {
+		if ((green == DefaultValue.INVALID_CL_CODE) && (hexaC.equals(""))) {
 			green = GreenCl;
 		} else {
 			throw new InputsVaciosException("Red code " + GreenCl + " can't set");
@@ -199,7 +200,7 @@ public class colors extends java_cup.runtime.lr_parser {
 	}
 
 	private void setHexa(String hexaCd) throws InputsVaciosException{
-		if (hexaC.equals("") && (red == DefaultValue.noInicioDimension) && (blue == DefaultValue.noInicioDimension) && (green == DefaultValue.noInicioDimension)) {
+		if (hexaC.equals("") && (red == DefaultValue.INVALID_CL_CODE) && (blue == DefaultValue.INVALID_CL_CODE) && (green == DefaultValue.INVALID_CL_CODE)) {
 			hexaC = hexaCd;
 		} else {
 			throw new InputsVaciosException("Hexa code " + hexaCd + " can't set");
@@ -207,9 +208,9 @@ public class colors extends java_cup.runtime.lr_parser {
 	}
 
 	private void addTemColor() throws InputsVaciosException{
-		if (!nameCl.equals("") && (red != DefaultValue.noInicioDimension) && (blue != DefaultValue.noInicioDimension) && (green != DefaultValue.noInicioDimension) && (hexaC.equals(""))) {
+		if (!nameCl.equals("") && (red != DefaultValue.INVALID_CL_CODE) && (blue != DefaultValue.INVALID_CL_CODE) && (green != DefaultValue.INVALID_CL_CODE) && (hexaC.equals(""))) {
 			listAux.add(new auxColor(nameCl, red, blue, green));
-		} else if (!nameCl.equals("") && (red == DefaultValue.noInicioDimension) && (blue == DefaultValue.noInicioDimension) && (green == DefaultValue.noInicioDimension) && (!hexaC.equals(""))) {
+		} else if (!nameCl.equals("") && (red == DefaultValue.INVALID_CL_CODE) && (blue == DefaultValue.INVALID_CL_CODE) && (green == DefaultValue.INVALID_CL_CODE) && (!hexaC.equals(""))) {
 			listAux.add(new auxColor(nameCl, hexaC));
 		} else {
 			throw new InputsVaciosException("Missing parameter at " + nameCl + " color");
@@ -220,7 +221,7 @@ public class colors extends java_cup.runtime.lr_parser {
 	public void setColorByOwner(String owner) throws InputsVaciosException{
 		newColorM.newObjectColor(owner);
 		for (int i = 0;i< listAux.size() ; i++) {
-			if (!listAux.get(i).getHexa().equals("")) {
+			if (!(listAux.get(i).getHexa() == null)) {
 				newColorM.addColorToColorObject(owner,listAux.get(i).getName(), listAux.get(i).getHexa());
 			} else {
 				newColorM.addColorToColorObject(owner,listAux.get(i).getName(), listAux.get(i).getRed(), listAux.get(i).getGreen(),listAux.get(i).getBlue());
@@ -231,9 +232,9 @@ public class colors extends java_cup.runtime.lr_parser {
 
 	private void cleanColorParameters(){
 		nameCl = "";
-		red = DefaultValue.noInicioDimension;
-		blue = DefaultValue.noInicioDimension;
-		green = DefaultValue.noInicioDimension;
+		red = DefaultValue.INVALID_CL_CODE;
+		blue = DefaultValue.INVALID_CL_CODE;
+		green = DefaultValue.INVALID_CL_CODE;
 		hexaC = "";
 	}
 
@@ -292,7 +293,19 @@ class CUP$colors$actions {
           return CUP$colors$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 2: // CLRS_CUERPO ::= ID_LIENZO Coma CLRS_CUERPO 
+          case 2: // CLRS ::= error 
+            {
+              String RESULT =null;
+		int eleft = ((java_cup.runtime.Symbol)CUP$colors$stack.peek()).left;
+		int eright = ((java_cup.runtime.Symbol)CUP$colors$stack.peek()).right;
+		Object e = (Object)((java_cup.runtime.Symbol) CUP$colors$stack.peek()).value;
+		 System.out.println("error: "+e);
+              CUP$colors$result = parser.getSymbolFactory().newSymbol("CLRS",0, ((java_cup.runtime.Symbol)CUP$colors$stack.peek()), ((java_cup.runtime.Symbol)CUP$colors$stack.peek()), RESULT);
+            }
+          return CUP$colors$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 3: // CLRS_CUERPO ::= ID_LIENZO Coma CLRS_CUERPO 
             {
               String RESULT =null;
 
@@ -301,7 +314,7 @@ class CUP$colors$actions {
           return CUP$colors$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 3: // CLRS_CUERPO ::= ID_LIENZO 
+          case 4: // CLRS_CUERPO ::= ID_LIENZO 
             {
               String RESULT =null;
 
@@ -310,7 +323,7 @@ class CUP$colors$actions {
           return CUP$colors$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 4: // ID_LIENZO ::= Identificador DosPuntos CorAbierto CLRS_CARACTERISTICAS CorCerrado 
+          case 5: // ID_LIENZO ::= Identificador DosPuntos CorAbierto CLRS_CARACTERISTICAS CorCerrado 
             {
               String RESULT =null;
 		int eleft = ((java_cup.runtime.Symbol)CUP$colors$stack.elementAt(CUP$colors$top-4)).left;
@@ -322,7 +335,7 @@ class CUP$colors$actions {
           return CUP$colors$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 5: // CLRS_CARACTERISTICAS ::= NEW_COLOR Coma CLRS_CARACTERISTICAS 
+          case 6: // CLRS_CARACTERISTICAS ::= NEW_COLOR Coma CLRS_CARACTERISTICAS 
             {
               String RESULT =null;
 
@@ -331,7 +344,7 @@ class CUP$colors$actions {
           return CUP$colors$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 6: // CLRS_CARACTERISTICAS ::= NEW_COLOR 
+          case 7: // CLRS_CARACTERISTICAS ::= NEW_COLOR 
             {
               String RESULT =null;
 
@@ -340,7 +353,7 @@ class CUP$colors$actions {
           return CUP$colors$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 7: // NEW_COLOR ::= Identificador DosPuntos CorAbierto COLOR_CLRS CorCerrado 
+          case 8: // NEW_COLOR ::= Identificador DosPuntos CorAbierto COLOR_CLRS CorCerrado 
             {
               String RESULT =null;
 		int eleft = ((java_cup.runtime.Symbol)CUP$colors$stack.elementAt(CUP$colors$top-4)).left;
@@ -352,7 +365,7 @@ class CUP$colors$actions {
           return CUP$colors$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 8: // COLOR_CLRS ::= Hex DosPuntos HexaCode 
+          case 9: // COLOR_CLRS ::= Hex DosPuntos HexaCode 
             {
               String RESULT =null;
 		int eleft = ((java_cup.runtime.Symbol)CUP$colors$stack.peek()).left;
@@ -364,7 +377,7 @@ class CUP$colors$actions {
           return CUP$colors$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 9: // COLOR_CLRS ::= CLRGB_CLRS 
+          case 10: // COLOR_CLRS ::= CLRGB_CLRS 
             {
               String RESULT =null;
 
@@ -373,7 +386,7 @@ class CUP$colors$actions {
           return CUP$colors$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 10: // CLRGB_CLRS ::= Red DosPuntos Entero Coma CLRGB_CLRS 
+          case 11: // CLRGB_CLRS ::= Red DosPuntos Entero Coma CLRGB_CLRS 
             {
               String RESULT =null;
 		int eleft = ((java_cup.runtime.Symbol)CUP$colors$stack.elementAt(CUP$colors$top-2)).left;
@@ -385,7 +398,7 @@ class CUP$colors$actions {
           return CUP$colors$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 11: // CLRGB_CLRS ::= Blue DosPuntos Entero Coma CLRGB_CLRS 
+          case 12: // CLRGB_CLRS ::= Blue DosPuntos Entero Coma CLRGB_CLRS 
             {
               String RESULT =null;
 		int eleft = ((java_cup.runtime.Symbol)CUP$colors$stack.elementAt(CUP$colors$top-2)).left;
@@ -397,7 +410,7 @@ class CUP$colors$actions {
           return CUP$colors$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 12: // CLRGB_CLRS ::= Green DosPuntos Entero Coma CLRGB_CLRS 
+          case 13: // CLRGB_CLRS ::= Green DosPuntos Entero Coma CLRGB_CLRS 
             {
               String RESULT =null;
 		int eleft = ((java_cup.runtime.Symbol)CUP$colors$stack.elementAt(CUP$colors$top-2)).left;
@@ -409,7 +422,7 @@ class CUP$colors$actions {
           return CUP$colors$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 13: // CLRGB_CLRS ::= Red DosPuntos Entero 
+          case 14: // CLRGB_CLRS ::= Red DosPuntos Entero 
             {
               String RESULT =null;
 		int eleft = ((java_cup.runtime.Symbol)CUP$colors$stack.peek()).left;
@@ -421,7 +434,7 @@ class CUP$colors$actions {
           return CUP$colors$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 14: // CLRGB_CLRS ::= Blue DosPuntos Entero 
+          case 15: // CLRGB_CLRS ::= Blue DosPuntos Entero 
             {
               String RESULT =null;
 		int eleft = ((java_cup.runtime.Symbol)CUP$colors$stack.peek()).left;
@@ -433,7 +446,7 @@ class CUP$colors$actions {
           return CUP$colors$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 15: // CLRGB_CLRS ::= Green DosPuntos Entero 
+          case 16: // CLRGB_CLRS ::= Green DosPuntos Entero 
             {
               String RESULT =null;
 		int eleft = ((java_cup.runtime.Symbol)CUP$colors$stack.peek()).left;

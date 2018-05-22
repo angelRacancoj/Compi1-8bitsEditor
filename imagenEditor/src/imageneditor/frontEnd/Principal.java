@@ -9,6 +9,7 @@ import imageneditor.DefaultValue;
 import imageneditor.analisis.Lexer;
 import imageneditor.analisis.canvas;
 import imageneditor.analisis.colors;
+import imageneditor.analisis.paint;
 import imageneditor.backEnd.Objects.canvasStruct;
 import imageneditor.backEnd.Objects.colorsStruct;
 import imageneditor.backEnd.Objects.paintStruct;
@@ -45,8 +46,10 @@ public class Principal extends javax.swing.JFrame {
 
     Lexer lex;
     Lexer lex2;
+    Lexer lex3;
     canvas canvasSi;
     colors colorSi;
+    paint paintSi;
 
     /**
      * Creates new form Principal
@@ -65,6 +68,8 @@ public class Principal extends javax.swing.JFrame {
         this.canvasSi = new canvas(lex, canvasMgr);
         this.lex2 = new Lexer(new StringReader(""));
         this.colorSi = new colors(lex2, colorMgr);
+        this.lex3 = new Lexer(new StringReader(""));
+        this.paintSi = new paint(lex3, paintMgr);
     }
 
     /**
@@ -255,7 +260,7 @@ public class Principal extends javax.swing.JFrame {
         if (dialogo.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
             pathAux = dialogo.getSelectedFile().getAbsolutePath();
             try {
-                if (fileManager.extensionFile(pathAux).equalsIgnoreCase(DefaultValue.canvasExt)) {
+                if (fileManager.extensionFile(pathAux).equalsIgnoreCase(DefaultValue.CANVAS_EXT)) {
                     pathCanvas = pathAux;
                     if (pathCanvasOld.equals("")) {
                         codeEditor canvasWindows = new codeEditor(pathCanvas);
@@ -269,7 +274,7 @@ public class Principal extends javax.swing.JFrame {
                         proyectTabsTabbedPane.add(fileManager.nameFile(pathCanvas), canvasWindows);
                     }
                     pathCanvasOld = pathCanvas;
-                } else if (fileManager.extensionFile(pathAux).equalsIgnoreCase(DefaultValue.colorsExt) && (!pathCanvas.replaceAll(" ", "").equals(""))) {
+                } else if (fileManager.extensionFile(pathAux).equalsIgnoreCase(DefaultValue.COLOR_EXT)) {
                     pathColors = pathAux;
                     if (pathColorsOld.equals("")) {
                         codeEditor colorsWindows = new codeEditor(pathColors);
@@ -282,6 +287,21 @@ public class Principal extends javax.swing.JFrame {
                         colorsWindows.setText(fileManager.lecturaArchivo(pathColors));
                         proyectTabsTabbedPane.add(fileManager.nameFile(pathColors), colorsWindows);
                     }
+                    pathColorsOld = pathColors;
+                } else if (fileManager.extensionFile(pathAux).equalsIgnoreCase(DefaultValue.PAINT_EXT)) {
+                    pathPaint = pathAux;
+                    if (pathPaintOld.equals("")) {
+                        codeEditor paintWindows = new codeEditor(pathPaint);
+                        paintWindows.setText(fileManager.lecturaArchivo(pathPaint));
+                        proyectTabsTabbedPane.add(fileManager.nameFile(pathPaint), paintWindows);
+                    } else {
+                        int index = proyectTabsTabbedPane.indexOfTab(fileManager.nameFile(pathPaintOld));
+                        proyectTabsTabbedPane.remove(index);
+                        codeEditor paintWindows = new codeEditor(pathPaint);
+                        paintWindows.setText(fileManager.lecturaArchivo(pathPaint));
+                        proyectTabsTabbedPane.add(fileManager.nameFile(pathPaint), paintWindows);
+                    }
+                    pathPaintOld = pathPaint;
                 }
             } catch (IOException e) {
                 System.out.println(e);
@@ -298,6 +318,8 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_salirMenuItemActionPerformed
 
     private void analizarMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_analizarMenuItemActionPerformed
+        clearList();
+
         try {
             lex.yyreset(new StringReader(fileManager.lecturaArchivo(pathCanvas)));
             this.canvasSi.parse();
@@ -307,12 +329,21 @@ public class Principal extends javax.swing.JFrame {
         }
 
         try {
-
             lex2.yyreset(new StringReader(fileManager.lecturaArchivo(pathColors)));
             this.colorSi.parse();
             System.out.println("parse colors");
         } catch (Exception e) {
             System.out.println("Error=> " + e);
+            e.printStackTrace();
+        }
+
+        try {
+            lex3.yyreset(new StringReader(fileManager.lecturaArchivo(pathPaint)));
+            this.paintSi.parse();
+            System.out.println("parse paint");
+        } catch (Exception e) {
+            System.out.println("Error->> " + e);
+            e.printStackTrace();
         }
     }//GEN-LAST:event_analizarMenuItemActionPerformed
 
@@ -357,4 +388,10 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JTabbedPane proyectTabsTabbedPane;
     private javax.swing.JMenuItem salirMenuItem;
     // End of variables declaration//GEN-END:variables
+
+    public void clearList() {
+        canvasStr.clear();
+        colorStr.clear();
+        paintSrt.clear();
+    }
 }

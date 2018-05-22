@@ -11,10 +11,11 @@ package imageneditor;
  */
 public class DefaultValue {
 
-    public static final int inicioDimension = 0;
-    public static final int noInicioDimension = -1;
-    public static final String canvasExt = "canvas";
-    public static final String colorsExt = "clrs";
-    public static final String paintExt = "pnt";
+    public static final int INICIO_DIMENSION = 1;
+    public static final int NO_INICIO_DIMENSION = 0;
+    public static final int INVALID_CL_CODE = -1;
+    public static final String CANVAS_EXT = "canvas";
+    public static final String COLOR_EXT = "clrs";
+    public static final String PAINT_EXT = "pnt";
 
 }
