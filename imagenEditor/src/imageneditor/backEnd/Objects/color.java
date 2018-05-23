@@ -26,9 +26,9 @@ public class color {
 
     public color(String hexa) {
         this.hexa = hexa;
-        this.red = DefaultValue.NO_INICIO_DIMENSION;
-        this.green = DefaultValue.NO_INICIO_DIMENSION;
-        this.blue = DefaultValue.NO_INICIO_DIMENSION;
+        this.red = DefaultValue.INVALID_CL_CODE;
+        this.green = DefaultValue.INVALID_CL_CODE;
+        this.blue = DefaultValue.INVALID_CL_CODE;
     }
 
     public color() {

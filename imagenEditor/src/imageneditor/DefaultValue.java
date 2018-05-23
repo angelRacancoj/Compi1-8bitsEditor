@@ -18,4 +18,7 @@ public class DefaultValue {
     public static final String COLOR_EXT = "clrs";
     public static final String PAINT_EXT = "pnt";
 
+    public static final int BUTTON_SIZE = 130;
+    public static final int BUTTON_SEPARATION = 25;
+
 }

@@ -99,6 +99,10 @@ public class canvasStruct {
         return lienzos;
     }
 
+    public lienzoObj getLienzo(int posicion) {
+        return lienzos.get(posicion);
+    }
+
     public void setLienzos(LinkedList<lienzoObj> lienzos) {
         this.lienzos = lienzos;
     }

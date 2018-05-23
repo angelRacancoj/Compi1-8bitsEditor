@@ -1,0 +1,91 @@
+package imageneditor.analisis;
+
+import java_cup.runtime.*;
+import imageneditor.frontEnd.buttonPlace;
+import java.util.LinkedList;
+import imageneditor.exceptions.InputsVaciosException;
+
+parser code {:
+
+	LinkedList<paint> paintlist;
+	buttonPlace newObj = new buttonPlace();
+	int dimension;
+	int posX 	= DefaultValue.NO_INICIO_DIMENSION;
+	int posXint = DefaultValue.NO_INICIO_DIMENSION;
+	int posY 	= DefaultValue.NO_INICIO_DIMENSION;
+	int posYint = DefaultValue.NO_INICIO_DIMENSION;
+
+
+
+	public paint(Lexer lex, LinkedList<paint> paintlis, int dimension){
+		super(lex);
+		this.paintlist.addAll(paintlis);
+		this.dimension = dimension;
+	}
+
+	private void setPosX(int xPnt) throws InputsVaciosException {
+		if (posX == DefaultValue.NO_INICIO_DIMENSION) {
+			posX = xPnt;
+		} else {
+			throw new InputsVaciosException("Posicion X " + xPnt + " can't set");
+		}
+	}
+
+	private void setPosXint(int xPnt) throws InputsVaciosException {
+		if (posXint == DefaultValue.NO_INICIO_DIMENSION) {
+			posXint = xPnt;
+		} else {
+			throw new InputsVaciosException("Posicion X " + xPnt + " can't set");
+		}
+	}
+
+	private void setPosY(int yPnt) throws InputsVaciosException {
+		if (posY == DefaultValue.NO_INICIO_DIMENSION) {
+			posY = yPnt;
+		} else {
+			throw new InputsVaciosException("Posicion X " + yPnt + " can't set");
+		}
+	}
+
+	private void setPosYint(int yPnt) throws InputsVaciosException {
+		if (posYint == DefaultValue.NO_INICIO_DIMENSION) {
+			posYint = yPnt;
+		} else {
+			throw new InputsVaciosException("Posicion X " + yPnt + " can't set");
+		}
+	}
+
+	public void syntax_error(Symbol cur_token) {
+		String message = "Estructura invalida en posición " + cur_token.right
+			 + ", token: " + cur_token.value;
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<");	 
+		System.out.println(message);
+		System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+	}
+
+	public buttonPlace returnCom(){
+		return newObj;
+	}
+
+:}
+
+/* Terminal */
+terminal String Pintar, Vars, Colores, Dimension, Cuadro, Hex, Red, Blue, Green, Tipo, Fondo; 
+terminal String Tamanio, Nombre, Lienzos, Igual, Menos, Mas, Coma, Intervalo, DosPuntos, PuntoYComa; 
+terminal String ParAbierto, ParCerrado, CorAbierto, CorCerrado, LlaveAbierta, LlaveCerrada;
+terminal String Comment, HexaCode, Entero, Cadena, Identificador, NewVar, Instrucciones;
+
+/* Non terminal */
+non terminal String PAINT_COM, POS_X, POS_Y;
+
+start with PAINT_COM;
+
+PAINT_COM	::= Pintar ParAbierto Identificador:e Coma POS_X Coma POS_Y ParCerrado PuntoYComa {: listPaintVar.add(new AuxPaint(e, posX, posXint, posY, posYint)); clearPosXY(); :};
+
+POS_X		::= Entero:e 										{: setPosX(Integer.parseInt(e)); :}
+				| Entero:e1 Intervalo Entero:e2 				{: setPosX(Integer.parseInt(e1)); setPosXint(Integer.parseInt(e2)); :}
+				;
+
+POS_Y		::= Entero:e 										{: setPosY(Integer.parseInt(e)); :}
+				| Entero:e1 Intervalo Entero:e2 				{: setPosY(Integer.parseInt(e1)); setPosYint(Integer.parseInt(e2)); :}
+				;

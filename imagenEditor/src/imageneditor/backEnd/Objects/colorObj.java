@@ -74,6 +74,10 @@ public class colorObj {
         return colorList;
     }
 
+    public colorMaker getColor(int index) {
+        return colorList.get(index);
+    }
+
     public void setColorList(LinkedList<colorMaker> colorList) {
         this.colorList = colorList;
     }

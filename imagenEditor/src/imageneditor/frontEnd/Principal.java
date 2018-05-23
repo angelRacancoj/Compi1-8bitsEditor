@@ -51,11 +51,12 @@ public class Principal extends javax.swing.JFrame {
     colors colorSi;
     paint paintSi;
 
+    imagenEditor editor;
+
     /**
      * Creates new form Principal
      */
     public Principal() {
-        initComponents();
         this.fileManager = new ManejadorArchivo();
         this.canvasStr = new canvasStruct();
         this.canvasMgr = new canvasManager(canvasStr);
@@ -70,6 +71,10 @@ public class Principal extends javax.swing.JFrame {
         this.colorSi = new colors(lex2, colorMgr);
         this.lex3 = new Lexer(new StringReader(""));
         this.paintSi = new paint(lex3, paintMgr);
+
+        editor = new imagenEditor(canvasStr, colorStr, paintSrt);
+        initComponents();
+        generarMenu.setEnabled(false);
     }
 
     /**
@@ -255,58 +260,77 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_pintarMenuItemActionPerformed
 
     private void abrirMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_abrirMenuItemActionPerformed
-        JFileChooser dialogo = new JFileChooser();
-        dialogo.setDialogTitle("Open .canvas file");
-        if (dialogo.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-            pathAux = dialogo.getSelectedFile().getAbsolutePath();
-            try {
-                if (fileManager.extensionFile(pathAux).equalsIgnoreCase(DefaultValue.CANVAS_EXT)) {
-                    pathCanvas = pathAux;
-                    if (pathCanvasOld.equals("")) {
-                        codeEditor canvasWindows = new codeEditor(pathCanvas);
-                        canvasWindows.setText(fileManager.lecturaArchivo(pathCanvas));
-                        proyectTabsTabbedPane.add(fileManager.nameFile(pathCanvas), canvasWindows);
-                    } else {
-                        int index = proyectTabsTabbedPane.indexOfTab(fileManager.nameFile(pathCanvasOld));
-                        proyectTabsTabbedPane.remove(index);
-                        codeEditor canvasWindows = new codeEditor(pathCanvas);
-                        canvasWindows.setText(fileManager.lecturaArchivo(pathCanvas));
-                        proyectTabsTabbedPane.add(fileManager.nameFile(pathCanvas), canvasWindows);
-                    }
-                    pathCanvasOld = pathCanvas;
-                } else if (fileManager.extensionFile(pathAux).equalsIgnoreCase(DefaultValue.COLOR_EXT)) {
-                    pathColors = pathAux;
-                    if (pathColorsOld.equals("")) {
-                        codeEditor colorsWindows = new codeEditor(pathColors);
-                        colorsWindows.setText(fileManager.lecturaArchivo(pathColors));
-                        proyectTabsTabbedPane.add(fileManager.nameFile(pathColors), colorsWindows);
-                    } else {
-                        int index = proyectTabsTabbedPane.indexOfTab(fileManager.nameFile(pathColorsOld));
-                        proyectTabsTabbedPane.remove(index);
-                        codeEditor colorsWindows = new codeEditor(pathColors);
-                        colorsWindows.setText(fileManager.lecturaArchivo(pathColors));
-                        proyectTabsTabbedPane.add(fileManager.nameFile(pathColors), colorsWindows);
-                    }
-                    pathColorsOld = pathColors;
-                } else if (fileManager.extensionFile(pathAux).equalsIgnoreCase(DefaultValue.PAINT_EXT)) {
-                    pathPaint = pathAux;
-                    if (pathPaintOld.equals("")) {
-                        codeEditor paintWindows = new codeEditor(pathPaint);
-                        paintWindows.setText(fileManager.lecturaArchivo(pathPaint));
-                        proyectTabsTabbedPane.add(fileManager.nameFile(pathPaint), paintWindows);
-                    } else {
-                        int index = proyectTabsTabbedPane.indexOfTab(fileManager.nameFile(pathPaintOld));
-                        proyectTabsTabbedPane.remove(index);
-                        codeEditor paintWindows = new codeEditor(pathPaint);
-                        paintWindows.setText(fileManager.lecturaArchivo(pathPaint));
-                        proyectTabsTabbedPane.add(fileManager.nameFile(pathPaint), paintWindows);
-                    }
-                    pathPaintOld = pathPaint;
-                }
-            } catch (IOException e) {
-                System.out.println(e);
-            }
+//        JFileChooser dialogo = new JFileChooser();
+//        dialogo.setDialogTitle("Open .canvas file");
+//        if (dialogo.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+//            pathAux = dialogo.getSelectedFile().getAbsolutePath();
+//            try {
+//                if (fileManager.extensionFile(pathAux).equalsIgnoreCase(DefaultValue.CANVAS_EXT)) {
+//                    pathCanvas = pathAux;
+//                    if (pathCanvasOld.equals("")) {
+//                        codeEditor canvasWindows = new codeEditor(pathCanvas);
+//                        canvasWindows.setText(fileManager.lecturaArchivo(pathCanvas));
+//                        proyectTabsTabbedPane.add(fileManager.nameFile(pathCanvas), canvasWindows);
+//                    } else {
+//                        int index = proyectTabsTabbedPane.indexOfTab(fileManager.nameFile(pathCanvasOld));
+//                        proyectTabsTabbedPane.remove(index);
+//                        codeEditor canvasWindows = new codeEditor(pathCanvas);
+//                        canvasWindows.setText(fileManager.lecturaArchivo(pathCanvas));
+//                        proyectTabsTabbedPane.add(fileManager.nameFile(pathCanvas), canvasWindows);
+//                    }
+//                    pathCanvasOld = pathCanvas;
+//                } else if (fileManager.extensionFile(pathAux).equalsIgnoreCase(DefaultValue.COLOR_EXT)) {
+//                    pathColors = pathAux;
+//                    if (pathColorsOld.equals("")) {
+//                        codeEditor colorsWindows = new codeEditor(pathColors);
+//                        colorsWindows.setText(fileManager.lecturaArchivo(pathColors));
+//                        proyectTabsTabbedPane.add(fileManager.nameFile(pathColors), colorsWindows);
+//                    } else {
+//                        int index = proyectTabsTabbedPane.indexOfTab(fileManager.nameFile(pathColorsOld));
+//                        proyectTabsTabbedPane.remove(index);
+//                        codeEditor colorsWindows = new codeEditor(pathColors);
+//                        colorsWindows.setText(fileManager.lecturaArchivo(pathColors));
+//                        proyectTabsTabbedPane.add(fileManager.nameFile(pathColors), colorsWindows);
+//                    }
+//                    pathColorsOld = pathColors;
+//                } else if (fileManager.extensionFile(pathAux).equalsIgnoreCase(DefaultValue.PAINT_EXT)) {
+//                    pathPaint = pathAux;
+//                    if (pathPaintOld.equals("")) {
+//                        codeEditor paintWindows = new codeEditor(pathPaint);
+//                        paintWindows.setText(fileManager.lecturaArchivo(pathPaint));
+//                        proyectTabsTabbedPane.add(fileManager.nameFile(pathPaint), paintWindows);
+//                    } else {
+//                        int index = proyectTabsTabbedPane.indexOfTab(fileManager.nameFile(pathPaintOld));
+//                        proyectTabsTabbedPane.remove(index);
+//                        codeEditor paintWindows = new codeEditor(pathPaint);
+//                        paintWindows.setText(fileManager.lecturaArchivo(pathPaint));
+//                        proyectTabsTabbedPane.add(fileManager.nameFile(pathPaint), paintWindows);
+//                    }
+//                    pathPaintOld = pathPaint;
+//                }
+//            } catch (IOException e) {
+//                System.out.println(e);
+//            }
+
+        try {
+            pathCanvas = "/home/angel/Documents/pruebaImagenEditor/prueba.canvas";
+            codeEditor canvasWindows = new codeEditor(pathCanvas);
+            canvasWindows.setText(fileManager.lecturaArchivo(pathCanvas));
+            proyectTabsTabbedPane.add(fileManager.nameFile(pathCanvas), canvasWindows);
+
+            pathColors = "/home/angel/Documents/pruebaImagenEditor/prueba.clrs";
+            codeEditor colorsWindows = new codeEditor(pathColors);
+            colorsWindows.setText(fileManager.lecturaArchivo(pathColors));
+            proyectTabsTabbedPane.add(fileManager.nameFile(pathColors), colorsWindows);
+
+            pathPaint = "/home/angel/Documents/pruebaImagenEditor/prueba.pnt";
+            codeEditor paintWindows = new codeEditor(pathPaint);
+            paintWindows.setText(fileManager.lecturaArchivo(pathPaint));
+            proyectTabsTabbedPane.add(fileManager.nameFile(pathPaint), paintWindows);
+        } catch (IOException e) {
+            System.out.println(e);
         }
+//        }
     }//GEN-LAST:event_abrirMenuItemActionPerformed
 
     private void guardarMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarMenuItemActionPerformed
@@ -323,32 +347,49 @@ public class Principal extends javax.swing.JFrame {
         try {
             lex.yyreset(new StringReader(fileManager.lecturaArchivo(pathCanvas)));
             this.canvasSi.parse();
+            canvasStr.setPath(pathCanvas);
             System.out.println("parse canvas");
-        } catch (Exception e) {
-            System.out.println("Error-> " + e);
-        }
 
-        try {
             lex2.yyreset(new StringReader(fileManager.lecturaArchivo(pathColors)));
             this.colorSi.parse();
+            colorStr.setPath(pathColors);
             System.out.println("parse colors");
-        } catch (Exception e) {
-            System.out.println("Error=> " + e);
-            e.printStackTrace();
-        }
 
-        try {
             lex3.yyreset(new StringReader(fileManager.lecturaArchivo(pathPaint)));
             this.paintSi.parse();
+            paintSrt.setPath(pathPaint);
             System.out.println("parse paint");
+
+            generarMenu.setEnabled(true);
+
         } catch (Exception e) {
-            System.out.println("Error->> " + e);
-            e.printStackTrace();
+            System.out.println("Error-> " + e);
+            generarMenu.setEnabled(false);
         }
+
+//        try {
+//            lex2.yyreset(new StringReader(fileManager.lecturaArchivo(pathColors)));
+//            this.colorSi.parse();
+//            colorStr.setPath(pathColors);
+//            System.out.println("parse colors");
+//        } catch (Exception e) {
+//            System.out.println("Error=> " + e);
+//            e.printStackTrace();
+//        }
+//
+//        try {
+//            lex3.yyreset(new StringReader(fileManager.lecturaArchivo(pathPaint)));
+//            this.paintSi.parse();
+//            paintSrt.setPath(pathPaint);
+//            System.out.println("parse paint");
+//        } catch (Exception e) {
+//            System.out.println("Error->> " + e);
+//            e.printStackTrace();
+//        }
     }//GEN-LAST:event_analizarMenuItemActionPerformed
 
     private void editorGraficoMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editorGraficoMenuItemActionPerformed
-        // TODO add your handling code here:
+        this.editor.setVisible(true);
     }//GEN-LAST:event_editorGraficoMenuItemActionPerformed
 
     private void generarMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generarMenuItemActionPerformed
