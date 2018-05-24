@@ -20,6 +20,8 @@ public class colorMaker {
     }
 
     public colorMaker() {
+        this.name = null;
+        this.itsColor = null;
     }
 
     public String getName() {

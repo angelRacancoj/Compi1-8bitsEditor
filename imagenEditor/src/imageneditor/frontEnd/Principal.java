@@ -25,6 +25,8 @@ import java.io.StringReader;
 import java.util.LinkedList;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -349,40 +351,50 @@ public class Principal extends javax.swing.JFrame {
     private void abrirMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_abrirMenuItemActionPerformed
         clearList();
 
-//        JFileChooser dialogo = new JFileChooser();
-//        dialogo.setDialogTitle("Open .canvas file");
-//        if (dialogo.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-//            pathAux = dialogo.getSelectedFile().getAbsolutePath();
-//            if (fileManager.extensionFile(pathAux).equalsIgnoreCase(DefaultValue.CANVAS_EXT)) {
-//                pathCanvas = pathAux;
-//                addWindow(pathCanvas, pathCanvasOld);
-//                pathCanvasOld = pathCanvas;
-//            } else if (fileManager.extensionFile(pathAux).equalsIgnoreCase(DefaultValue.COLOR_EXT)) {
-//                pathColors = pathAux;
-//                addWindow(pathColors, pathColorsOld);
-//                pathColorsOld = pathColors;
-//            } else if (fileManager.extensionFile(pathAux).equalsIgnoreCase(DefaultValue.PAINT_EXT)) {
-//                pathPaint = pathAux;
-//                addWindow(pathPaint, pathPaintOld);
-//                pathPaintOld = pathPaint;
-//            }
-        try {
-            pathCanvas = "/home/angel/Documents/pruebaImagenEditor/prueba.canvas";
-            codeEditor canvasWindows = new codeEditor(pathCanvas);
-            canvasWindows.setText(fileManager.lecturaArchivo(pathCanvas));
-            proyectTabsTabbedPane.add(fileManager.nameFile(pathCanvas), canvasWindows);
-
-            pathColors = "/home/angel/Documents/pruebaImagenEditor/prueba.clrs";
-            codeEditor colorsWindows = new codeEditor(pathColors);
-            colorsWindows.setText(fileManager.lecturaArchivo(pathColors));
-            proyectTabsTabbedPane.add(fileManager.nameFile(pathColors), colorsWindows);
-
-            pathPaint = "/home/angel/Documents/pruebaImagenEditor/prueba.pnt";
-            codeEditor paintWindows = new codeEditor(pathPaint);
-            paintWindows.setText(fileManager.lecturaArchivo(pathPaint));
-            proyectTabsTabbedPane.add(fileManager.nameFile(pathPaint), paintWindows);
-        } catch (IOException e) {
-            System.out.println(e);
+        JFileChooser dialogo = new JFileChooser();
+        dialogo.setDialogTitle("Open file");
+        FileFilter colorsExt = new FileNameExtensionFilter("COLORES (." + DefaultValue.COLOR_EXT + " )", DefaultValue.COLOR_EXT);
+        FileFilter canvasExt = new FileNameExtensionFilter("CANVAS (." + DefaultValue.CANVAS_EXT + ")", DefaultValue.CANVAS_EXT);
+        FileFilter paintExt = new FileNameExtensionFilter("PINTAR (." + DefaultValue.PAINT_EXT + ")", DefaultValue.PAINT_EXT);
+        dialogo.addChoosableFileFilter(canvasExt);
+        dialogo.addChoosableFileFilter(colorsExt);
+        dialogo.addChoosableFileFilter(paintExt);
+        dialogo.setFileFilter(canvasExt);
+        //??????????????????????????????????????????????
+        dialogo.setAcceptAllFileFilterUsed(false);
+        //??????????????????????????????????????????????
+        if (dialogo.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+            pathAux = dialogo.getSelectedFile().getAbsolutePath();
+            if (fileManager.extensionFile(pathAux).equalsIgnoreCase(DefaultValue.CANVAS_EXT)) {
+                pathCanvas = pathAux;
+                addWindow(pathCanvas, pathCanvasOld);
+                pathCanvasOld = pathCanvas;
+            } else if (fileManager.extensionFile(pathAux).equalsIgnoreCase(DefaultValue.COLOR_EXT)) {
+                pathColors = pathAux;
+                addWindow(pathColors, pathColorsOld);
+                pathColorsOld = pathColors;
+            } else if (fileManager.extensionFile(pathAux).equalsIgnoreCase(DefaultValue.PAINT_EXT)) {
+                pathPaint = pathAux;
+                addWindow(pathPaint, pathPaintOld);
+                pathPaintOld = pathPaint;
+            }
+//        try {
+//            pathCanvas = "/home/angel/Documents/pruebaImagenEditor/prueba.canvas";
+//            codeEditor canvasWindows = new codeEditor(pathCanvas);
+//            canvasWindows.setText(fileManager.lecturaArchivo(pathCanvas));
+//            proyectTabsTabbedPane.add(fileManager.nameFile(pathCanvas), canvasWindows);
+//
+//            pathColors = "/home/angel/Documents/pruebaImagenEditor/prueba.clrs";
+//            codeEditor colorsWindows = new codeEditor(pathColors);
+//            colorsWindows.setText(fileManager.lecturaArchivo(pathColors));
+//            proyectTabsTabbedPane.add(fileManager.nameFile(pathColors), colorsWindows);
+//
+//            pathPaint = "/home/angel/Documents/pruebaImagenEditor/prueba.pnt";
+//            codeEditor paintWindows = new codeEditor(pathPaint);
+//            paintWindows.setText(fileManager.lecturaArchivo(pathPaint));
+//            proyectTabsTabbedPane.add(fileManager.nameFile(pathPaint), paintWindows);
+//        } catch (IOException e) {
+//            System.out.println(e);
 //        }
         }
     }//GEN-LAST:event_abrirMenuItemActionPerformed
@@ -442,6 +454,7 @@ public class Principal extends javax.swing.JFrame {
         } catch (Exception e) {
             System.out.println("Error->> " + e);
             errors.addPaintError("(Paint)Error: " + e);
+            e.printStackTrace();
             generarMenu.setEnabled(false);
             clearList();
         }

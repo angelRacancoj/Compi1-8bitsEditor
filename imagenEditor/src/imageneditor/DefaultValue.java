@@ -21,4 +21,16 @@ public class DefaultValue {
     public static final int BUTTON_SIZE = 130;
     public static final int BUTTON_SEPARATION = 25;
 
+    public static final String VARS = "VARS";
+    public static final String VAR = "VAR";
+    public static final String COR_ABIERTO = "[";
+    public static final String COR_CERRADO = "]";
+    public static final String IGUAL = "=";
+    public static final String END_COM = ";";
+    public static final String PAR_ABIERTO = "(";
+    public static final String PAR_CERRADO = ")";
+    public static final String INSTRUCCIONES = "INSTRUCCIONES";
+    public static final String PINTAR = "PINTAR";
+    public static final String COMA = ",";
+
 }

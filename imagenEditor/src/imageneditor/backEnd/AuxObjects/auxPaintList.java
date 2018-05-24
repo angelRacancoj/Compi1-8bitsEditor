@@ -29,7 +29,7 @@ public class auxPaintList {
     }
 
     public void addAuxPaint(String colorName, int posX, int posXend, int posY, int posYend) {
-        paintList.add(new AuxPaint(owner, posX, posXend, posY, posYend));
+        paintList.add(new AuxPaint(colorName, posX, posXend, posY, posYend));
     }
 
     public AuxPaint getAuxPaint(int index) {

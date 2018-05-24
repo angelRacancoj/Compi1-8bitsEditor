@@ -5,9 +5,19 @@
  */
 package imageneditor.frontEnd;
 
+import imageneditor.DefaultValue;
+import imageneditor.backEnd.AuxObjects.AuxPaint;
+import imageneditor.backEnd.AuxObjects.auxPaintList;
+import imageneditor.backEnd.AuxObjects.auxPaintToFile;
 import imageneditor.backEnd.Objects.canvasStruct;
 import imageneditor.backEnd.Objects.colorsStruct;
 import imageneditor.backEnd.Objects.paintStruct;
+import imageneditor.backEnd.Objects.variable;
+import imageneditor.files.ManejadorArchivo;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.IOException;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -15,9 +25,11 @@ import imageneditor.backEnd.Objects.paintStruct;
  */
 public class imagenEditor extends javax.swing.JFrame {
 
+    ManejadorArchivo fileM;
     private canvasStruct canvas;
     private colorsStruct colors;
     private paintStruct paint;
+    private auxPaintToFile paintFiles;
 
     /**
      * Creates new form imagenEditor
@@ -30,7 +42,24 @@ public class imagenEditor extends javax.swing.JFrame {
         this.canvas = canvas;
         this.colors = colors;
         this.paint = paint;
+        this.paintFiles = new auxPaintToFile();
+        this.fileM = new ManejadorArchivo();
         initComponents();
+
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                int confirm = JOptionPane.showOptionDialog(null, "Desea salir sin guardar los cambios?", "Salir",
+                        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+                if (confirm == 0) {
+                    lienzosTabbedPane.removeAll();
+                    hideIt();
+                } else {
+                    saveChanges();
+                }
+
+            }
+        });
     }
 
     /**
@@ -51,6 +80,7 @@ public class imagenEditor extends javax.swing.JFrame {
         importarMenu = new javax.swing.JMenu();
         generarImagenMenuItem = new javax.swing.JMenuItem();
 
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Editor");
         setAlwaysOnTop(true);
 
@@ -111,27 +141,72 @@ public class imagenEditor extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void hideIt() {
+        this.setVisible(false);
+        cargarMenuItem.setEnabled(true);
+    }
+
+    private void saveChanges() {
+        try {
+            fileM.guardarArchivo(paint.getPath() + "1", newFileText());
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, e, "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private String newFileText() {
+        String aux = "";
+        aux += (DefaultValue.VARS + DefaultValue.COR_ABIERTO + "\n");
+        for (variable variablesList : paint.getVariablesList()) {
+            aux += ("\t" + DefaultValue.VAR + " " + variablesList.getName() + " "
+                    + DefaultValue.IGUAL + " " + variablesList.getValue() + DefaultValue.END_COM + "\n");
+        }
+        aux += (DefaultValue.COR_CERRADO + "\n\n");
+
+        for (auxPaintList lienzoInstruction : paintFiles.getLienzoInstructions()) {
+            aux += (DefaultValue.INSTRUCCIONES + DefaultValue.PAR_ABIERTO + lienzoInstruction.getOwner()
+                    + DefaultValue.PAR_CERRADO + DefaultValue.COR_ABIERTO + "\n");
+            for (AuxPaint paintList : lienzoInstruction.getPaintList()) {
+                aux += ("\t" + DefaultValue.PINTAR + DefaultValue.PAR_ABIERTO + paintList.getName()
+                        + DefaultValue.COMA + paintList.getPosX() + DefaultValue.COMA + paintList.getPosY()
+                        + DefaultValue.PAR_CERRADO + DefaultValue.END_COM + "\n");
+            }
+            aux += (DefaultValue.COR_CERRADO + "\n\n");
+        }
+        return aux;
+    }
+
     private void cargarMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cargarMenuItemActionPerformed
         createWindows();
+        cargarMenuItem.setEnabled(false);
     }//GEN-LAST:event_cargarMenuItemActionPerformed
 
     private void guardarMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarMenuItemActionPerformed
-
+        System.out.println("Codigo salida:\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n" + newFileText() + ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        saveChanges();
     }//GEN-LAST:event_guardarMenuItemActionPerformed
 
     private void salirMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salirMenuItemActionPerformed
-        // TODO add your handling code here:
+        int confirm = JOptionPane.showOptionDialog(null, "Desea salir sin guardar los cambios?", "Salir",
+                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+        if (confirm == 0) {
+            lienzosTabbedPane.removeAll();
+            hideIt();
+        } else {
+            saveChanges();
+        }
     }//GEN-LAST:event_salirMenuItemActionPerformed
 
     private void createWindows() {
-        lienzosTabbedPane.removeAll();
         for (int i = 0; i < canvas.lienzosListSize(); i++) {
             try {
-                lienzoEditor newLienzo = new lienzoEditor(canvas.getLienzo(i), colors.findColorObject(canvas.getLienzo(i).getId()), paint.findIsntruccionsP(canvas.getLienzo(i).getId()));
+                lienzoEditor newLienzo = new lienzoEditor(canvas.getLienzo(i), colors.findColorObject(canvas.getLienzo(i).getId()),
+                        paint.findIsntruccionsP(canvas.getLienzo(i).getId()), paintFiles);
                 lienzosTabbedPane.add(canvas.getLienzo(i).getName(), newLienzo);
             } catch (Exception e) {
                 e.printStackTrace();
                 System.out.println("Error crear el lienzo " + canvas.getLienzo(i).getName());
+                JOptionPane.showMessageDialog(this, "Error crear el lienzo " + canvas.getLienzo(i).getName(), "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
     }
