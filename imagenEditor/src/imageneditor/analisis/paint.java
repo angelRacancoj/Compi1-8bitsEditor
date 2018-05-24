@@ -11,6 +11,7 @@ import imageneditor.objectsManager.pintarManager;
 import imageneditor.exceptions.InputsVaciosException;
 import imageneditor.backEnd.AuxObjects.*;
 import java.util.LinkedList;
+import imageneditor.exceptions.errorsSaver;
 import java_cup.runtime.XMLElement;
 
 /** CUP v0.11b 20160615 (GIT 4ac7450) generated parser.
@@ -161,6 +162,7 @@ public class paint extends java_cup.runtime.lr_parser {
 
 
 
+	errorsSaver errors;
 	LinkedList<auxVar> listVar = new LinkedList<>();
 	LinkedList<AuxPaint> listPaintVar = new LinkedList<>();
 
@@ -172,9 +174,10 @@ public class paint extends java_cup.runtime.lr_parser {
 
 
 
-	public paint(Lexer lex, pintarManager pntIn){
+	public paint(Lexer lex, pintarManager pntIn, errorsSaver errors){
 		super(lex);
 		this.newPaintM = pntIn;
+		this.errors = errors;
 	}
 
 	private void setPosX(int xPnt) throws InputsVaciosException {
@@ -235,12 +238,13 @@ public class paint extends java_cup.runtime.lr_parser {
 		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<");	 
 		System.out.println(message);
 		System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+		errors.addPaintError("(Paint)"+message);
 	}
 
 	private void clearPosXY(){
-		posX =DefaultValue.NO_INICIO_DIMENSION;
+		posX 	= DefaultValue.NO_INICIO_DIMENSION;
 		posXint = DefaultValue.NO_INICIO_DIMENSION;
-		posY =DefaultValue.NO_INICIO_DIMENSION;
+		posY 	= DefaultValue.NO_INICIO_DIMENSION;
 		posYint = DefaultValue.NO_INICIO_DIMENSION;
 	}
 
@@ -342,7 +346,7 @@ class CUP$paint$actions {
 		int eleft = ((java_cup.runtime.Symbol)CUP$paint$stack.peek()).left;
 		int eright = ((java_cup.runtime.Symbol)CUP$paint$stack.peek()).right;
 		Object e = (Object)((java_cup.runtime.Symbol) CUP$paint$stack.peek()).value;
-		 System.out.println("error: "+e);
+		 System.out.println("error: "+e); errors.addPaintError("(Paint)Error al declarar la variable: " + e);
               CUP$paint$result = parser.getSymbolFactory().newSymbol("SET_VARIABLE",3, ((java_cup.runtime.Symbol)CUP$paint$stack.peek()), ((java_cup.runtime.Symbol)CUP$paint$stack.peek()), RESULT);
             }
           return CUP$paint$result;
@@ -465,7 +469,7 @@ class CUP$paint$actions {
 		int eleft = ((java_cup.runtime.Symbol)CUP$paint$stack.peek()).left;
 		int eright = ((java_cup.runtime.Symbol)CUP$paint$stack.peek()).right;
 		Object e = (Object)((java_cup.runtime.Symbol) CUP$paint$stack.peek()).value;
-		 System.out.println("error: "+e);
+		 System.out.println("error: "+e); errors.addPaintError("(Paint)Error al declarar las isntrucciones: " + e); 
               CUP$paint$result = parser.getSymbolFactory().newSymbol("INSTRUCCIONS",2, ((java_cup.runtime.Symbol)CUP$paint$stack.peek()), ((java_cup.runtime.Symbol)CUP$paint$stack.peek()), RESULT);
             }
           return CUP$paint$result;
@@ -540,7 +544,7 @@ class CUP$paint$actions {
 		int eleft = ((java_cup.runtime.Symbol)CUP$paint$stack.peek()).left;
 		int eright = ((java_cup.runtime.Symbol)CUP$paint$stack.peek()).right;
 		String e = (String)((java_cup.runtime.Symbol) CUP$paint$stack.peek()).value;
-		 setPosX(Integer.parseInt(e)); 
+		setPosX(Integer.parseInt(e)); 
               CUP$paint$result = parser.getSymbolFactory().newSymbol("POS_X",7, ((java_cup.runtime.Symbol)CUP$paint$stack.peek()), ((java_cup.runtime.Symbol)CUP$paint$stack.peek()), RESULT);
             }
           return CUP$paint$result;
@@ -555,7 +559,7 @@ class CUP$paint$actions {
 		int e2left = ((java_cup.runtime.Symbol)CUP$paint$stack.peek()).left;
 		int e2right = ((java_cup.runtime.Symbol)CUP$paint$stack.peek()).right;
 		String e2 = (String)((java_cup.runtime.Symbol) CUP$paint$stack.peek()).value;
-		 setPosX(Integer.parseInt(e1)); setPosXint(Integer.parseInt(e2)); 
+		setPosX(Integer.parseInt(e1)); setPosXint(Integer.parseInt(e2)); 
               CUP$paint$result = parser.getSymbolFactory().newSymbol("POS_X",7, ((java_cup.runtime.Symbol)CUP$paint$stack.elementAt(CUP$paint$top-2)), ((java_cup.runtime.Symbol)CUP$paint$stack.peek()), RESULT);
             }
           return CUP$paint$result;

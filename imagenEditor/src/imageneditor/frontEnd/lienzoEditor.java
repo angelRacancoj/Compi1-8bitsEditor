@@ -6,15 +6,21 @@
 package imageneditor.frontEnd;
 
 import imageneditor.DefaultValue;
+import imageneditor.analisis.Lexer;
+import imageneditor.analisis.miniPaint;
+import imageneditor.backEnd.AuxObjects.AuxPaint;
 import imageneditor.backEnd.Objects.colorMaker;
 import imageneditor.backEnd.Objects.colorObj;
 import imageneditor.backEnd.Objects.instruccionsP;
 import imageneditor.backEnd.Objects.lienzoObj;
 import imageneditor.backEnd.Objects.paint;
+import imageneditor.exceptions.InputsVaciosException;
+import imageneditor.objectsManager.miniPaintManager;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Insets;
+import java.io.StringReader;
 import java.util.LinkedList;
 import javax.swing.JButton;
 import javax.swing.JTextPane;
@@ -40,6 +46,11 @@ public class lienzoEditor extends javax.swing.JPanel {
     int dimension;
     int pixels;
 
+    Lexer lex;
+    miniPaint miniP;
+    AuxPaint AuxObj;
+    miniPaintManager miniPM;
+
     /**
      * Creates new form lienzoEditor
      *
@@ -48,14 +59,19 @@ public class lienzoEditor extends javax.swing.JPanel {
      * @param instructions
      */
     public lienzoEditor(lienzoObj lienzo, colorObj colors, instruccionsP instructions) {
+        this.AuxObj = new AuxPaint();
         this.lienzo = lienzo;
         this.colors = colors;
         this.instructions = instructions;
         this.dimension = lienzo.getItSize().getDimension();
         this.pixels = lienzo.getItSize().getCuadro();
         this.colorFondo = new colorMaker("FONDO", this.lienzo.getFondo());
+        this.lex = new Lexer(new StringReader(""));
+        this.miniPM = new miniPaintManager(AuxObj);
+        this.miniP = new miniPaint(lex, dimension, miniPM);
         initComponents();
         addPixels(lienzosPanel);
+        tamanioLienzoLabel.setText("Tamaño: " + dimension + " x " + dimension + ", Pixeles por cuadro: " + pixels);
 
         try {
             addPaintCom();
@@ -71,6 +87,19 @@ public class lienzoEditor extends javax.swing.JPanel {
             e.printStackTrace();
         }
 
+    }
+
+    public colorMaker returnColor(String name) {
+        for (colorMaker colorList : colors.getColorList()) {
+            if (colorList.getName().equals(name)) {
+                return colorList;
+            }
+        }
+        return null;
+    }
+
+    public boolean existColor(String name) {
+        return (returnColor(name) != null);
     }
 
     /**
@@ -94,6 +123,8 @@ public class lienzoEditor extends javax.swing.JPanel {
         jLabel6 = new javax.swing.JLabel();
         actualColorButton = new javax.swing.JButton();
         borrarRadioButton = new javax.swing.JRadioButton();
+        actualColorLabel = new javax.swing.JLabel();
+        tamanioLienzoLabel = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         historialTextPane = new javax.swing.JTextPane();
         lienzoScrollPane = new javax.swing.JScrollPane();
@@ -123,9 +154,12 @@ public class lienzoEditor extends javax.swing.JPanel {
 
         jLabel6.setText("Color Actual: ");
 
-        actualColorButton.setText(".");
-
         borrarRadioButton.setText("Borrador Activado");
+
+        actualColorLabel.setFont(new java.awt.Font("Noto Sans", 0, 13)); // NOI18N
+
+        tamanioLienzoLabel.setFont(new java.awt.Font("Noto Sans", 0, 13)); // NOI18N
+        tamanioLienzoLabel.setText("jLabel5");
 
         javax.swing.GroupLayout informacionPanelLayout = new javax.swing.GroupLayout(informacionPanel);
         informacionPanel.setLayout(informacionPanelLayout);
@@ -135,19 +169,29 @@ public class lienzoEditor extends javax.swing.JPanel {
                 .addGap(42, 42, 42)
                 .addComponent(jLabel6)
                 .addGap(18, 18, 18)
-                .addComponent(actualColorButton, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(actualColorButton, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
+                .addComponent(actualColorLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(borrarRadioButton)
+                .addGap(18, 18, 18)
+                .addComponent(tamanioLienzoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         informacionPanelLayout.setVerticalGroup(
             informacionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, informacionPanelLayout.createSequentialGroup()
-                .addContainerGap(16, Short.MAX_VALUE)
-                .addGroup(informacionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(actualColorButton)
-                    .addComponent(borrarRadioButton))
+                .addContainerGap()
+                .addGroup(informacionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(actualColorButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(informacionPanelLayout.createSequentialGroup()
+                        .addGap(0, 4, Short.MAX_VALUE)
+                        .addGroup(informacionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(actualColorLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, informacionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel6)
+                                .addComponent(borrarRadioButton)
+                                .addComponent(tamanioLienzoLabel)))))
                 .addContainerGap())
         );
 
@@ -161,7 +205,7 @@ public class lienzoEditor extends javax.swing.JPanel {
         );
         lienzosPanelLayout.setVerticalGroup(
             lienzosPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 583, Short.MAX_VALUE)
+            .addGap(0, 591, Short.MAX_VALUE)
         );
 
         lienzoScrollPane.setViewportView(lienzosPanel);
@@ -238,13 +282,21 @@ public class lienzoEditor extends javax.swing.JPanel {
 
     private void colorSelected(java.awt.event.ActionEvent ev, int index) {
         selectedColor = colors.getColor(index);
+        setColorButton(this.actualColorButton, selectedColor);
+        actualColorLabel.setText(selectedColor.getName());
+
         System.out.println("Color: " + selectedColor.getName());
     }
 
     private void setColorSelected(java.awt.event.ActionEvent ev, JButton boton) {
-        setColorButton(boton, selectedColor);
-        Insets insets = lienzosPanel.getInsets();
-        addChange((boton.getLocation().x - insets.left) / pixels, (boton.getLocation().y - insets.top) / pixels, boton, selectedColor);
+        if (borrarRadioButton.isSelected()) {
+            Insets insets = lienzosPanel.getInsets();
+            undoChange((boton.getLocation().x - insets.left) / pixels, (boton.getLocation().y - insets.top) / pixels, boton);
+        } else {
+            setColorButton(boton, selectedColor);
+            Insets insets = lienzosPanel.getInsets();
+            addChange((boton.getLocation().x - insets.left) / pixels, (boton.getLocation().y - insets.top) / pixels, boton, selectedColor);
+        }
     }
 
     private void setColorButton(JButton boton, colorMaker newColor) {
@@ -268,14 +320,15 @@ public class lienzoEditor extends javax.swing.JPanel {
         addChange(x, y, buttonList.get(x).get(y).getLast().getButton(), newColor);
     }
 
-    private void changeColorButton(JButton boton, colorMaker newColor) {
-        setColorButton(boton, newColor);
-        Insets insets = lienzosPanel.getInsets();
-        addChange((boton.getLocation().x - insets.left) / pixels, (boton.getLocation().y - insets.top) / pixels, boton, selectedColor);
-    }
-
     public void addChange(int x, int y, JButton botton, colorMaker newColor) {
         buttonList.get(x).get(y).addLast(new buttonPlace(x, y, botton, newColor));
+    }
+
+    public void undoChange(int x, int y, JButton botton) {
+        if (buttonList.get(x).get(y).size() > 1) {
+            buttonList.get(x).get(y).removeLast();
+            setColorButton(botton, buttonList.get(x).get(y).getLast().getSelectedColor());
+        }
     }
 
     private void addPaintCom() {
@@ -305,7 +358,42 @@ public class lienzoEditor extends javax.swing.JPanel {
     }
 
     private void pintarCommandButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pintarCommandButtonActionPerformed
-        // TODO add your handling code here:
+        try {
+            lex.yyreset(new StringReader(agregarCommandTextField.getText()));
+            this.miniP.parse();
+
+            if (existColor(AuxObj.getName())) {
+                if ((AuxObj.getPosXemd() < DefaultValue.INICIO_DIMENSION) && (AuxObj.getPosYemd() < DefaultValue.INICIO_DIMENSION)) {
+                    changeColorButton(AuxObj.getPosX() - 1, AuxObj.getPosY() - 1, returnColor(AuxObj.getName()));
+                    append(Color.BLUE, agregarCommandTextField.getText(), historialTextPane);
+                } else if ((AuxObj.getPosXemd() > DefaultValue.NO_INICIO_DIMENSION) && (AuxObj.getPosYemd() < DefaultValue.INICIO_DIMENSION)) {
+                    for (int x = AuxObj.getPosX() - 1; x <= AuxObj.getPosXemd() - 1; x++) {
+                        changeColorButton(x, AuxObj.getPosY() - 1, returnColor(AuxObj.getName()));
+                    }
+                    append(Color.BLUE, agregarCommandTextField.getText(), historialTextPane);
+                } else if ((AuxObj.getPosXemd() < DefaultValue.INICIO_DIMENSION) && (AuxObj.getPosYemd() > DefaultValue.NO_INICIO_DIMENSION)) {
+                    for (int y = AuxObj.getPosY() - 1; y <= AuxObj.getPosYemd() - 1; y++) {
+                        changeColorButton(AuxObj.getPosX() - 1, y, returnColor(AuxObj.getName()));
+                    }
+                    append(Color.BLUE, agregarCommandTextField.getText(), historialTextPane);
+                } else {
+                    for (int x = AuxObj.getPosX() - 1; x <= AuxObj.getPosXemd() - 1; x++) {
+                        for (int y = AuxObj.getPosY() - 1; y <= AuxObj.getPosYemd() - 1; y++) {
+                            changeColorButton(x, y, returnColor(AuxObj.getName()));
+                        }
+                    }
+                    append(Color.BLUE, agregarCommandTextField.getText(), historialTextPane);
+                }
+            } else {
+                throw new InputsVaciosException("Doesn't exist the color");
+            }
+        } catch (Exception e) {
+            System.out.println("Error en mini Paint: " + e);
+            append(Color.red, e.getMessage() + "\n" + agregarCommandTextField.getText(), historialTextPane);
+            e.printStackTrace();
+        }
+
+        agregarCommandTextField.setText("");
     }//GEN-LAST:event_pintarCommandButtonActionPerformed
 
     private void addPixels(Container pane) {
@@ -364,6 +452,7 @@ public class lienzoEditor extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton actualColorButton;
+    private javax.swing.JLabel actualColorLabel;
     private javax.swing.JTextField agregarCommandTextField;
     private javax.swing.JRadioButton borrarRadioButton;
     private javax.swing.JScrollPane coloresScrollPane;
@@ -379,6 +468,7 @@ public class lienzoEditor extends javax.swing.JPanel {
     private javax.swing.JScrollPane lienzoScrollPane;
     private javax.swing.JPanel lienzosPanel;
     private javax.swing.JButton pintarCommandButton;
+    private javax.swing.JLabel tamanioLienzoLabel;
     // End of variables declaration//GEN-END:variables
 
     private void append(Color c, String s, JTextPane panelComandos) {
@@ -388,7 +478,7 @@ public class lienzoEditor extends javax.swing.JPanel {
         int len = panelComandos.getText().length();
         panelComandos.setCaretPosition(len);
         panelComandos.setCharacterAttributes(aset, false);
-        panelComandos.replaceSelection(s);
+        panelComandos.replaceSelection(s + "\n");
     }
 
     public LinkedList<paint> getPaintlist() {

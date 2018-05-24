@@ -6,9 +6,11 @@ import imageneditor.objectsManager.colorManager;
 import imageneditor.exceptions.InputsVaciosException;
 import imageneditor.backEnd.Objects.auxColor;
 import java.util.LinkedList;
+import imageneditor.exceptions.errorsSaver;
 
 parser code {:
 
+	errorsSaver errors;
 	LinkedList<auxColor> listAux = new LinkedList<>();
 	colorManager newColorM;
 	String id = "";
@@ -18,9 +20,10 @@ parser code {:
 	int green = DefaultValue.INVALID_CL_CODE;
 	String hexaC = "";
 
-	public colors(Lexer lex, colorManager clIn){
+	public colors(Lexer lex, colorManager clIn, errorsSaver errors){
 		super(lex);
 		this.newColorM = clIn;
+		this.errors = errors;
 	}
 
 	public void syntax_error(Symbol cur_token) {
@@ -29,6 +32,7 @@ parser code {:
 		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<");	 
 		System.out.println(message);
 		System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+		errors.addColorError("(Colors)" +message);
 	}
 
 	private void setID(String IDLinezo) throws InputsVaciosException{
@@ -130,7 +134,8 @@ non terminal String CLRS, CLRS_CUERPO, CLRS_CARACTERISTICAS, COLOR_CLRS, CLRGB_C
 start with CLRS;
 
 CLRS 		::= CorAbierto Colores DosPuntos CorAbierto CLRS_CUERPO CorCerrado CorCerrado
-				| error:e {: System.out.println("error: "+e);:}; 
+				| error:e {: System.out.println("error: "+e); errors.addColorError("(Colors)Error al inicio del programa: " + e);:}
+				; 
 
 CLRS_CUERPO	::= ID_LIENZO Coma CLRS_CUERPO
 				| ID_LIENZO
@@ -142,7 +147,9 @@ CLRS_CARACTERISTICAS	::=	NEW_COLOR Coma CLRS_CARACTERISTICAS
 							| NEW_COLOR
 							;
 
-NEW_COLOR	::= Identificador:e DosPuntos CorAbierto COLOR_CLRS CorCerrado {: setNameColor(e); addTemColor();:};
+NEW_COLOR	::= Identificador:e DosPuntos CorAbierto COLOR_CLRS CorCerrado {: setNameColor(e); addTemColor();:}
+				| error:e {: System.out.println("error: "+e); errors.addColorError("(Colors)Error en la declaracion del color: " + e);:}
+				;
 
 COLOR_CLRS 		::= Hex DosPuntos HexaCode:e {: setHexa(e); :}
 				| CLRGB_CLRS

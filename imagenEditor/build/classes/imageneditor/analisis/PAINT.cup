@@ -6,9 +6,11 @@ import imageneditor.objectsManager.pintarManager;
 import imageneditor.exceptions.InputsVaciosException;
 import imageneditor.backEnd.AuxObjects.*;
 import java.util.LinkedList;
+import imageneditor.exceptions.errorsSaver;
 
 parser code {:
 
+	errorsSaver errors;
 	LinkedList<auxVar> listVar = new LinkedList<>();
 	LinkedList<AuxPaint> listPaintVar = new LinkedList<>();
 
@@ -20,9 +22,10 @@ parser code {:
 
 
 
-	public paint(Lexer lex, pintarManager pntIn){
+	public paint(Lexer lex, pintarManager pntIn, errorsSaver errors){
 		super(lex);
 		this.newPaintM = pntIn;
+		this.errors = errors;
 	}
 
 	private void setPosX(int xPnt) throws InputsVaciosException {
@@ -83,6 +86,7 @@ parser code {:
 		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<");	 
 		System.out.println(message);
 		System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+		errors.addPaintError("(Paint)"+message);
 	}
 
 	private void clearPosXY(){
@@ -120,7 +124,7 @@ VARIABLES	::= Vars LlaveAbierta SET_VARIABLE LlaveCerrada;
 
 SET_VARIABLE	::= NewVar DATA PuntoYComa SET_VARIABLE
 					| NewVar DATA PuntoYComa	
-					| error:e {: System.out.println("error: "+e);:}
+					| error:e {: System.out.println("error: "+e); errors.addPaintError("(Paint)Error al declarar la variable: " + e);:}
 					;
 
 DATA		::= NEW_VAR Coma DATA
@@ -138,7 +142,7 @@ MATH_OP		::= MATH_OP:e1 Mas MATH_OP:e2 						{: RESULT = valorSuma(e1, e2); :}
 				;
 
 INSTRUCCIONS	::= Instrucciones ParAbierto Identificador:e ParCerrado LlaveAbierta INT_BODY LlaveCerrada {: addInstruccion(e); :} 
-				| error:e 										{: System.out.println("error: "+e);:}
+				| error:e 										{: System.out.println("error: "+e); errors.addPaintError("(Paint)Error al declarar las isntrucciones: " + e); :}
 				;
 
 INT_BODY	::= VAR_VALUE INT_BODY
@@ -151,8 +155,8 @@ VAR_VALUE	::= Identificador:e1 Igual MATH_OP:e2 PuntoYComa 	{: newPaintM.changeV
 
 PAINT_COM	::= Pintar ParAbierto Identificador:e Coma POS_X Coma POS_Y ParCerrado PuntoYComa {: listPaintVar.add(new AuxPaint(e, posX, posXint, posY, posYint)); clearPosXY(); :};
 
-POS_X		::= MATH_OP:e 										{: setPosX(Integer.parseInt(e)); :}
-				| MATH_OP:e1 Intervalo MATH_OP:e2 				{: setPosX(Integer.parseInt(e1)); setPosXint(Integer.parseInt(e2)); :}
+POS_X		::= MATH_OP:e 										{:setPosX(Integer.parseInt(e)); :}
+				| MATH_OP:e1 Intervalo MATH_OP:e2 				{:setPosX(Integer.parseInt(e1)); setPosXint(Integer.parseInt(e2)); :}
 				;
 
 POS_Y		::= MATH_OP:e 										{: setPosY(Integer.parseInt(e)); :}

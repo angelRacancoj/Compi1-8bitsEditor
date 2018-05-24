@@ -4,9 +4,11 @@ import java_cup.runtime.*;
 import imageneditor.DefaultValue;
 import imageneditor.objectsManager.canvasManager;
 import imageneditor.exceptions.InputsVaciosException;
+import imageneditor.exceptions.errorsSaver;
 
 parser code {:
 
+	errorsSaver errors;
 	canvasManager newCanvasM;
 	String id = "";
 	String name = "";
@@ -19,9 +21,10 @@ parser code {:
 	int dimesion = DefaultValue.NO_INICIO_DIMENSION;
 
 
-	public canvas(Lexer lex, canvasManager canvasM){
+	public canvas(Lexer lex, canvasManager canvasM, errorsSaver errors){
 		super(lex);
 		this.newCanvasM = canvasM;
+		this.errors = errors;
 	}
 
 	public void syntax_error(Symbol cur_token) {
@@ -30,6 +33,7 @@ parser code {:
 		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<");	 
 		System.out.println(message);
 		System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+		errors.addCanvasError("(Canvas)" +message);
 	}
 
 	private void setNameLienzo(String nameLienzo) throws InputsVaciosException{
@@ -141,7 +145,7 @@ non terminal String CANVAS, CUERPO, CARACTERISTICAS, NOMBRE, TIPO, FONDO, TAMANI
 start with CANVAS;
 
 CANVAS		::=	CorAbierto Lienzos DosPuntos CorAbierto CUERPO CorCerrado CorCerrado
-				| error:e {: System.out.println("error: "+e);:};
+				| error:e {: System.out.println("error: "+e); errors.addCanvasError("(Canvas)Error desde el inicio: " + e); :};
 
 CUERPO		::= LIENZO Coma CUERPO
 				| LIENZO
@@ -158,6 +162,7 @@ CARACTERISTICAS	::= NOMBRE Coma CARACTERISTICAS
 					| TIPO
 					| FONDO
 					| TAMANIO
+					| error:e {: errors.addCanvasError("(Canvas)Error en las caracteristicas: " + e); :}
 					; 
 
 NOMBRE 		::= Nombre DosPuntos Cadena:e {: setNameLienzo(e); :}; 

@@ -65,9 +65,19 @@ public class imagenEditor extends javax.swing.JFrame {
         archivoMenu.add(cargarMenuItem);
 
         guardarMenuItem.setText("Guardar");
+        guardarMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                guardarMenuItemActionPerformed(evt);
+            }
+        });
         archivoMenu.add(guardarMenuItem);
 
         salirMenuItem.setText("Salir");
+        salirMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                salirMenuItemActionPerformed(evt);
+            }
+        });
         archivoMenu.add(salirMenuItem);
 
         jMenuBar1.add(archivoMenu);
@@ -104,6 +114,14 @@ public class imagenEditor extends javax.swing.JFrame {
     private void cargarMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cargarMenuItemActionPerformed
         createWindows();
     }//GEN-LAST:event_cargarMenuItemActionPerformed
+
+    private void guardarMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarMenuItemActionPerformed
+
+    }//GEN-LAST:event_guardarMenuItemActionPerformed
+
+    private void salirMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salirMenuItemActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_salirMenuItemActionPerformed
 
     private void createWindows() {
         lienzosTabbedPane.removeAll();

@@ -4,9 +4,12 @@ import java_cup.runtime.*;
 import imageneditor.frontEnd.buttonPlace;
 import java.util.LinkedList;
 import imageneditor.exceptions.InputsVaciosException;
+import imageneditor.DefaultValue;
+import imageneditor.objectsManager.miniPaintManager;
 
 parser code {:
 
+	miniPaintManager miniPM;
 	int dimension;
 	int posX 	= DefaultValue.NO_INICIO_DIMENSION;
 	int posXint = DefaultValue.NO_INICIO_DIMENSION;
@@ -14,16 +17,14 @@ parser code {:
 	int posYint = DefaultValue.NO_INICIO_DIMENSION;
 	String name = "";
 
-
-
-	public paint(Lexer lex, int dimension){
-		clear();
+	public miniPaint(Lexer lex, int dimension, miniPaintManager miniPM){
 		super(lex);
 		this.dimension = dimension;
+		this.miniPM = miniPM;
 	}
 
 	private void setName(String name) throws InputsVaciosException {
-		if (posX.equals("")) {
+		if (this.name.equals("")) {
 			this.name = name;
 		} else {
 			throw new InputsVaciosException("The name " + name + " can't set");
@@ -34,7 +35,7 @@ parser code {:
 		if (posX == DefaultValue.NO_INICIO_DIMENSION) {
 			posX = xPnt;
 		} else {
-			throw new InputsVaciosException("Posicion X " + xPnt + " can't set");
+			throw new InputsVaciosException("Posicion en X >>" + xPnt + "<< can't set");
 		}
 	}
 
@@ -42,7 +43,7 @@ parser code {:
 		if (posXint == DefaultValue.NO_INICIO_DIMENSION) {
 			posXint = xPnt;
 		} else {
-			throw new InputsVaciosException("Posicion X " + xPnt + " can't set");
+			throw new InputsVaciosException("Posicion en X >>" + xPnt + "<< can't set");
 		}
 	}
 
@@ -50,7 +51,7 @@ parser code {:
 		if (posY == DefaultValue.NO_INICIO_DIMENSION) {
 			posY = yPnt;
 		} else {
-			throw new InputsVaciosException("Posicion X " + yPnt + " can't set");
+			throw new InputsVaciosException("Posicion en Y >>" + yPnt + "<< can't set");
 		}
 	}
 
@@ -58,7 +59,7 @@ parser code {:
 		if (posYint == DefaultValue.NO_INICIO_DIMENSION) {
 			posYint = yPnt;
 		} else {
-			throw new InputsVaciosException("Posicion X " + yPnt + " can't set");
+			throw new InputsVaciosException("Posicion en Y >>" + yPnt + "<< can't set");
 		}
 	}
 
@@ -70,25 +71,42 @@ parser code {:
 		System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
 	}
 
-	public AuxPaint returnCom() throws InputsVaciosException {
+	public void returnCom() throws InputsVaciosException {
 		if ((posX>DefaultValue.NO_INICIO_DIMENSION) && (posY>DefaultValue.NO_INICIO_DIMENSION) 
 			&& (posXint==DefaultValue.NO_INICIO_DIMENSION) && (posYint==DefaultValue.NO_INICIO_DIMENSION)) {
-			return new AuxPaint(name, posX, posXint, posY, posYint);
+			miniPM.getAuxPaint().setName(name);
+			miniPM.getAuxPaint().setPosX(posX);
+			miniPM.getAuxPaint().setPosXemd(posXint);
+			miniPM.getAuxPaint().setPosY(posY);
+			miniPM.getAuxPaint().setPosYemd(posYint);
 		} else if ((posX>DefaultValue.NO_INICIO_DIMENSION) && (posY>DefaultValue.NO_INICIO_DIMENSION) && 
 			(posXint>DefaultValue.NO_INICIO_DIMENSION) && (posYint==DefaultValue.NO_INICIO_DIMENSION) &&
 			(posX<posXint) && (posX<=dimension) && (posXint<=dimension) && (posY<=dimension)) {
-			return new AuxPaint(name, posX, posXint, posY, posYint);
+			miniPM.getAuxPaint().setName(name);
+			miniPM.getAuxPaint().setPosX(posX);
+			miniPM.getAuxPaint().setPosXemd(posXint);
+			miniPM.getAuxPaint().setPosY(posY);
+			miniPM.getAuxPaint().setPosYemd(posYint);
 		} else if ((posX>DefaultValue.NO_INICIO_DIMENSION) && (posY>DefaultValue.NO_INICIO_DIMENSION) && 
 			(posXint==DefaultValue.NO_INICIO_DIMENSION) && (posYint>DefaultValue.NO_INICIO_DIMENSION) &&
 			(posY<posYint) && (posY<=dimension) && (posYint<=dimension) && (posX<=dimension)) {
-			return new AuxPaint(name, posX, posXint, posY, posYint);
+			miniPM.getAuxPaint().setName(name);
+			miniPM.getAuxPaint().setPosX(posX);
+			miniPM.getAuxPaint().setPosXemd(posXint);
+			miniPM.getAuxPaint().setPosY(posY);
+			miniPM.getAuxPaint().setPosYemd(posYint);
 		} else if ((posX>DefaultValue.NO_INICIO_DIMENSION) && (posY>DefaultValue.NO_INICIO_DIMENSION) && 
 			(posXint>DefaultValue.NO_INICIO_DIMENSION) && (posYint>DefaultValue.NO_INICIO_DIMENSION) &&
 			(posX<posXint) && (posY<posYint) && (posY<=dimension) && (posYint<=dimension) && (posX<=dimension) && (posXint<=dimension)) {
-			return new AuxPaint(name, posX, posXint, posY, posYint);
+			miniPM.getAuxPaint().setName(name);
+			miniPM.getAuxPaint().setPosX(posX);
+			miniPM.getAuxPaint().setPosXemd(posXint);
+			miniPM.getAuxPaint().setPosY(posY);
+			miniPM.getAuxPaint().setPosYemd(posYint);
 		} else {
 			throw new InputsVaciosException("Invalid rank");
 		}
+		clear();
 	}
 
 	private void clear(){
@@ -101,17 +119,17 @@ parser code {:
 :}
 
 /* Terminal */
-terminal String Pintar, Vars, Colores, Dimension, Cuadro, Hex, Red, Blue, Green, Tipo, Fondo; 
+terminal String Pintar, Vars, Colores, Dimension, Cuadro, Hex, Tipo, Fondo,Red, Blue, Green; 
 terminal String Tamanio, Nombre, Lienzos, Igual, Menos, Mas, Coma, Intervalo, DosPuntos, PuntoYComa; 
 terminal String ParAbierto, ParCerrado, CorAbierto, CorCerrado, LlaveAbierta, LlaveCerrada;
-terminal String Comment, HexaCode, Entero, Cadena, Identificador, NewVar, Instrucciones;
+terminal String Comment, HexaCode, Cadena, Identificador, NewVar, Instrucciones,Entero;
 
 /* Non terminal */
 non terminal String PAINT_COM, POS_X, POS_Y;
 
 start with PAINT_COM;
 
-PAINT_COM	::= Pintar ParAbierto Identificador:e Coma POS_X Coma POS_Y ParCerrado PuntoYComa {: setName(e); :}
+PAINT_COM	::= Pintar ParAbierto Identificador:e Coma POS_X Coma POS_Y ParCerrado PuntoYComa {: setName(e); returnCom();:}
 				| error:e {: System.out.println("Error al usar el mini comando"); :} 
 				;
 

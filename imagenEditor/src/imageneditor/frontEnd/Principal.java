@@ -13,13 +13,18 @@ import imageneditor.analisis.paint;
 import imageneditor.backEnd.Objects.canvasStruct;
 import imageneditor.backEnd.Objects.colorsStruct;
 import imageneditor.backEnd.Objects.paintStruct;
+import imageneditor.exceptions.errorsSaver;
 import imageneditor.files.ManejadorArchivo;
 import imageneditor.objectsManager.canvasManager;
 import imageneditor.objectsManager.colorManager;
 import imageneditor.objectsManager.pintarManager;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.LinkedList;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -53,10 +58,18 @@ public class Principal extends javax.swing.JFrame {
 
     imagenEditor editor;
 
+    LinkedList<String> canvasErrors = new LinkedList<>();
+    LinkedList<String> colorsErrors = new LinkedList<>();
+    LinkedList<String> paintErrors = new LinkedList<>();
+
+    errorsSaver errors;
+    codeEditor errorWindows;
+
     /**
      * Creates new form Principal
      */
     public Principal() {
+
         this.fileManager = new ManejadorArchivo();
         this.canvasStr = new canvasStruct();
         this.canvasMgr = new canvasManager(canvasStr);
@@ -65,16 +78,36 @@ public class Principal extends javax.swing.JFrame {
         this.paintSrt = new paintStruct();
         this.paintMgr = new pintarManager(paintSrt, canvasMgr, colorStr);
 
+        errors = new errorsSaver(pathCanvas, canvasErrors, pathColors, colorsErrors, pathPaint, paintErrors);
+        errorWindows = new codeEditor("");
+        errorWindows.noEditable();
+
         this.lex = new Lexer(new StringReader(""));
-        this.canvasSi = new canvas(lex, canvasMgr);
+        this.canvasSi = new canvas(lex, canvasMgr, errors);
         this.lex2 = new Lexer(new StringReader(""));
-        this.colorSi = new colors(lex2, colorMgr);
+        this.colorSi = new colors(lex2, colorMgr, errors);
         this.lex3 = new Lexer(new StringReader(""));
-        this.paintSi = new paint(lex3, paintMgr);
+        this.paintSi = new paint(lex3, paintMgr, errors);
 
         editor = new imagenEditor(canvasStr, colorStr, paintSrt);
         initComponents();
         generarMenu.setEnabled(false);
+        proyectTabsTabbedPane.add("Errores", errorWindows);
+
+        this.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                if (needToSave()) {
+                    int confirm = JOptionPane.showOptionDialog(null, "Desea salir sin guardar los cambios?", "Salir", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+                    if (confirm == 0) {
+                        System.exit(0);
+                    } else {
+                        saveChanges();
+                    }
+                } else {
+                    System.exit(0);
+                }
+            }
+        });
     }
 
     /**
@@ -102,11 +135,11 @@ public class Principal extends javax.swing.JFrame {
         editorGraficoMenuItem = new javax.swing.JMenuItem();
         generarMenuItem = new javax.swing.JMenuItem();
         ayudaMenu = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
+        manualUsuarioMenuItem = new javax.swing.JMenuItem();
+        manualTecnicoMenuItem = new javax.swing.JMenuItem();
         acercaDeMenuItem = new javax.swing.JMenuItem();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Editor de Imagenes");
 
         archivoMenu.setText(" Archivo ");
@@ -199,21 +232,21 @@ public class Principal extends javax.swing.JFrame {
 
         ayudaMenu.setText(" Ayuda ");
 
-        jMenuItem1.setText("Manual Usuario");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        manualUsuarioMenuItem.setText("Manual Usuario");
+        manualUsuarioMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                manualUsuarioMenuItemActionPerformed(evt);
             }
         });
-        ayudaMenu.add(jMenuItem1);
+        ayudaMenu.add(manualUsuarioMenuItem);
 
-        jMenuItem2.setText("Manual Tecnico");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+        manualTecnicoMenuItem.setText("Manual Tecnico");
+        manualTecnicoMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
+                manualTecnicoMenuItemActionPerformed(evt);
             }
         });
-        ayudaMenu.add(jMenuItem2);
+        ayudaMenu.add(manualTecnicoMenuItem);
 
         acercaDeMenuItem.setText("Acerca de");
         acercaDeMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -247,71 +280,92 @@ public class Principal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void canvasMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_canvasMenuItemActionPerformed
+    private void addWindow(String path, String oldPath) {
+        try {
+            if (oldPath.equals("")) {
+                codeEditor canvasWindows = new codeEditor(path);
+                canvasWindows.setText(fileManager.lecturaArchivo(path));
+                proyectTabsTabbedPane.add(fileManager.nameFile(path), canvasWindows);
+            } else {
+                int index = proyectTabsTabbedPane.indexOfTab(fileManager.nameFile(oldPath));
+                proyectTabsTabbedPane.remove(index);
+                codeEditor canvasWindows = new codeEditor(path);
+                canvasWindows.setText(fileManager.lecturaArchivo(path));
+                proyectTabsTabbedPane.add(fileManager.nameFile(path), canvasWindows);
+            }
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, e, "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
+    private void canvasMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_canvasMenuItemActionPerformed
+        JFileChooser guardar = new JFileChooser();
+        guardar.setDialogTitle("Create as ." + DefaultValue.CANVAS_EXT + " file");
+        if (guardar.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+            pathCanvas = (guardar.getSelectedFile().getAbsolutePath() + "." + DefaultValue.CANVAS_EXT);
+            System.out.println(pathCanvas);
+            try {
+                fileManager.guardarArchivo(pathCanvas, "/* Clase " + fileManager.nameFile(pathCanvas) + " creada */");
+                addWindow(pathCanvas, pathCanvasOld);
+                pathCanvasOld = pathCanvas;
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(this, e, "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }//GEN-LAST:event_canvasMenuItemActionPerformed
 
     private void coloresMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_coloresMenuItemActionPerformed
-        // TODO add your handling code here:
+        JFileChooser guardar = new JFileChooser();
+        guardar.setDialogTitle("Create as ." + DefaultValue.COLOR_EXT + " file");
+        if (guardar.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+            pathColors = (guardar.getSelectedFile().getAbsolutePath() + "." + DefaultValue.COLOR_EXT);
+            System.out.println(pathColors);
+            try {
+                fileManager.guardarArchivo(pathColors, "/* Clase " + fileManager.nameFile(pathColors) + " creada */");
+                addWindow(pathColors, pathColorsOld);
+                pathColorsOld = pathColors;
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(this, e, "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }//GEN-LAST:event_coloresMenuItemActionPerformed
 
     private void pintarMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pintarMenuItemActionPerformed
-        // TODO add your handling code here:
+        JFileChooser guardar = new JFileChooser();
+        guardar.setDialogTitle("Create as ." + DefaultValue.PAINT_EXT + " file");
+        if (guardar.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+            pathPaint = (guardar.getSelectedFile().getAbsolutePath() + "." + DefaultValue.PAINT_EXT);
+            System.out.println(pathPaint);
+            try {
+                fileManager.guardarArchivo(pathPaint, "/* Clase " + fileManager.nameFile(pathPaint) + " creada */");
+                addWindow(pathPaint, pathPaintOld);
+                pathPaintOld = pathPaint;
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(this, e, "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }//GEN-LAST:event_pintarMenuItemActionPerformed
 
     private void abrirMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_abrirMenuItemActionPerformed
+        clearList();
+
 //        JFileChooser dialogo = new JFileChooser();
 //        dialogo.setDialogTitle("Open .canvas file");
 //        if (dialogo.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 //            pathAux = dialogo.getSelectedFile().getAbsolutePath();
-//            try {
-//                if (fileManager.extensionFile(pathAux).equalsIgnoreCase(DefaultValue.CANVAS_EXT)) {
-//                    pathCanvas = pathAux;
-//                    if (pathCanvasOld.equals("")) {
-//                        codeEditor canvasWindows = new codeEditor(pathCanvas);
-//                        canvasWindows.setText(fileManager.lecturaArchivo(pathCanvas));
-//                        proyectTabsTabbedPane.add(fileManager.nameFile(pathCanvas), canvasWindows);
-//                    } else {
-//                        int index = proyectTabsTabbedPane.indexOfTab(fileManager.nameFile(pathCanvasOld));
-//                        proyectTabsTabbedPane.remove(index);
-//                        codeEditor canvasWindows = new codeEditor(pathCanvas);
-//                        canvasWindows.setText(fileManager.lecturaArchivo(pathCanvas));
-//                        proyectTabsTabbedPane.add(fileManager.nameFile(pathCanvas), canvasWindows);
-//                    }
-//                    pathCanvasOld = pathCanvas;
-//                } else if (fileManager.extensionFile(pathAux).equalsIgnoreCase(DefaultValue.COLOR_EXT)) {
-//                    pathColors = pathAux;
-//                    if (pathColorsOld.equals("")) {
-//                        codeEditor colorsWindows = new codeEditor(pathColors);
-//                        colorsWindows.setText(fileManager.lecturaArchivo(pathColors));
-//                        proyectTabsTabbedPane.add(fileManager.nameFile(pathColors), colorsWindows);
-//                    } else {
-//                        int index = proyectTabsTabbedPane.indexOfTab(fileManager.nameFile(pathColorsOld));
-//                        proyectTabsTabbedPane.remove(index);
-//                        codeEditor colorsWindows = new codeEditor(pathColors);
-//                        colorsWindows.setText(fileManager.lecturaArchivo(pathColors));
-//                        proyectTabsTabbedPane.add(fileManager.nameFile(pathColors), colorsWindows);
-//                    }
-//                    pathColorsOld = pathColors;
-//                } else if (fileManager.extensionFile(pathAux).equalsIgnoreCase(DefaultValue.PAINT_EXT)) {
-//                    pathPaint = pathAux;
-//                    if (pathPaintOld.equals("")) {
-//                        codeEditor paintWindows = new codeEditor(pathPaint);
-//                        paintWindows.setText(fileManager.lecturaArchivo(pathPaint));
-//                        proyectTabsTabbedPane.add(fileManager.nameFile(pathPaint), paintWindows);
-//                    } else {
-//                        int index = proyectTabsTabbedPane.indexOfTab(fileManager.nameFile(pathPaintOld));
-//                        proyectTabsTabbedPane.remove(index);
-//                        codeEditor paintWindows = new codeEditor(pathPaint);
-//                        paintWindows.setText(fileManager.lecturaArchivo(pathPaint));
-//                        proyectTabsTabbedPane.add(fileManager.nameFile(pathPaint), paintWindows);
-//                    }
-//                    pathPaintOld = pathPaint;
-//                }
-//            } catch (IOException e) {
-//                System.out.println(e);
+//            if (fileManager.extensionFile(pathAux).equalsIgnoreCase(DefaultValue.CANVAS_EXT)) {
+//                pathCanvas = pathAux;
+//                addWindow(pathCanvas, pathCanvasOld);
+//                pathCanvasOld = pathCanvas;
+//            } else if (fileManager.extensionFile(pathAux).equalsIgnoreCase(DefaultValue.COLOR_EXT)) {
+//                pathColors = pathAux;
+//                addWindow(pathColors, pathColorsOld);
+//                pathColorsOld = pathColors;
+//            } else if (fileManager.extensionFile(pathAux).equalsIgnoreCase(DefaultValue.PAINT_EXT)) {
+//                pathPaint = pathAux;
+//                addWindow(pathPaint, pathPaintOld);
+//                pathPaintOld = pathPaint;
 //            }
-
         try {
             pathCanvas = "/home/angel/Documents/pruebaImagenEditor/prueba.canvas";
             codeEditor canvasWindows = new codeEditor(pathCanvas);
@@ -329,63 +383,86 @@ public class Principal extends javax.swing.JFrame {
             proyectTabsTabbedPane.add(fileManager.nameFile(pathPaint), paintWindows);
         } catch (IOException e) {
             System.out.println(e);
-        }
 //        }
+        }
     }//GEN-LAST:event_abrirMenuItemActionPerformed
 
     private void guardarMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarMenuItemActionPerformed
-        // TODO add your handling code here:
+        if (needToSave()) {
+            saveChanges();
+        }
     }//GEN-LAST:event_guardarMenuItemActionPerformed
 
     private void salirMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salirMenuItemActionPerformed
-        // TODO add your handling code here:
+        if (needToSave()) {
+            int confirm = JOptionPane.showOptionDialog(null, "Desea salir sin guardar los cambios?", "Salir", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+            if (confirm == 0) {
+                System.exit(0);
+            } else {
+                saveChanges();
+            }
+        } else {
+            System.exit(0);
+        }
     }//GEN-LAST:event_salirMenuItemActionPerformed
 
     private void analizarMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_analizarMenuItemActionPerformed
         clearList();
+        errors.clearList();
 
         try {
             lex.yyreset(new StringReader(fileManager.lecturaArchivo(pathCanvas)));
             this.canvasSi.parse();
             canvasStr.setPath(pathCanvas);
             System.out.println("parse canvas");
+        } catch (Exception e) {
+            System.out.println("Error-> " + e);
+            errors.addCanvasError("(Canvas)Error: " + e);
+            generarMenu.setEnabled(false);
+        }
 
+        try {
             lex2.yyreset(new StringReader(fileManager.lecturaArchivo(pathColors)));
             this.colorSi.parse();
             colorStr.setPath(pathColors);
             System.out.println("parse colors");
+        } catch (Exception e) {
+            System.out.println("Error=> " + e);
+            errors.addColorError("(Colors)Error: " + e);
+            generarMenu.setEnabled(false);
+        }
 
+        try {
             lex3.yyreset(new StringReader(fileManager.lecturaArchivo(pathPaint)));
             this.paintSi.parse();
             paintSrt.setPath(pathPaint);
             System.out.println("parse paint");
 
             generarMenu.setEnabled(true);
-
         } catch (Exception e) {
-            System.out.println("Error-> " + e);
+            System.out.println("Error->> " + e);
+            errors.addPaintError("(Paint)Error: " + e);
             generarMenu.setEnabled(false);
+            clearList();
         }
 
-//        try {
-//            lex2.yyreset(new StringReader(fileManager.lecturaArchivo(pathColors)));
-//            this.colorSi.parse();
-//            colorStr.setPath(pathColors);
-//            System.out.println("parse colors");
-//        } catch (Exception e) {
-//            System.out.println("Error=> " + e);
-//            e.printStackTrace();
-//        }
-//
-//        try {
-//            lex3.yyreset(new StringReader(fileManager.lecturaArchivo(pathPaint)));
-//            this.paintSi.parse();
-//            paintSrt.setPath(pathPaint);
-//            System.out.println("parse paint");
-//        } catch (Exception e) {
-//            System.out.println("Error->> " + e);
-//            e.printStackTrace();
-//        }
+        if ((errors.getCanvasError().size() > 0) || (errors.getColorError().size() > 0) || (errors.getPaintError().size() > 0)) {
+            String erroresText = "";
+            for (String canvasError : errors.getCanvasError()) {
+                erroresText += (canvasError + "\n");
+            }
+            erroresText += ("\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n\n");
+
+            for (String colorError : errors.getColorError()) {
+                erroresText += (colorError + "\n");
+            }
+            erroresText += ("\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n\n");
+
+            for (String paintError : errors.getPaintError()) {
+                erroresText += (paintError + "\n");
+            }
+            errorWindows.setText(erroresText);
+        }
     }//GEN-LAST:event_analizarMenuItemActionPerformed
 
     private void editorGraficoMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editorGraficoMenuItemActionPerformed
@@ -396,16 +473,16 @@ public class Principal extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_generarMenuItemActionPerformed
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+    private void manualUsuarioMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_manualUsuarioMenuItemActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    }//GEN-LAST:event_manualUsuarioMenuItemActionPerformed
 
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+    private void manualTecnicoMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_manualTecnicoMenuItemActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
+    }//GEN-LAST:event_manualTecnicoMenuItemActionPerformed
 
     private void acercaDeMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_acercaDeMenuItemActionPerformed
-        // TODO add your handling code here:
+        JOptionPane.showMessageDialog(this, "Angel Racancoj\nCarnet: 201631547\nProyecto Compiladores 1\nEditor de Imagenes V0.1", "Acerca de", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_acercaDeMenuItemActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -422,8 +499,8 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem generarMenuItem;
     private javax.swing.JMenuItem guardarMenuItem;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem manualTecnicoMenuItem;
+    private javax.swing.JMenuItem manualUsuarioMenuItem;
     private javax.swing.JMenu nuevoMenu;
     private javax.swing.JMenuItem pintarMenuItem;
     private javax.swing.JTabbedPane proyectTabsTabbedPane;
@@ -434,5 +511,84 @@ public class Principal extends javax.swing.JFrame {
         canvasStr.clear();
         colorStr.clear();
         paintSrt.clear();
+        errorWindows.setText("");
+    }
+
+    private void saveChanges() {
+        try {
+            if (!pathCanvas.equals("")) {
+                int indexCanvas = proyectTabsTabbedPane.indexOfTab(fileManager.nameFile(pathCanvas));
+                codeEditor temp = (codeEditor) proyectTabsTabbedPane.getComponentAt(indexCanvas);
+                if (!temp.returnText().equals(fileManager.lecturaArchivo(pathCanvas))) {
+                    temp.saveProgress();
+                }
+            }
+            if (!pathColors.equals("")) {
+                int indexColors = proyectTabsTabbedPane.indexOfTab(fileManager.nameFile(pathColors));
+                codeEditor temp = (codeEditor) proyectTabsTabbedPane.getComponentAt(indexColors);
+                if (!temp.returnText().equals(fileManager.lecturaArchivo(pathColors))) {
+                    temp.saveProgress();
+                }
+            }
+            if (!pathPaint.equals("")) {
+                int indexPaint = proyectTabsTabbedPane.indexOfTab(fileManager.nameFile(pathPaint));
+                codeEditor temp = (codeEditor) proyectTabsTabbedPane.getComponentAt(indexPaint);
+                if (!temp.returnText().equals(fileManager.lecturaArchivo(pathPaint))) {
+                    temp.saveProgress();
+                }
+            }
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, e, "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private boolean needSave(String path) {
+        boolean save = false;
+        try {
+            if (!path.equals("")) {
+                int index = proyectTabsTabbedPane.indexOfTab(fileManager.nameFile(path));
+                codeEditor temp = (codeEditor) proyectTabsTabbedPane.getComponentAt(index);
+                if (!temp.returnText().equals(fileManager.lecturaArchivo(path))) {
+                    save = true;
+                }
+            }
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, e, "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        return save;
+    }
+
+    private boolean needToSave() {
+
+        return (needSave(pathCanvas) || needSave(pathColors) || needSave(pathPaint));
+//        boolean saveCanvas = false;
+//        boolean saveColor = false;
+//        boolean savePaint = false;
+//        try {
+//            if (!pathCanvas.equals("")) {
+//                int indexCanvas = proyectTabsTabbedPane.indexOfTab(fileManager.nameFile(pathCanvas));
+//                codeEditor temp = (codeEditor) proyectTabsTabbedPane.getComponentAt(indexCanvas);
+//                if (!temp.returnText().equals(fileManager.lecturaArchivo(pathCanvas))) {
+//                    saveCanvas = true;
+//                }
+//            }
+//            if (!pathColors.equals("")) {
+//                int indexColors = proyectTabsTabbedPane.indexOfTab(fileManager.nameFile(pathColors));
+//                codeEditor temp = (codeEditor) proyectTabsTabbedPane.getComponentAt(indexColors);
+//                if (!temp.returnText().equals(fileManager.lecturaArchivo(pathColors))) {
+//                    saveColor = true;
+//                }
+//            }
+//            if (!pathPaint.equals("")) {
+//                int indexPaint = proyectTabsTabbedPane.indexOfTab(fileManager.nameFile(pathPaint));
+//                codeEditor temp = (codeEditor) proyectTabsTabbedPane.getComponentAt(indexPaint);
+//                if (!temp.returnText().equals(fileManager.lecturaArchivo(pathPaint))) {
+//                    savePaint = true;
+//                }
+//            }
+//        } catch (IOException e) {
+//            JOptionPane.showMessageDialog(this, e, "Error", JOptionPane.ERROR_MESSAGE);
+//        }
+//        return (saveCanvas || saveColor || savePaint);
     }
 }

@@ -1,6 +1,7 @@
 package imageneditor.analisis;
 
 import java_cup.runtime.*;
+import imageneditor.exceptions.InputsVaciosException;
 
 %%
 
@@ -36,8 +37,9 @@ hexaCode = [#][:jletterdigit:][:jletterdigit:][:jletterdigit:][:jletterdigit:][:
     	return new Symbol(type, yyline+1, yycolumn+1, value);
   	}
 
-  	private void error(String message) {
+  	private void error(String message) throws InputsVaciosException {
     	System.out.println("Error en linea line "+(yyline+1)+", columna "+(yycolumn+1)+" : "+message);
+      throw new InputsVaciosException("Error en linea line "+(yyline+1)+", columna "+(yycolumn+1)+" : "+message);
   	}
 
 	private void imprimirToken(String textSalida){
@@ -87,5 +89,5 @@ hexaCode = [#][:jletterdigit:][:jletterdigit:][:jletterdigit:][:jletterdigit:][:
   {LineTerminator}  {/*Nothing to do*/}
 }
 
-[^] {error("Simbolo invalido <"+ yytext()+">");}
+[^] {error("Simbolo invalido << "+ yytext()+" >>");}
 <<EOF>>                 { return symbol(sym.EOF); }

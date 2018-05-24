@@ -122,13 +122,7 @@ public class codeEditor extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void guardarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarButtonActionPerformed
-        try {
-            if (!filesManager.lecturaArchivo(path).equals(codeTextArea.getText())) {
-                filesManager.guardarArchivo(path, codeTextArea.getText());
-            }
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(this, e, "Error", JOptionPane.ERROR_MESSAGE);
-        }
+        saveProgress();
     }//GEN-LAST:event_guardarButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -138,7 +132,25 @@ public class codeEditor extends javax.swing.JPanel {
     private javax.swing.JLabel lineColumn;
     // End of variables declaration//GEN-END:variables
 
+    public void noEditable() {
+        guardarButton.setEnabled(false);
+    }
+
     public void setText(String textIn) {
         codeTextArea.setText(textIn);
+    }
+
+    public String returnText() {
+        return codeTextArea.getText();
+    }
+
+    public void saveProgress() {
+        try {
+            if (!filesManager.lecturaArchivo(path).equals(codeTextArea.getText())) {
+                filesManager.guardarArchivo(path, codeTextArea.getText());
+            }
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, e, "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 }

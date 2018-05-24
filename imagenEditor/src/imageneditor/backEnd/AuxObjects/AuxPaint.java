@@ -5,6 +5,8 @@
  */
 package imageneditor.backEnd.AuxObjects;
 
+import imageneditor.DefaultValue;
+
 /**
  *
  * @author angel
@@ -23,6 +25,22 @@ public class AuxPaint {
         this.posXemd = posXemd;
         this.posY = posY;
         this.posYemd = posYemd;
+    }
+
+    public AuxPaint() {
+        this.name = "";
+        this.posX = DefaultValue.NO_INICIO_DIMENSION;
+        this.posXemd = DefaultValue.NO_INICIO_DIMENSION;
+        this.posY = DefaultValue.NO_INICIO_DIMENSION;
+        this.posYemd = DefaultValue.NO_INICIO_DIMENSION;
+    }
+
+    public void clear() {
+        this.name = "";
+        this.posX = DefaultValue.NO_INICIO_DIMENSION;
+        this.posXemd = DefaultValue.NO_INICIO_DIMENSION;
+        this.posY = DefaultValue.NO_INICIO_DIMENSION;
+        this.posYemd = DefaultValue.NO_INICIO_DIMENSION;
     }
 
     public String getName() {
