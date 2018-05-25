@@ -41,7 +41,6 @@ public class lienzoEditor extends javax.swing.JPanel {
     lienzoObj lienzo;
     colorObj colors;
     instruccionsP instructions;
-    LinkedList<paint> paintlist = new LinkedList<>();
     LinkedList<LinkedList<LinkedList<buttonPlace>>> buttonList = new LinkedList<>();
     colorMaker selectedColor = new colorMaker();
     colorMaker colorFondo;
@@ -196,7 +195,7 @@ public class lienzoEditor extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(borrarRadioButton)
                 .addGap(18, 18, 18)
-                .addComponent(tamanioLienzoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(tamanioLienzoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         informacionPanelLayout.setVerticalGroup(
@@ -386,39 +385,45 @@ public class lienzoEditor extends javax.swing.JPanel {
     }
 
     private void pintarCommandButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pintarCommandButtonActionPerformed
-        try {
-            lex.yyreset(new StringReader(agregarCommandTextField.getText()));
-            this.miniP.parse();
+        if (!agregarCommandTextField.getText().replaceAll(" ", "").replaceAll("\t", "").isEmpty()) {
+            try {
+                lex.yyreset(new StringReader(agregarCommandTextField.getText()));
+                this.miniP.parse();
 
-            if (existColor(AuxObj.getName())) {
-                if ((AuxObj.getPosXemd() < DefaultValue.INICIO_DIMENSION) && (AuxObj.getPosYemd() < DefaultValue.INICIO_DIMENSION)) {
-                    changeColorButton(AuxObj.getPosX() - 1, AuxObj.getPosY() - 1, returnColor(AuxObj.getName()));
-                    append(Color.BLUE, agregarCommandTextField.getText(), historialTextPane);
-                } else if ((AuxObj.getPosXemd() > DefaultValue.NO_INICIO_DIMENSION) && (AuxObj.getPosYemd() < DefaultValue.INICIO_DIMENSION)) {
-                    for (int x = AuxObj.getPosX() - 1; x <= AuxObj.getPosXemd() - 1; x++) {
-                        changeColorButton(x, AuxObj.getPosY() - 1, returnColor(AuxObj.getName()));
-                    }
-                    append(Color.BLUE, agregarCommandTextField.getText(), historialTextPane);
-                } else if ((AuxObj.getPosXemd() < DefaultValue.INICIO_DIMENSION) && (AuxObj.getPosYemd() > DefaultValue.NO_INICIO_DIMENSION)) {
-                    for (int y = AuxObj.getPosY() - 1; y <= AuxObj.getPosYemd() - 1; y++) {
-                        changeColorButton(AuxObj.getPosX() - 1, y, returnColor(AuxObj.getName()));
-                    }
-                    append(Color.BLUE, agregarCommandTextField.getText(), historialTextPane);
-                } else {
-                    for (int x = AuxObj.getPosX() - 1; x <= AuxObj.getPosXemd() - 1; x++) {
-                        for (int y = AuxObj.getPosY() - 1; y <= AuxObj.getPosYemd() - 1; y++) {
-                            changeColorButton(x, y, returnColor(AuxObj.getName()));
+                if (existColor(AuxObj.getName())) {
+                    if ((AuxObj.getPosXemd() < DefaultValue.INICIO_DIMENSION) && (AuxObj.getPosYemd() < DefaultValue.INICIO_DIMENSION)) {
+                        changeColorButton(AuxObj.getPosX() - 1, AuxObj.getPosY() - 1, returnColor(AuxObj.getName()));
+                        append(Color.BLUE, agregarCommandTextField.getText(), historialTextPane);
+                    } else if ((AuxObj.getPosXemd() > DefaultValue.NO_INICIO_DIMENSION) && (AuxObj.getPosYemd() < DefaultValue.INICIO_DIMENSION)) {
+                        for (int x = AuxObj.getPosX() - 1; x <= AuxObj.getPosXemd() - 1; x++) {
+                            changeColorButton(x, AuxObj.getPosY() - 1, returnColor(AuxObj.getName()));
                         }
+                        append(Color.BLUE, agregarCommandTextField.getText(), historialTextPane);
+                    } else if ((AuxObj.getPosXemd() < DefaultValue.INICIO_DIMENSION) && (AuxObj.getPosYemd() > DefaultValue.NO_INICIO_DIMENSION)) {
+                        for (int y = AuxObj.getPosY() - 1; y <= AuxObj.getPosYemd() - 1; y++) {
+                            changeColorButton(AuxObj.getPosX() - 1, y, returnColor(AuxObj.getName()));
+                        }
+                        append(Color.BLUE, agregarCommandTextField.getText(), historialTextPane);
+                    } else {
+                        for (int x = AuxObj.getPosX() - 1; x <= AuxObj.getPosXemd() - 1; x++) {
+                            for (int y = AuxObj.getPosY() - 1; y <= AuxObj.getPosYemd() - 1; y++) {
+                                changeColorButton(x, y, returnColor(AuxObj.getName()));
+                            }
+                        }
+                        append(Color.BLUE, agregarCommandTextField.getText(), historialTextPane);
                     }
-                    append(Color.BLUE, agregarCommandTextField.getText(), historialTextPane);
+                } else {
+                    throw new InputsVaciosException("Doesn't exist the color");
                 }
-            } else {
-                throw new InputsVaciosException("Doesn't exist the color");
+            } catch (Exception e) {
+                System.out.println("Error en mini Paint: " + e);
+                append(Color.red, e.getMessage() + "\n" + agregarCommandTextField.getText(), historialTextPane);
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            System.out.println("Error en mini Paint: " + e);
-            append(Color.red, e.getMessage() + "\n" + agregarCommandTextField.getText(), historialTextPane);
-            e.printStackTrace();
+        } else {
+            JOptionPane.showMessageDialog(this, "Debe ingresar una instruccion\n"
+                    + "\nPINTAR(nombreColor,posicion X, posicion Y);\nEj: PINTAR(nombreColor,2, 5);\n"
+                    + "\nPINTAR(nombreColor,intervalo X,intervalo Y);\nEj: PINTAR(nombreColor, 2..7 , 1..8);", "Información", JOptionPane.INFORMATION_MESSAGE);
         }
 
         agregarCommandTextField.setText("");
@@ -508,13 +513,4 @@ public class lienzoEditor extends javax.swing.JPanel {
         panelComandos.setCharacterAttributes(aset, false);
         panelComandos.replaceSelection(s + "\n");
     }
-
-    public LinkedList<paint> getPaintlist() {
-        return paintlist;
-    }
-
-    public void setPaintlist(LinkedList<paint> paintlist) {
-        this.paintlist = paintlist;
-    }
-
 }

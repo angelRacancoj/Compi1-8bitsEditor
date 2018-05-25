@@ -11,9 +11,11 @@ import imageneditor.backEnd.AuxObjects.auxPaintList;
 import imageneditor.backEnd.AuxObjects.auxPaintToFile;
 import imageneditor.backEnd.Objects.canvasStruct;
 import imageneditor.backEnd.Objects.colorsStruct;
+import imageneditor.backEnd.Objects.lienzoObj;
 import imageneditor.backEnd.Objects.paintStruct;
 import imageneditor.backEnd.Objects.variable;
 import imageneditor.files.ManejadorArchivo;
+import imageneditor.files.ManejadorImagenes;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
@@ -26,6 +28,7 @@ import javax.swing.JOptionPane;
 public class imagenEditor extends javax.swing.JFrame {
 
     ManejadorArchivo fileM;
+    ManejadorImagenes imageManager = new ManejadorImagenes();
     private canvasStruct canvas;
     private colorsStruct colors;
     private paintStruct paint;
@@ -115,6 +118,11 @@ public class imagenEditor extends javax.swing.JFrame {
         importarMenu.setText("Importar");
 
         generarImagenMenuItem.setText("Generar Imagen");
+        generarImagenMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                generarImagenMenuItemActionPerformed(evt);
+            }
+        });
         importarMenu.add(generarImagenMenuItem);
 
         jMenuBar1.add(importarMenu);
@@ -196,6 +204,16 @@ public class imagenEditor extends javax.swing.JFrame {
             saveChanges();
         }
     }//GEN-LAST:event_salirMenuItemActionPerformed
+
+    private void generarImagenMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generarImagenMenuItemActionPerformed
+        for (lienzoObj lienzo : canvas.getLienzos()) {
+            if (imageManager.crearImagen("", lienzo, paintFiles.getPaintIstruction(lienzo.getId()).getPaintList(), colors.findColorObject(lienzo.getId()))) {
+                JOptionPane.showMessageDialog(this, "Imagen " + lienzo.getId() + "." + lienzo.getTipo() + " creada exitosamente", "Imagen", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this, "No se creo la imagen " + lienzo.getId() + "." + lienzo.getTipo(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_generarImagenMenuItemActionPerformed
 
     private void createWindows() {
         for (int i = 0; i < canvas.lienzosListSize(); i++) {

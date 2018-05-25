@@ -12,9 +12,11 @@ import imageneditor.analisis.colors;
 import imageneditor.analisis.paint;
 import imageneditor.backEnd.Objects.canvasStruct;
 import imageneditor.backEnd.Objects.colorsStruct;
+import imageneditor.backEnd.Objects.lienzoObj;
 import imageneditor.backEnd.Objects.paintStruct;
 import imageneditor.exceptions.errorsSaver;
 import imageneditor.files.ManejadorArchivo;
+import imageneditor.files.ManejadorImagenes;
 import imageneditor.objectsManager.canvasManager;
 import imageneditor.objectsManager.colorManager;
 import imageneditor.objectsManager.pintarManager;
@@ -43,6 +45,7 @@ public class Principal extends javax.swing.JFrame {
     String pathPaintOld = "";
 
     ManejadorArchivo fileManager;
+    ManejadorImagenes imageManager = new ManejadorImagenes();
 
     canvasStruct canvasStr;
     colorsStruct colorStr;
@@ -479,11 +482,18 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_analizarMenuItemActionPerformed
 
     private void editorGraficoMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editorGraficoMenuItemActionPerformed
+
         this.editor.setVisible(true);
     }//GEN-LAST:event_editorGraficoMenuItemActionPerformed
 
     private void generarMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generarMenuItemActionPerformed
-        // TODO add your handling code here:
+        for (lienzoObj lienzo : canvasStr.getLienzos()) {
+            if (imageManager.crearImagen("", lienzo, colorStr.findColorObject(lienzo.getId()), paintSrt.findIsntruccionsP(lienzo.getId()).getPaintlist())) {
+                JOptionPane.showMessageDialog(this, "Imagen " + lienzo.getId() + "." + lienzo.getTipo() + " creada exitosamente", "Imagen", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this, "No se creo la imagen " + lienzo.getId() + "." + lienzo.getTipo(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }//GEN-LAST:event_generarMenuItemActionPerformed
 
     private void manualUsuarioMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_manualUsuarioMenuItemActionPerformed
