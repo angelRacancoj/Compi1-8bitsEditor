@@ -35,6 +35,8 @@ public class imagenEditor extends javax.swing.JFrame {
     private paintStruct paint;
     private auxPaintToFile paintFiles;
 
+    Principal principal;
+
     /**
      * Creates new form imagenEditor
      *
@@ -42,12 +44,13 @@ public class imagenEditor extends javax.swing.JFrame {
      * @param colors
      * @param paint
      */
-    public imagenEditor(canvasStruct canvas, colorsStruct colors, paintStruct paint) {
+    public imagenEditor(canvasStruct canvas, colorsStruct colors, paintStruct paint, Principal principal) {
         this.canvas = canvas;
         this.colors = colors;
         this.paint = paint;
         this.paintFiles = new auxPaintToFile();
         this.fileM = new ManejadorArchivo();
+        this.principal = principal;
         initComponents();
 
         this.addWindowListener(new WindowAdapter() {
@@ -153,6 +156,7 @@ public class imagenEditor extends javax.swing.JFrame {
     private void hideIt() {
         this.setVisible(false);
         cargarMenuItem.setEnabled(true);
+        principal.setVisible(true);
     }
 
     private void saveChanges() {
@@ -200,6 +204,7 @@ public class imagenEditor extends javax.swing.JFrame {
     private void guardarMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarMenuItemActionPerformed
         System.out.println("Codigo salida:\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n" + newFileText() + ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
         saveChanges();
+        principal.actualizarTexto();
     }//GEN-LAST:event_guardarMenuItemActionPerformed
 
     private void salirMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salirMenuItemActionPerformed

@@ -94,7 +94,7 @@ public class Principal extends javax.swing.JFrame {
         this.lex3 = new Lexer(new StringReader(""));
         this.paintSi = new paint(lex3, paintMgr, errors);
 
-        editor = new imagenEditor(canvasStr, colorStr, paintSrt);
+        editor = new imagenEditor(canvasStr, colorStr, paintSrt, this);
         initComponents();
         generarMenu.setEnabled(false);
         proyectTabsTabbedPane.add("Errores", errorWindows);
@@ -359,6 +359,7 @@ public class Principal extends javax.swing.JFrame {
 
     private void abrirMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_abrirMenuItemActionPerformed
         clearList();
+        generarMenu.setEnabled(false);
 
         JFileChooser dialogo = new JFileChooser();
         dialogo.setDialogTitle("Open file");
@@ -488,8 +489,8 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_analizarMenuItemActionPerformed
 
     private void editorGraficoMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editorGraficoMenuItemActionPerformed
-
         this.editor.setVisible(true);
+        this.setVisible(false);
     }//GEN-LAST:event_editorGraficoMenuItemActionPerformed
 
     private void generarMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generarMenuItemActionPerformed
@@ -598,5 +599,27 @@ public class Principal extends javax.swing.JFrame {
     private boolean needToSave() {
 
         return (needSave(pathCanvas) || needSave(pathColors) || needSave(pathPaint));
+    }
+
+    public void actualizarTexto() {
+        try {
+            if (!pathCanvas.equals("")) {
+                int indexCanvas = proyectTabsTabbedPane.indexOfTab(fileManager.nameFile(pathCanvas));
+                codeEditor temp = (codeEditor) proyectTabsTabbedPane.getComponentAt(indexCanvas);
+                temp.setText(fileManager.lecturaArchivo(pathCanvas));
+            }
+            if (!pathColors.equals("")) {
+                int indexColors = proyectTabsTabbedPane.indexOfTab(fileManager.nameFile(pathColors));
+                codeEditor temp = (codeEditor) proyectTabsTabbedPane.getComponentAt(indexColors);
+                temp.setText(fileManager.lecturaArchivo(pathColors));
+            }
+            if (!pathPaint.equals("")) {
+                int indexPaint = proyectTabsTabbedPane.indexOfTab(fileManager.nameFile(pathPaint));
+                codeEditor temp = (codeEditor) proyectTabsTabbedPane.getComponentAt(indexPaint);
+                temp.setText(fileManager.lecturaArchivo(pathPaint));
+            }
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, e, "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 }
