@@ -20,8 +20,10 @@ import imageneditor.files.ManejadorImagenes;
 import imageneditor.objectsManager.canvasManager;
 import imageneditor.objectsManager.colorManager;
 import imageneditor.objectsManager.pintarManager;
+import java.awt.Desktop;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.LinkedList;
@@ -292,6 +294,14 @@ public class Principal extends javax.swing.JFrame {
                 canvasWindows.setText(fileManager.lecturaArchivo(path));
                 proyectTabsTabbedPane.add(fileManager.nameFile(path), canvasWindows);
             } else {
+                if (needToSave()) {
+                    int confirm = JOptionPane.showOptionDialog(null, "Desea guardar los cambios realizados?", "Información", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+                    if (confirm != 0) {
+                        saveChanges();
+                    }
+                } else {
+                    System.exit(0);
+                }
                 int index = proyectTabsTabbedPane.indexOfTab(fileManager.nameFile(oldPath));
                 proyectTabsTabbedPane.remove(index);
                 codeEditor canvasWindows = new codeEditor(path);
@@ -461,6 +471,7 @@ public class Principal extends javax.swing.JFrame {
             System.out.println("parse paint");
 
             generarMenu.setEnabled(true);
+            errorWindows.setText("Exelente! No hay Errores");
         } catch (Exception e) {
             System.out.println("Error->> " + e);
             errors.addPaintError("(Paint)Error: " + e);
@@ -491,6 +502,7 @@ public class Principal extends javax.swing.JFrame {
     private void editorGraficoMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editorGraficoMenuItemActionPerformed
         this.editor.setVisible(true);
         this.setVisible(false);
+        generarMenu.setEnabled(false);
     }//GEN-LAST:event_editorGraficoMenuItemActionPerformed
 
     private void generarMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generarMenuItemActionPerformed
@@ -512,7 +524,13 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_generarMenuItemActionPerformed
 
     private void manualUsuarioMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_manualUsuarioMenuItemActionPerformed
-        // TODO add your handling code here:
+        try {
+            File file = new File("ManualdeUsuario-ImageEditorAlphaV1.pdf");
+//            File file = new File("/home/angel/NetBeansProjects/ProyectoIPC2-IE/imagenEditor/ManualdeUsuario-ImageEditorAlphaV1.pdf");
+            Desktop.getDesktop().open(file);
+        } catch (Exception e) {
+            System.out.println("Error al abrir el manual");
+        }
     }//GEN-LAST:event_manualUsuarioMenuItemActionPerformed
 
     private void manualTecnicoMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_manualTecnicoMenuItemActionPerformed
