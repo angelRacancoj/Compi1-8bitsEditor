@@ -19,6 +19,7 @@ import imageneditor.files.ManejadorImagenes;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 /**
@@ -156,7 +157,8 @@ public class imagenEditor extends javax.swing.JFrame {
 
     private void saveChanges() {
         try {
-            fileM.guardarArchivo(paint.getPath() + "1", newFileText());
+            System.out.println(newFileText());
+            fileM.guardarArchivo(paint.getPath(), newFileText());
         } catch (IOException e) {
             JOptionPane.showMessageDialog(this, e, "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -164,12 +166,18 @@ public class imagenEditor extends javax.swing.JFrame {
 
     private String newFileText() {
         String aux = "";
-        aux += (DefaultValue.VARS + DefaultValue.COR_ABIERTO + "\n");
-        for (variable variablesList : paint.getVariablesList()) {
-            aux += ("\t" + DefaultValue.VAR + " " + variablesList.getName() + " "
-                    + DefaultValue.IGUAL + " " + variablesList.getValue() + DefaultValue.END_COM + "\n");
+
+        try {
+            aux = fileM.varStruct(fileM.lecturaArchivo(paint.getPath())) + "\n\n";
+        } catch (IOException e) {
+            System.out.println("error:" + e);
         }
-        aux += (DefaultValue.COR_CERRADO + "\n\n");
+//        aux += (DefaultValue.VARS + DefaultValue.COR_ABIERTO + "\n");
+//        for (variable variablesList : paint.getVariablesList()) {
+//            aux += ("\t" + DefaultValue.VAR + " " + variablesList.getName() + " "
+//                    + DefaultValue.IGUAL + " " + variablesList.getValue() + DefaultValue.END_COM + "\n");
+//        }
+//        aux += (DefaultValue.COR_CERRADO + "\n\n");
 
         for (auxPaintList lienzoInstruction : paintFiles.getLienzoInstructions()) {
             aux += (DefaultValue.INSTRUCCIONES + DefaultValue.PAR_ABIERTO + lienzoInstruction.getOwner()
@@ -206,11 +214,19 @@ public class imagenEditor extends javax.swing.JFrame {
     }//GEN-LAST:event_salirMenuItemActionPerformed
 
     private void generarImagenMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generarImagenMenuItemActionPerformed
-        for (lienzoObj lienzo : canvas.getLienzos()) {
-            if (imageManager.crearImagen("", lienzo, paintFiles.getPaintIstruction(lienzo.getId()).getPaintList(), colors.findColorObject(lienzo.getId()))) {
-                JOptionPane.showMessageDialog(this, "Imagen " + lienzo.getId() + "." + lienzo.getTipo() + " creada exitosamente", "Imagen", JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                JOptionPane.showMessageDialog(this, "No se creo la imagen " + lienzo.getId() + "." + lienzo.getTipo(), "Error", JOptionPane.ERROR_MESSAGE);
+        JFileChooser dialogo = new JFileChooser();
+        dialogo.setDialogTitle("Elegir carpeta destino");
+        dialogo.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+        if (dialogo.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+            String pathImg = dialogo.getSelectedFile().getAbsolutePath();
+            System.out.println("Path:" + pathImg);
+            for (lienzoObj lienzo : canvas.getLienzos()) {
+                if (imageManager.crearImagen(pathImg, lienzo, paintFiles.getPaintIstruction(lienzo.getId()).getPaintList(), colors.findColorObject(lienzo.getId()))) {
+                    JOptionPane.showMessageDialog(this, "Imagen " + lienzo.getId() + "." + lienzo.getTipo() + " creada exitosamente", "Imagen", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(this, "No se creo la imagen " + lienzo.getId() + "." + lienzo.getTipo(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
         }
     }//GEN-LAST:event_generarImagenMenuItemActionPerformed

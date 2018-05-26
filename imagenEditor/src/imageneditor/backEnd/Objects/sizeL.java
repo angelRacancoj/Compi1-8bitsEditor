@@ -29,7 +29,7 @@ public class sizeL {
      * @return
      */
     public boolean isReachableDimension(int pos) {
-        return ((dimension > pos) && (pos >= DefaultValue.INICIO_DIMENSION));
+        return ((dimension >= pos) && (pos > DefaultValue.NO_INICIO_DIMENSION));
     }
 
     /**

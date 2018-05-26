@@ -81,4 +81,25 @@ public class ManejadorArchivo {
         }
         return textoSalida;
     }
+
+    public String varStruct(String textoEntrada) {
+        int catENTER = 1;
+        String textoSalida = "";
+        for (int i = 0; i < textoEntrada.length(); i++) {
+            char letra = textoEntrada.charAt(i);
+            if (catENTER > 0) {
+                switch (letra) {
+                    case ']':
+                        catENTER--;
+                        textoSalida += letra;
+                        break;
+                    default:
+                        textoSalida += letra;
+                }
+            } else {
+                break;
+            }
+        }
+        return textoSalida;
+    }
 }

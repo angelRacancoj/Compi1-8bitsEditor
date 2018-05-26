@@ -71,8 +71,8 @@ public class ManejadorImagenes {
         }
 
         try {
-            File file = new File("/home/angel/Documents/" + lienzo.getId() + ".png");
-            ImageIO.write(img, "png", file);
+            File file = new File(path + "/" + lienzo.getName() + "." + lienzo.getTipo());
+            ImageIO.write(img, lienzo.getTipo(), file);
             return true;
         } catch (IOException e) {
             System.out.println("Error: " + e);
@@ -104,8 +104,8 @@ public class ManejadorImagenes {
         }
 
         try {
-            File file = new File("/home/angel/Documents/" + lienzo.getId() + ".png");
-            ImageIO.write(img, "png", file);
+            File file = new File(path + "/" + lienzo.getName() + "." + lienzo.getTipo());
+            ImageIO.write(img, lienzo.getTipo(), file);
             return true;
         } catch (IOException e) {
             System.out.println("Error: " + e);
@@ -119,7 +119,6 @@ public class ManejadorImagenes {
         } else {
             return Color.decode(colorIn.getHexa()).getRGB();
         }
-
     }
 
     public void imagenPrueba() {

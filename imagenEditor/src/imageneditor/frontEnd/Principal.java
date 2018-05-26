@@ -306,6 +306,8 @@ public class Principal extends javax.swing.JFrame {
     private void canvasMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_canvasMenuItemActionPerformed
         JFileChooser guardar = new JFileChooser();
         guardar.setDialogTitle("Create as ." + DefaultValue.CANVAS_EXT + " file");
+        FileFilter canvasExt = new FileNameExtensionFilter("CANVAS (." + DefaultValue.CANVAS_EXT + ")", DefaultValue.CANVAS_EXT);
+        guardar.setFileFilter(canvasExt);
         if (guardar.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
             pathCanvas = (guardar.getSelectedFile().getAbsolutePath() + "." + DefaultValue.CANVAS_EXT);
             System.out.println(pathCanvas);
@@ -322,6 +324,8 @@ public class Principal extends javax.swing.JFrame {
     private void coloresMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_coloresMenuItemActionPerformed
         JFileChooser guardar = new JFileChooser();
         guardar.setDialogTitle("Create as ." + DefaultValue.COLOR_EXT + " file");
+        FileFilter colorsExt = new FileNameExtensionFilter("COLORES (." + DefaultValue.COLOR_EXT + " )", DefaultValue.COLOR_EXT);
+        guardar.setFileFilter(colorsExt);
         if (guardar.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
             pathColors = (guardar.getSelectedFile().getAbsolutePath() + "." + DefaultValue.COLOR_EXT);
             System.out.println(pathColors);
@@ -338,6 +342,8 @@ public class Principal extends javax.swing.JFrame {
     private void pintarMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pintarMenuItemActionPerformed
         JFileChooser guardar = new JFileChooser();
         guardar.setDialogTitle("Create as ." + DefaultValue.PAINT_EXT + " file");
+        FileFilter paintExt = new FileNameExtensionFilter("PINTAR (." + DefaultValue.PAINT_EXT + ")", DefaultValue.PAINT_EXT);
+        guardar.setFileFilter(paintExt);
         if (guardar.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
             pathPaint = (guardar.getSelectedFile().getAbsolutePath() + "." + DefaultValue.PAINT_EXT);
             System.out.println(pathPaint);
@@ -487,11 +493,19 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_editorGraficoMenuItemActionPerformed
 
     private void generarMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generarMenuItemActionPerformed
-        for (lienzoObj lienzo : canvasStr.getLienzos()) {
-            if (imageManager.crearImagen("", lienzo, colorStr.findColorObject(lienzo.getId()), paintSrt.findIsntruccionsP(lienzo.getId()).getPaintlist())) {
-                JOptionPane.showMessageDialog(this, "Imagen " + lienzo.getId() + "." + lienzo.getTipo() + " creada exitosamente", "Imagen", JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                JOptionPane.showMessageDialog(this, "No se creo la imagen " + lienzo.getId() + "." + lienzo.getTipo(), "Error", JOptionPane.ERROR_MESSAGE);
+        JFileChooser dialogo = new JFileChooser();
+        dialogo.setDialogTitle("Elegir carpeta destino");
+        dialogo.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+        if (dialogo.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+            String pathImg = dialogo.getSelectedFile().getAbsolutePath();
+            System.out.println("Path:" + pathImg);
+            for (lienzoObj lienzo : canvasStr.getLienzos()) {
+                if (imageManager.crearImagen(pathImg, lienzo, colorStr.findColorObject(lienzo.getId()), paintSrt.findIsntruccionsP(lienzo.getId()).getPaintlist())) {
+                    JOptionPane.showMessageDialog(this, "Imagen " + lienzo.getId() + "." + lienzo.getTipo() + " creada exitosamente", "Imagen", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(this, "No se creo la imagen " + lienzo.getId() + "." + lienzo.getTipo(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
         }
     }//GEN-LAST:event_generarMenuItemActionPerformed
@@ -584,34 +598,5 @@ public class Principal extends javax.swing.JFrame {
     private boolean needToSave() {
 
         return (needSave(pathCanvas) || needSave(pathColors) || needSave(pathPaint));
-//        boolean saveCanvas = false;
-//        boolean saveColor = false;
-//        boolean savePaint = false;
-//        try {
-//            if (!pathCanvas.equals("")) {
-//                int indexCanvas = proyectTabsTabbedPane.indexOfTab(fileManager.nameFile(pathCanvas));
-//                codeEditor temp = (codeEditor) proyectTabsTabbedPane.getComponentAt(indexCanvas);
-//                if (!temp.returnText().equals(fileManager.lecturaArchivo(pathCanvas))) {
-//                    saveCanvas = true;
-//                }
-//            }
-//            if (!pathColors.equals("")) {
-//                int indexColors = proyectTabsTabbedPane.indexOfTab(fileManager.nameFile(pathColors));
-//                codeEditor temp = (codeEditor) proyectTabsTabbedPane.getComponentAt(indexColors);
-//                if (!temp.returnText().equals(fileManager.lecturaArchivo(pathColors))) {
-//                    saveColor = true;
-//                }
-//            }
-//            if (!pathPaint.equals("")) {
-//                int indexPaint = proyectTabsTabbedPane.indexOfTab(fileManager.nameFile(pathPaint));
-//                codeEditor temp = (codeEditor) proyectTabsTabbedPane.getComponentAt(indexPaint);
-//                if (!temp.returnText().equals(fileManager.lecturaArchivo(pathPaint))) {
-//                    savePaint = true;
-//                }
-//            }
-//        } catch (IOException e) {
-//            JOptionPane.showMessageDialog(this, e, "Error", JOptionPane.ERROR_MESSAGE);
-//        }
-//        return (saveCanvas || saveColor || savePaint);
     }
 }

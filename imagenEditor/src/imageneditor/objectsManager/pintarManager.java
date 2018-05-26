@@ -133,19 +133,19 @@ public class pintarManager {
                 if (newPaintS.findIsntruccionsP(owner).getOwner().getItSize().isReachableDimension(posX) && newPaintS.findIsntruccionsP(owner).getOwner().getItSize().isReachableDimension(posY)) {
                     newPaintS.findIsntruccionsP(owner).addPaint(new paint(colorsS.findColorMaker(owner, colorName), posX, posY));
                 } else {
-                    throw new InputsVaciosException("Grow rank >>" + posX + "," + posY + "<<");
+                    throw new InputsVaciosException("Owner: " + owner + " PINTAR(" + colorName + "," + posX + "," + posY + ") Grow rank >>" + posX + "," + posY + "<<");
                 }
             } else if (newPaintS.findIsntruccionsP(owner).getOwner().getItSize().isReachableDimension(posX, posY) && (posXEnd >= DefaultValue.INICIO_DIMENSION) && (posYEnd < DefaultValue.INICIO_DIMENSION)) {
                 if (newPaintS.findIsntruccionsP(owner).getOwner().getItSize().isReachableDimension(posXEnd)) {
                     newPaintS.findIsntruccionsP(owner).addPaint(new paint(colorsS.findColorMaker(owner, colorName), posX, posXEnd, posY, DefaultValue.INVALID_CL_CODE));
                 } else {
-                    throw new InputsVaciosException("Grow rank >>" + posX + "," + posXEnd + "<<");
+                    throw new InputsVaciosException("Owner: " + owner + " PINTAR(" + colorName + "," + posX + ".." + posXEnd + "," + posY + ") Grow rank >>" + posX + "," + posXEnd + "<<");
                 }
             } else if (newPaintS.findIsntruccionsP(owner).getOwner().getItSize().isReachableDimension(posX, posY) && (posYEnd >= DefaultValue.INICIO_DIMENSION) && (posXEnd < DefaultValue.INICIO_DIMENSION)) {
                 if (newPaintS.findIsntruccionsP(owner).getOwner().getItSize().isReachableDimension(posYEnd)) {
                     newPaintS.findIsntruccionsP(owner).addPaint(new paint(colorsS.findColorMaker(owner, colorName), posX, DefaultValue.INVALID_CL_CODE, posY, posYEnd));
                 } else {
-                    throw new InputsVaciosException("Grow rank >>" + posY + "," + posYEnd + "<<");
+                    throw new InputsVaciosException("Owner: " + owner + " PINTAR(" + colorName + "," + posX + "," + posY + ".." + posYEnd + ") Grow rank >>" + posY + "," + posYEnd + "<<");
                 }
             } else {
                 if ((posX < posXEnd) && (posY < posYEnd)) {
@@ -153,9 +153,9 @@ public class pintarManager {
                         newPaintS.findIsntruccionsP(owner).addPaint(new paint(colorsS.findColorMaker(owner, colorName), posX, posXEnd, posY, posYEnd));
                     } else {
                         if (posX >= posXEnd) {
-                            throw new InputsVaciosException("Grow rank >>" + posX + "," + posXEnd + "<<");
+                            throw new InputsVaciosException("Owner: " + owner + " PINTAR(" + colorName + "," + posX + ".." + posXEnd + "," + posY + ".." + posYEnd + ") Grow rank >>" + posX + "," + posXEnd + "<<");
                         } else {
-                            throw new InputsVaciosException("Grow rank >>" + posY + "," + posYEnd + "<<");
+                            throw new InputsVaciosException("Owner: " + owner + " PINTAR(" + colorName + "," + posX + ".." + posXEnd + "," + posY + ".." + posYEnd + ") Grow rank >>" + posY + "," + posYEnd + "<<");
                         }
                     }
                 } else {

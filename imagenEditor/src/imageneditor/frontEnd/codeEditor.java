@@ -92,7 +92,7 @@ public class codeEditor extends javax.swing.JPanel {
             }
         });
 
-        lineColumn.setText("jLabel1");
+        lineColumn.setText("Errores");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
